@@ -1,0 +1,16 @@
+{
+  "name": "@issue-tracker/next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@issue-tracker/ui": "workspace:*",
+    "next": "16.2.2"
+  },
+  "devDependencies": {}
+}

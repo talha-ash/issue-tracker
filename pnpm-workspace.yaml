@@ -1,0 +1,11 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+onlyBuiltDependencies:
+  - "esbuild"
+  - "lightningcss"
+
+ignoredBuiltDependencies:
+  - sharp
+  - unrs-resolver
