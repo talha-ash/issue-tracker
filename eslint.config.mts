@@ -1,0 +1,108 @@
+// @ts-check
+
+import eslint from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import pluginReact from 'eslint-plugin-react';
+import globals from 'globals';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+import { globalIgnores } from 'eslint/config';
+import pluginRouter from '@tanstack/eslint-plugin-router'
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import importX from 'eslint-plugin-import-x';
+import nodePlugin from 'eslint-plugin-n';
+import prettier from 'eslint-config-prettier'; // Must be last — disables formatting rules that conflict with Prettier
+
+export default tseslint.config(
+    eslint.configs.recommended, // Core JS rules (no-undef, no-dupe-keys, etc.)
+    tseslint.configs.strictTypeChecked, // Strict TS rules with type info (no-floating-promises, no-unsafe-assignment, etc.)
+    importX.flatConfigs.recommended, // Import validation (no duplicates, no circular deps, named exports must exist)
+    importX.flatConfigs.typescript, // TS-aware import resolution (understands path aliases, workspace packages)
+    nodePlugin.configs['flat/recommended-module'], // Node.js rules for ESM (deprecated APIs, unsupported syntax)
+
+    // Accessibility — scoped to non-Next apps (Next.js bundles its own jsx-a11y)
+    {
+        ...jsxA11y.flatConfigs.recommended,
+        files: ['apps/tanstart-app/**/*.{ts,tsx,js,jsx}', 'packages/**/*.{ts,tsx,js,jsx}'],
+    },
+
+    // React + TypeScript config for all .ts/.tsx files
+    {
+        files: ['**/*.{ts,tsx}'],
+        languageOptions: {
+            globals: {
+                ...globals.browser, // window, document, fetch, etc.
+                ...globals.es2020, // Promise, BigInt, globalThis, etc.
+            },
+            parserOptions: {
+                projectService: true, // Connect to TS language service for type-aware rules
+                tsconfigRootDir: process.cwd(),
+            },
+        },
+        settings: {
+            react: { version: 'detect' },
+        },
+        plugins: {
+            react: pluginReact,
+            'react-hooks': reactHooks,
+            'react-refresh': reactRefresh,
+        },
+        rules: {
+            ...pluginReact.configs.recommended.rules, // Core React rules (jsx-key, no-direct-mutation, etc.)
+            ...pluginReact.configs['jsx-runtime'].rules, // Disables react-in-jsx-scope (not needed with React 17+)
+            ...reactHooks.configs.recommended.rules, // rules-of-hooks + exhaustive-deps
+
+            // React
+            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }], // Warns when exports break Fast Refresh (HMR)
+            'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce'] }], // Prevents {count && <Comp/>} rendering "0"
+            'react/no-unstable-nested-components': 'error', // Ban components defined inside render (causes remounts)
+            'react/jsx-handler-names': ['error', { eventHandlerPrefix: 'handle', eventHandlerPropPrefix: 'on' }], // Consistent handler naming
+            'react/hook-use-state': 'error', // Enforce [value, setValue] pattern
+            'react/prop-types': 'off', // TypeScript handles prop validation
+
+            // Hooks
+            'react-hooks/rules-of-hooks': 'error', // Hooks only at top level
+            'react-hooks/exhaustive-deps': 'error', // All deps in dependency arrays (upgraded from warn)
+
+            // TypeScript
+            '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+            '@typescript-eslint/explicit-function-return-type': 'off', // TS infers return types
+            '@typescript-eslint/explicit-module-boundary-types': 'off', // TS infers exported types
+            '@typescript-eslint/no-explicit-any': 'error', // Use unknown instead
+        },
+    },
+
+    // Next.js — scoped to next-app only (includes jsx-a11y internally)
+    {
+        files: ['apps/next-app/**/*.{ts,tsx,js,jsx}'],
+        extends: [...nextVitals, ...nextTs],
+    },
+    // TanStack Router — route tree and loader validation
+    {
+        files: ['apps/tanstart-app/**/*.{ts,tsx,js,jsx}'],
+        extends: [...pluginRouter.configs['flat/recommended']],
+    },
+
+    globalIgnores([
+        ".next/**", "out/**", "build/**", "next-env.d.ts",
+        '**/assets/**/*', '**/dist/**/*', 'dist', 'build', 'node_modules', 'coverage', '*.min.js', '.vinxi', '.output',
+    ]),
+
+    // Package-specific: allow numbers/booleans in template literals
+    {
+        files: ['packages/**/src/**/*.ts', 'packages/**/tests/**/*.ts'],
+        rules: {
+            '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true, allowBoolean: true }],
+        },
+    },
+    // Disable node rules that conflict with bundlers/TS resolution
+    {
+        rules: {
+            'n/no-missing-import': 'off', // Bundlers handle resolution
+            'n/no-unpublished-import': 'off', // Workspace deps aren't "published"
+        },
+    },
+    prettier, // Must be last — disables all formatting rules
+)
