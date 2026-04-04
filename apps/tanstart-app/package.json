@@ -12,7 +12,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@issue-tracker/ui": "workspace:*",   
+    "@issue-tracker/backend": "workspace:*",
+    "@issue-tracker/ui": "workspace:*",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",

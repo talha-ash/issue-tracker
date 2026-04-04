@@ -1,10 +1,40 @@
-import { Button } from "@issue-tracker/ui/components";
-export default function Home() {
+import { getSupabaseClient } from '@/supabaseClient';
+import { AnalyticsBadge } from './analytics-badge';
+
+export default async function Home() {
+  const { data: projects } = await getSupabaseClient().fetchProjects();
+
+  
   return (
-    <div className="flex flex-col flex-1 items-center justify-center dark:bg-emerald-200 font-sans bg-amber-600">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-brown dark:bg-brown sm:items-start">
-        <Button>Hello World</Button>
-      </main>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <AnalyticsBadge />
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Projects</h1>
+      <div className="grid gap-4">
+        {projects?.map(project => (
+          <div
+            key={project.id}
+            className="bg-white rounded-xl border border-gray-200 shadow-sm p-6"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-lg font-semibold text-gray-900">
+                {project.name}
+              </h2>
+              <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-indigo-100 text-indigo-700">
+                {project.key}
+              </span>
+            </div>
+            {project.description && (
+              <p className="text-sm text-gray-500">{project.description}</p>
+            )}
+            <div className="mt-3 flex items-center gap-3 text-xs text-gray-400">
+              <span>{project.visibility}</span>
+              <span>
+                Created {new Date(project.created_at).toLocaleDateString()}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

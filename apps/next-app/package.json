@@ -9,8 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@issue-tracker/backend": "workspace:*",
     "@issue-tracker/ui": "workspace:*",
+    "dotenv": "^17.4.0",
     "next": "16.2.2"
-  },
-  "devDependencies": {}
+  }
 }
