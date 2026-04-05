@@ -7,9 +7,9 @@
     "dist"
   ],
   "exports": {
-    "./supabase": {
-      "types": "./dist/supabase/index.d.ts",
-      "import": "./dist/supabase/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
@@ -17,6 +17,7 @@
     "dev": "tsc -p tsconfig.build.json --watch"
   },
   "dependencies": {
+    "@supabase/postgrest-js": "^2.101.1",
     "@supabase/supabase-js": "^2.101.0"
   }
 }

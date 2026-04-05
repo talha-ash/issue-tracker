@@ -1,8 +1,8 @@
-import { getSupabaseClient } from '@/supabaseClient';
+import { Api } from '@/apiClient';
 import { AnalyticsBadge } from './analytics-badge';
 
 export default async function Home() {
-  const { data: projects } = await getSupabaseClient().fetchProjects();
+  const projects = await Api().getProjects();
 
   
   return (

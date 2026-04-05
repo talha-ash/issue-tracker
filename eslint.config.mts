@@ -14,14 +14,14 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import importX from 'eslint-plugin-import-x';
 import nodePlugin from 'eslint-plugin-n';
 import prettier from 'eslint-config-prettier'; // Must be last — disables formatting rules that conflict with Prettier
+import eslintPluginNeverthrow from 'eslint-plugin-neverthrow';
 
 export default tseslint.config(
     eslint.configs.recommended, // Core JS rules (no-undef, no-dupe-keys, etc.)
     tseslint.configs.strictTypeChecked, // Strict TS rules with type info (no-floating-promises, no-unsafe-assignment, etc.)
     importX.flatConfigs.recommended, // Import validation (no duplicates, no circular deps, named exports must exist)
     importX.flatConfigs.typescript, // TS-aware import resolution (understands path aliases, workspace packages)
-    nodePlugin.configs['flat/recommended-module'], // Node.js rules for ESM (deprecated APIs, unsupported syntax)
-
+    nodePlugin.configs['flat/recommended-module'], // Node.js rules for ESM (deprecated APIs, unsupported syntax
     // Accessibility — scoped to non-Next apps (Next.js bundles its own jsx-a11y)
     {
         ...jsxA11y.flatConfigs.recommended,
@@ -48,12 +48,14 @@ export default tseslint.config(
             react: pluginReact,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
+            neverthrow: eslintPluginNeverthrow,
         },
         rules: {
             ...pluginReact.configs.recommended.rules, // Core React rules (jsx-key, no-direct-mutation, etc.)
             ...pluginReact.configs['jsx-runtime'].rules, // Disables react-in-jsx-scope (not needed with React 17+)
             ...reactHooks.configs.recommended.rules, // rules-of-hooks + exhaustive-deps
-
+            //neverthrow
+            'neverthrow/must-use-result': 'error',
             // React
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }], // Warns when exports break Fast Refresh (HMR)
             'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce'] }], // Prevents {count && <Comp/>} rendering "0"

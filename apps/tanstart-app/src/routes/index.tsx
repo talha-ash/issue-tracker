@@ -2,10 +2,10 @@ import { ClientOnly, createFileRoute } from '@tanstack/react-router';
 
 import { createServerFn } from '@tanstack/react-start';
 
-import { getSupabaseClient } from '../supabaseClient';
+import { Api } from '../apiClient';
 
 export const getProjects = createServerFn().handler(async () => {
-  const projects = await getSupabaseClient().fetchProjects();
+  const projects = await Api().getProjects();
   return projects;
 });
 
@@ -15,7 +15,7 @@ export const Route = createFileRoute('/')({
 });
 
 function App() {
-  const { data: projects } = Route.useLoaderData();
+  const projects = Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
