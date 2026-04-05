@@ -14,7 +14,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import importX from 'eslint-plugin-import-x';
 import nodePlugin from 'eslint-plugin-n';
 import prettier from 'eslint-config-prettier'; // Must be last — disables formatting rules that conflict with Prettier
-import eslintPluginNeverthrow from 'eslint-plugin-neverthrow';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 
 export default tseslint.config(
     eslint.configs.recommended, // Core JS rules (no-undef, no-dupe-keys, etc.)
@@ -22,6 +22,11 @@ export default tseslint.config(
     importX.flatConfigs.recommended, // Import validation (no duplicates, no circular deps, named exports must exist)
     importX.flatConfigs.typescript, // TS-aware import resolution (understands path aliases, workspace packages)
     nodePlugin.configs['flat/recommended-module'], // Node.js rules for ESM (deprecated APIs, unsupported syntax
+
+    globalIgnores([
+        "**/.next/**", "**/out/**", "**/build/**", "**/next-env.d.ts",
+        '**/assets/**/*', '**/dist/**/*', 'dist', 'build', 'node_modules', 'coverage', '*.min.js', '.vinxi', '.output', '**/database.types.ts', '**/*.mjs', '**/*.cjs', '**/*.mts',
+    ]),
     // Accessibility — scoped to non-Next apps (Next.js bundles its own jsx-a11y)
     {
         ...jsxA11y.flatConfigs.recommended,
@@ -30,7 +35,7 @@ export default tseslint.config(
 
     // React + TypeScript config for all .ts/.tsx files
     {
-        files: ['**/*.{ts,tsx}'],
+        files: ['**/*.{ts,tsx,js,jsx}'],
         languageOptions: {
             globals: {
                 ...globals.browser, // window, document, fetch, etc.
@@ -43,22 +48,22 @@ export default tseslint.config(
         },
         settings: {
             react: { version: 'detect' },
+            "import-x/resolver-next": [
+                createTypeScriptImportResolver({ project: ['tsconfig.json', 'apps/*/tsconfig.json', 'packages/*/tsconfig.json'] })
+            ]
         },
         plugins: {
             react: pluginReact,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
-            neverthrow: eslintPluginNeverthrow,
         },
         rules: {
             ...pluginReact.configs.recommended.rules, // Core React rules (jsx-key, no-direct-mutation, etc.)
             ...pluginReact.configs['jsx-runtime'].rules, // Disables react-in-jsx-scope (not needed with React 17+)
             ...reactHooks.configs.recommended.rules, // rules-of-hooks + exhaustive-deps
-            //neverthrow
-            'neverthrow/must-use-result': 'error',
             // React
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }], // Warns when exports break Fast Refresh (HMR)
-            'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce'] }], // Prevents {count && <Comp/>} rendering "0"
+            'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce', 'ternary'] }], // Prevents {count && <Comp/>} rendering "0"
             'react/no-unstable-nested-components': 'error', // Ban components defined inside render (causes remounts)
             'react/jsx-handler-names': ['error', { eventHandlerPrefix: 'handle', eventHandlerPropPrefix: 'on' }], // Consistent handler naming
             'react/hook-use-state': 'error', // Enforce [value, setValue] pattern
@@ -86,11 +91,6 @@ export default tseslint.config(
         files: ['apps/tanstart-app/**/*.{ts,tsx,js,jsx}'],
         extends: [...pluginRouter.configs['flat/recommended']],
     },
-
-    globalIgnores([
-        ".next/**", "out/**", "build/**", "next-env.d.ts",
-        '**/assets/**/*', '**/dist/**/*', 'dist', 'build', 'node_modules', 'coverage', '*.min.js', '.vinxi', '.output',
-    ]),
 
     // Package-specific: allow numbers/booleans in template literals
     {

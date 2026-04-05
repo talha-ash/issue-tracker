@@ -1,17 +1,19 @@
+import { ok } from "neverthrow"
 import type { DbClient } from "../../shared/db.js"
 import { fetchProjects } from "./db.js"
 import { filterActiveProjects } from "./logic.js"
 
 async function getProjects(client: DbClient) {
-    const { data, error } = await fetchProjects(client)
-    if (error) throw error
-    return data
+    const result = await fetchProjects(client)
+    return result
 }
 
 async function getActiveProjects(client: DbClient) {
-    const { data, error } = await fetchProjects(client)
-    if (error) throw error
-    return filterActiveProjects(data)
+    const result = await fetchProjects(client)
+    if (result.isErr()) {
+        return result
+    }
+    return ok(filterActiveProjects(result.value))
 }
 
 

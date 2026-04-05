@@ -1,12 +1,15 @@
-import { ClientOnly, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 
 import { createServerFn } from '@tanstack/react-start';
 
 import { Api } from '../apiClient';
 
 export const getProjects = createServerFn().handler(async () => {
-  const projects = await Api().getProjects();
-  return projects;
+  const result = await Api().getProjects();
+  if (result.isOk()) {
+    return result.value;
+  }
+  return [];
 });
 
 export const Route = createFileRoute('/')({
@@ -35,9 +38,7 @@ function App() {
                 {project.key}
               </span>
             </div>
-            {project.description && (
-              <p className="text-sm text-gray-500">{project.description}</p>
-            )}
+            {!!project.description && <p className="text-sm text-gray-500">{project.description}</p>}
             <div className="mt-3 flex items-center gap-3 text-xs text-gray-400">
               <span>{project.visibility}</span>
               <span>

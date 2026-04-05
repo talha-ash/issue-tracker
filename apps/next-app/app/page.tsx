@@ -2,15 +2,16 @@ import { Api } from '@/apiClient';
 import { AnalyticsBadge } from './analytics-badge';
 
 export default async function Home() {
-  const projects = await Api().getProjects();
+  const result = await Api().getProjects();
 
-  
+  const projects = result.isOk() ? result.value : [];
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <AnalyticsBadge />
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Projects</h1>
       <div className="grid gap-4">
-        {projects?.map(project => (
+        {projects.map(project => (
           <div
             key={project.id}
             className="bg-white rounded-xl border border-gray-200 shadow-sm p-6"
@@ -23,9 +24,9 @@ export default async function Home() {
                 {project.key}
               </span>
             </div>
-            {project.description && (
+            {project.description ? (
               <p className="text-sm text-gray-500">{project.description}</p>
-            )}
+            ) : null}
             <div className="mt-3 flex items-center gap-3 text-xs text-gray-400">
               <span>{project.visibility}</span>
               <span>
