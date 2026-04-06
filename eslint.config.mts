@@ -21,7 +21,7 @@ export default tseslint.config(
     tseslint.configs.strictTypeChecked, // Strict TS rules with type info (no-floating-promises, no-unsafe-assignment, etc.)
     importX.flatConfigs.recommended, // Import validation (no duplicates, no circular deps, named exports must exist)
     importX.flatConfigs.typescript, // TS-aware import resolution (understands path aliases, workspace packages)
-    nodePlugin.configs['flat/recommended-module'], // Node.js rules for ESM (deprecated APIs, unsupported syntax
+
 
     globalIgnores([
         "**/.next/**", "**/out/**", "**/build/**", "**/next-env.d.ts",
@@ -50,7 +50,7 @@ export default tseslint.config(
             react: { version: 'detect' },
             "import-x/resolver-next": [
                 createTypeScriptImportResolver({ project: ['tsconfig.json', 'apps/*/tsconfig.json', 'packages/*/tsconfig.json'] })
-            ]
+            ],
         },
         plugins: {
             react: pluginReact,
@@ -62,7 +62,7 @@ export default tseslint.config(
             ...pluginReact.configs['jsx-runtime'].rules, // Disables react-in-jsx-scope (not needed with React 17+)
             ...reactHooks.configs.recommended.rules, // rules-of-hooks + exhaustive-deps
             // React
-            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }], // Warns when exports break Fast Refresh (HMR)
+            'react-refresh/only-export-components': ['warn', { allowConstantExport: true, allowExportNames: ["Route"] }], // Warns when exports break Fast Refresh (HMR)
             'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce', 'ternary'] }], // Prevents {count && <Comp/>} rendering "0"
             'react/no-unstable-nested-components': 'error', // Ban components defined inside render (causes remounts)
             'react/jsx-handler-names': ['error', { eventHandlerPrefix: 'handle', eventHandlerPropPrefix: 'on' }], // Consistent handler naming
@@ -77,7 +77,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
             '@typescript-eslint/explicit-function-return-type': 'off', // TS infers return types
             '@typescript-eslint/explicit-module-boundary-types': 'off', // TS infers exported types
-            '@typescript-eslint/no-explicit-any': 'error', // Use unknown instead
+            '@typescript-eslint/no-explicit-any': 'error', // Use unknown instead            
         },
     },
 
@@ -99,8 +99,9 @@ export default tseslint.config(
             '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true, allowBoolean: true }],
         },
     },
-    // Disable node rules that conflict with bundlers/TS resolution
     {
+        files: ['packages/backend/**/*.{ts,js}'],
+        extends: [nodePlugin.configs['flat/recommended-module']],
         rules: {
             'n/no-missing-import': 'off', // Bundlers handle resolution
             'n/no-unpublished-import': 'off', // Workspace deps aren't "published"

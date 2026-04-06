@@ -20,7 +20,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: import.meta.env.VITE_APP_NAME,
+        title: import.meta.env.VITE_APP_NAME as string,
       },
     ],
     links: [

@@ -25,7 +25,7 @@ function App() {
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Projects</h1>
 
       <div className="grid gap-4">
-        {projects?.map(project => (
+        {projects.map(project => (
           <div
             key={project.id}
             className="bg-white rounded-xl border border-gray-200 shadow-sm p-6"
