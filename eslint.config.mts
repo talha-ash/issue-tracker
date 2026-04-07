@@ -62,7 +62,10 @@ export default tseslint.config(
             ...pluginReact.configs['jsx-runtime'].rules, // Disables react-in-jsx-scope (not needed with React 17+)
             ...reactHooks.configs.recommended.rules, // rules-of-hooks + exhaustive-deps
             // React
-            'react-refresh/only-export-components': ['warn', { allowConstantExport: true, allowExportNames: ["Route"] }], // Warns when exports break Fast Refresh (HMR)
+            // Off — Next.js and TanStack Start handle their own HMR internally;
+            // shared UI (shadcn) exports variants/constants alongside components by convention,
+            // causing false positives. The plugin adds noise without value in this monorepo.
+            'react-refresh/only-export-components': 'off',
             'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce', 'ternary'] }], // Prevents {count && <Comp/>} rendering "0"
             'react/no-unstable-nested-components': 'error', // Ban components defined inside render (causes remounts)
             'react/jsx-handler-names': ['error', { eventHandlerPrefix: 'handle', eventHandlerPropPrefix: 'on' }], // Consistent handler naming
@@ -90,7 +93,7 @@ export default tseslint.config(
     {
         files: ['apps/tanstart-app/**/*.{ts,tsx,js,jsx}'],
         extends: [...pluginRouter.configs['flat/recommended']],
-    },
+    },   
 
     // Package-specific: allow numbers/booleans in template literals
     {
@@ -99,12 +102,18 @@ export default tseslint.config(
             '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true, allowBoolean: true }],
         },
     },
+    // Node.js — scoped to backend only (browser apps and UI package don't need Node rules)
     {
         files: ['packages/backend/**/*.{ts,js}'],
-        extends: [nodePlugin.configs['flat/recommended-module']],
+        extends: [nodePlugin.configs['flat/recommended-module']], // ESM-specific Node rules (deprecated APIs, engine compat)
         rules: {
-            'n/no-missing-import': 'off', // Bundlers handle resolution
-            'n/no-unpublished-import': 'off', // Workspace deps aren't "published"
+            'n/no-missing-import': 'off', // Bundlers handle resolution (path aliases, workspace packages)
+            'n/no-unpublished-import': 'off', // Workspace deps like @issue-tracker/ui aren't published to npm
+            // neverthrow lives in root package.json but is hoisted — backend's own package.json doesn't list it.
+            // Using allowModules (not resolvePaths) because resolvePaths only helps locate modules on disk;
+            // the extraneous check walks up to the nearest package.json and checks its dependencies field,
+            // so resolvePaths can't make the rule see root-level deps for a nested package.
+            'n/no-extraneous-import': ['error', { allowModules: ['neverthrow'] }],
         },
     },
     prettier, // Must be last — disables all formatting rules

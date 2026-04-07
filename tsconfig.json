@@ -3,6 +3,7 @@
         "target": "ESNext",
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
+        "types": ["node"],        
         "noEmit": true,
         "noImplicitAny": true,
         "allowJs": true,
@@ -32,6 +33,7 @@
         // "**/tailwind.config.js",
         // "**/postcss.config.cjs",
         "**/vite.config.ts",
+        "./eslint.config.mts"
     ],
     "exclude": [
         "**/assets/**/*",

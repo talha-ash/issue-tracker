@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 
 type ThemeMode = 'light' | 'dark' | 'auto'
 
@@ -36,8 +36,8 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     const initialMode = getInitialMode()
-    setMode(initialMode)
     applyThemeMode(initialMode)
+    startTransition(() => { setMode(initialMode); })
   }, [])
 
   useEffect(() => {
