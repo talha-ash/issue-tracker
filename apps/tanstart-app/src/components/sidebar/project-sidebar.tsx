@@ -16,15 +16,15 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar'
+} from '@issue-tracker/ui/componentssidebar'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+} from '@issue-tracker/ui/componentsdropdown-menu'
+import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
+import { Button } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { projects, currentUser } from '@/lib/mock-data'
 

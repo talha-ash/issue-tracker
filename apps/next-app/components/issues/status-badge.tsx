@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import type { Status } from '@/lib/mock-data'
 

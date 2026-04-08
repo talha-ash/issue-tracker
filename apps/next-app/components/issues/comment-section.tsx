@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { Reply } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@issue-tracker/ui/components'
+import { Textarea } from '@issue-tracker/ui/components'
+import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { currentUser, type Comment } from '@/lib/mock-data'
 

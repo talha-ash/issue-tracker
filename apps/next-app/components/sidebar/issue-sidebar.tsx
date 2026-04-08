@@ -16,10 +16,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-} from '@/components/ui/sidebar'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
+} from '@issue-tracker/ui/components'
+import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
+import { Button } from '@issue-tracker/ui/components'
+import { ScrollArea } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { getProjectById, getIssuesByProjectId, currentUser, type Issue } from '@/lib/mock-data'
 

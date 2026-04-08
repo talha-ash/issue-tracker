@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
+import { Button } from '@issue-tracker/ui/components'
+import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
+import { Separator } from '@issue-tracker/ui/components'
 import { StatusBadge } from './status-badge'
 import { PriorityBadge } from './priority-badge'
 import { CommentSection } from './comment-section'

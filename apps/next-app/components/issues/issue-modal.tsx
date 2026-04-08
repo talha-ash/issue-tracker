@@ -7,19 +7,19 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+} from '@issue-tracker/ui/components'
+import { Button } from '@issue-tracker/ui/components'
+import { Input } from '@issue-tracker/ui/components'
+import { Textarea } from '@issue-tracker/ui/components'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Separator } from '@/components/ui/separator'
+} from '@issue-tracker/ui/components'
+import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
+import { Separator } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { users, type Issue, type Status, type Priority } from '@/lib/mock-data'
 

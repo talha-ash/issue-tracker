@@ -19,3 +19,8 @@ export * from "./ui/tabs"
 export * from "./ui/toast"
 export * from "./ui/tooltip"
 export * from "./ui/field"
+export * from "./ui/table"
+export * from "./ui/textarea"
+export * from "./ui/badge"
+export * from "./ui/skeleton"
+

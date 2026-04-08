@@ -1,7 +1,7 @@
 'use client'
 
 import { ClipboardList, FolderKanban, Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 
 interface EmptyStateProps {
