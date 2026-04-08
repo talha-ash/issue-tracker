@@ -67,7 +67,7 @@ export default tseslint.config(
             // causing false positives. The plugin adds noise without value in this monorepo.
             'react-refresh/only-export-components': 'off',
             'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce', 'ternary'] }], // Prevents {count && <Comp/>} rendering "0"
-            'react/no-unstable-nested-components': 'error', // Ban components defined inside render (causes remounts)
+            'react/no-unstable-nested-components': ['error', { allowAsProps: true }], // Ban components defined inside render (causes remounts); allow when passed as a prop (common pattern in shadcn/Radix slot APIs)
             'react/jsx-handler-names': ['error', { eventHandlerPrefix: 'handle', eventHandlerPropPrefix: 'on' }], // Consistent handler naming
             'react/hook-use-state': 'error', // Enforce [value, setValue] pattern
             'react/prop-types': 'off', // TypeScript handles prop validation

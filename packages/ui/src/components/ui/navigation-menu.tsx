@@ -24,7 +24,7 @@ function NavigationMenu({
       {...props}
     >
       {children}
-      {viewport ? <NavigationMenuViewport /> : null}
+      {viewport && <NavigationMenuViewport />}
     </NavigationMenuPrimitive.Root>
   )
 }
