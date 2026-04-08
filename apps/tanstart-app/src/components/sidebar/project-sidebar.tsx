@@ -1,4 +1,7 @@
-import { useLocation } from '@tanstack/react-router'
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Plus, MoreHorizontal, LogOut } from 'lucide-react'
 import {
   Sidebar,
@@ -13,50 +16,48 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+} from '@/components/ui/sidebar'
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Avatar,
-  AvatarFallback,
-  Button,
-} from '@issue-tracker/ui/components'
-import { projects, currentUser } from '@/components/sidebar/mock-data'
-
-// NOTE: plain <a> elements are used for navigation here because the target
-// routes (/dashboard, /projects/...) don't exist in the TanStack Router tree
-// yet. Swap to <Link to="..."> from @tanstack/react-router as routes land.
+} from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { useLanguage } from '@/lib/i18n'
+import { projects, currentUser } from '@/lib/mock-data'
 
 export function ProjectSidebar() {
-  const { pathname } = useLocation()
+  const pathname = usePathname()
+  const { t } = useLanguage()
 
   return (
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border p-4">
-        <a href="/dashboard" className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
             <span className="text-sm font-bold text-primary-foreground">IT</span>
           </div>
-          <span className="text-lg font-semibold">Issue Tracker</span>
-        </a>
+          <span className="text-lg font-semibold">{t('app.name')}</span>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center justify-between">
-            Projects
+            {t('nav.projects')}
           </SidebarGroupLabel>
           <SidebarGroupAction asChild>
-            <a href="/projects/new" title="New project">
+            <Link href="/projects/new" title={t('project.new')}>
               <Plus className="size-4" />
-            </a>
+            </Link>
           </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
               {projects.map((project) => {
-                const isActive =
-                  pathname === `/projects/${project.id}` ||
-                  pathname.startsWith(`/projects/${project.id}/`)
+                const isActive = pathname === `/projects/${project.id}` || 
+                                 pathname?.startsWith(`/projects/${project.id}/`)
                 return (
                   <SidebarMenuItem key={project.id}>
                     <SidebarMenuButton
@@ -64,13 +65,13 @@ export function ProjectSidebar() {
                       isActive={isActive}
                       className={isActive ? 'border-l-2 border-primary' : ''}
                     >
-                      <a href={`/projects/${project.id}`}>
+                      <Link href={`/projects/${project.id}`}>
                         <span
                           className="size-2 shrink-0 rounded-full"
                           style={{ backgroundColor: project.color }}
                         />
                         <span className="truncate">{project.name}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -80,13 +81,17 @@ export function ProjectSidebar() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="right" align="start">
                         <DropdownMenuItem asChild>
-                          <a href={`/projects/${project.id}`}>Details</a>
+                          <Link href={`/projects/${project.id}`}>
+                            {t('project.details')}
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <a href={`/projects/${project.id}/edit`}>Edit</a>
+                          <Link href={`/projects/${project.id}/edit`}>
+                            {t('project.edit')}
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-destructive">
-                          Delete
+                          {t('project.delete')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -109,9 +114,9 @@ export function ProjectSidebar() {
             <p className="truncate text-sm font-medium">{currentUser.name}</p>
           </div>
           <Button variant="ghost" size="icon-sm" asChild>
-            <a href="/login" title="Logout">
+            <Link href="/login" title={t('nav.logout')}>
               <LogOut className="size-4" />
-            </a>
+            </Link>
           </Button>
         </div>
       </SidebarFooter>

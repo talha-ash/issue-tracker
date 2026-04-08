@@ -1,4 +1,7 @@
-import { useLocation } from '@tanstack/react-router'
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ArrowLeft, Plus, LogOut } from 'lucide-react'
 import {
   Sidebar,
@@ -13,19 +16,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-  Avatar,
-  AvatarFallback,
-  Button,
-  ScrollArea,
-} from '@issue-tracker/ui/components'
-import {
-  getProjectById,
-  getIssuesByProjectId,
-  currentUser,
-  type Issue,
-} from '@/components/sidebar/mock-data'
-
-// NOTE: plain <a> elements are used for navigation here — see project-sidebar.tsx for context.
+} from '@/components/ui/sidebar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { useLanguage } from '@/lib/i18n'
+import { getProjectById, getIssuesByProjectId, currentUser, type Issue } from '@/lib/mock-data'
 
 interface IssueSidebarProps {
   projectId: string
@@ -39,12 +35,13 @@ function StatusDot({ status }: { status: Issue['status'] }) {
     resolved: 'bg-[var(--status-resolved)]',
     closed: 'bg-[var(--status-closed)]',
   }
-
+  
   return <span className={`size-2 shrink-0 rounded-full ${colors[status]}`} />
 }
 
 export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
-  const { pathname } = useLocation()
+  const pathname = usePathname()
+  const { t } = useLanguage()
   const project = getProjectById(projectId)
   const issues = getIssuesByProjectId(projectId)
 
@@ -53,13 +50,13 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
   return (
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="p-4">
-        <a
+        <Link
           href="/dashboard"
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
-          Back to projects
-        </a>
+          {t('nav.back')}
+        </Link>
         <h2 className="mt-2 truncate text-lg font-bold">{project.name}</h2>
       </SidebarHeader>
 
@@ -67,9 +64,9 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Issues</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('nav.issues')}</SidebarGroupLabel>
           <SidebarGroupAction asChild>
-            <button title="New issue">
+            <button title={t('issue.new')}>
               <Plus className="size-4" />
             </button>
           </SidebarGroupAction>
@@ -77,9 +74,7 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
             <ScrollArea className="h-[calc(100vh-280px)]">
               <SidebarMenu>
                 {issues.map((issue) => {
-                  const isActive =
-                    pathname.includes(`/issues/${issue.id}`) ||
-                    currentIssueId === issue.id
+                  const isActive = pathname?.includes(`/issues/${issue.id}`) || currentIssueId === issue.id
                   return (
                     <SidebarMenuItem key={issue.id}>
                       <SidebarMenuButton
@@ -87,10 +82,10 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
                         isActive={isActive}
                         className={isActive ? 'border-l-2 border-primary' : ''}
                       >
-                        <a href={`/projects/${projectId}/issues/${issue.id}`}>
+                        <Link href={`/projects/${projectId}/issues/${issue.id}`}>
                           <StatusDot status={issue.status} />
                           <span className="truncate">{issue.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )
@@ -112,9 +107,9 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
             <p className="truncate text-sm font-medium">{currentUser.name}</p>
           </div>
           <Button variant="ghost" size="icon-sm" asChild>
-            <a href="/login" title="Logout">
+            <Link href="/login" title={t('nav.logout')}>
               <LogOut className="size-4" />
-            </a>
+            </Link>
           </Button>
         </div>
       </SidebarFooter>

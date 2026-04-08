@@ -1,6 +1,8 @@
+'use client'
+
 import { SidebarProvider, SidebarInset } from '@issue-tracker/ui/components'
 import { Header } from '@/components/header'
-// TODO: import { IssueSidebar } from '@/components/sidebar/issue-sidebar'
+import { IssueSidebar } from '@/components/sidebar/issue-sidebar'
 
 interface IssueAppShellProps {
   projectId: string
@@ -8,18 +10,15 @@ interface IssueAppShellProps {
   children: React.ReactNode
 }
 
-export function IssueAppShell({
-  projectId: _projectId,
-  currentIssueId: _currentIssueId,
-  children,
-}: IssueAppShellProps) {
+export function IssueAppShell({ projectId, currentIssueId, children }: IssueAppShellProps) {
   return (
     <SidebarProvider>
-      {/* TODO: replace with <IssueSidebar projectId={projectId} currentIssueId={currentIssueId} /> once the sidebar slice is added */}
-      <div data-slot="sidebar-placeholder" />
+      <IssueSidebar projectId={projectId} currentIssueId={currentIssueId} />
       <SidebarInset>
         <Header />
-        <main className="flex-1 overflow-auto">{children}</main>
+        <main className="flex-1 overflow-auto">
+          {children}
+        </main>
       </SidebarInset>
     </SidebarProvider>
   )

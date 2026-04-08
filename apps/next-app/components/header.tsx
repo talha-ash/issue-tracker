@@ -1,20 +1,48 @@
 'use client'
 
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun, Globe } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { Button } from '@issue-tracker/ui/components'
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@issue-tracker/ui/components'
+import { useLanguage, type Language } from '@/lib/i18n'
 
 export function Header() {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
+  const { language, setLanguage, t } = useLanguage()
+
+  const languages: { code: Language; label: string; flag: string }[] = [
+    { code: 'en', label: 'English', flag: 'EN' },
+    { code: 'es', label: 'Español', flag: 'ES' },
+  ]
 
   return (
     <header className="flex h-14 items-center justify-end gap-2 border-b border-border bg-background px-4">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="gap-2">
+            <Globe className="size-4" />
+            <span className="text-xs font-medium">{language.toUpperCase()}</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          {languages.map((lang) => (
+            <DropdownMenuItem
+              key={lang.code}
+              onClick={() => setLanguage(lang.code)}
+              className={language === lang.code ? 'bg-accent' : ''}
+            >
+              <span className="mr-2 font-mono text-xs">{lang.flag}</span>
+              {lang.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon-sm">
@@ -25,13 +53,13 @@ export function Header() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => setTheme('light')}>
-            Light
+            {t('theme.light')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme('dark')}>
-            Dark
+            {t('theme.dark')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme('system')}>
-            System
+            {t('theme.system')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
