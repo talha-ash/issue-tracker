@@ -1,7 +1,4 @@
-'use client'
-
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { Link, useLocation } from '@tanstack/react-router'
 import { ArrowLeft, Plus, LogOut } from 'lucide-react'
 import {
   Sidebar,
@@ -16,10 +13,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-} from '@issue-tracker/ui/componentssidebar'
+} from '@issue-tracker/ui/components'
 import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
 import { Button } from '@issue-tracker/ui/components'
-import { ScrollArea } from '@issue-tracker/ui/componentsscroll-area'
+import { ScrollArea } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { getProjectById, getIssuesByProjectId, currentUser, type Issue } from '@/lib/mock-data'
 
@@ -40,7 +37,7 @@ function StatusDot({ status }: { status: Issue['status'] }) {
 }
 
 export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
-  const pathname = usePathname()
+  const { pathname } = useLocation()
   const { t } = useLanguage()
   const project = getProjectById(projectId)
   const issues = getIssuesByProjectId(projectId)
@@ -51,7 +48,7 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="p-4">
         <Link
-          href="/dashboard"
+          to="/dashboard"
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
@@ -82,7 +79,10 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
                         isActive={isActive}
                         className={isActive ? 'border-l-2 border-primary' : ''}
                       >
-                        <Link href={`/projects/${projectId}/issues/${issue.id}`}>
+                        <Link
+                          to="/projects/$projectId/issues/$issueId"
+                          params={{ projectId, issueId: issue.id }}
+                        >
                           <StatusDot status={issue.status} />
                           <span className="truncate">{issue.title}</span>
                         </Link>
@@ -107,7 +107,7 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
             <p className="truncate text-sm font-medium">{currentUser.name}</p>
           </div>
           <Button variant="ghost" size="icon-sm" asChild>
-            <Link href="/login" title={t('nav.logout')}>
+            <Link to="/login" title={t('nav.logout')}>
               <LogOut className="size-4" />
             </Link>
           </Button>

@@ -1,6 +1,4 @@
-'use client'
-
-import Link from 'next/link'
+import { Link } from '@tanstack/react-router'
 import { Button } from '@issue-tracker/ui/components'
 import {
   Table,
@@ -9,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@issue-tracker/ui/componentstable'
+} from '@issue-tracker/ui/components'
 import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
 import { StatusBadge } from './status-badge'
 import { PriorityBadge } from './priority-badge'
@@ -54,7 +52,8 @@ export function IssueTable({ issues, projectId, onEdit, onDelete }: IssueTablePr
               </TableCell>
               <TableCell>
                 <Link
-                  href={`/projects/${projectId}/issues/${issue.id}`}
+                  to="/projects/$projectId/issues/$issueId"
+                  params={{ projectId, issueId: issue.id }}
                   className="font-medium hover:text-primary hover:underline"
                 >
                   {issue.title}

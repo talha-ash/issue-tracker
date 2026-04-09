@@ -1,7 +1,4 @@
-'use client'
-
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { Link, useLocation } from '@tanstack/react-router'
 import { Plus, MoreHorizontal, LogOut } from 'lucide-react'
 import {
   Sidebar,
@@ -16,26 +13,26 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@issue-tracker/ui/componentssidebar'
+} from '@issue-tracker/ui/components'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@issue-tracker/ui/componentsdropdown-menu'
+} from '@issue-tracker/ui/components'
 import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
 import { Button } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { projects, currentUser } from '@/lib/mock-data'
 
 export function ProjectSidebar() {
-  const pathname = usePathname()
+  const { pathname } = useLocation()
   const { t } = useLanguage()
 
   return (
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border p-4">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link to="/dashboard" className="flex items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
             <span className="text-sm font-bold text-primary-foreground">IT</span>
           </div>
@@ -49,14 +46,14 @@ export function ProjectSidebar() {
             {t('nav.projects')}
           </SidebarGroupLabel>
           <SidebarGroupAction asChild>
-            <Link href="/projects/new" title={t('project.new')}>
+            <Link to="/projects/new" title={t('project.new')}>
               <Plus className="size-4" />
             </Link>
           </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
               {projects.map((project) => {
-                const isActive = pathname === `/projects/${project.id}` || 
+                const isActive = pathname === `/projects/${project.id}` ||
                                  pathname?.startsWith(`/projects/${project.id}/`)
                 return (
                   <SidebarMenuItem key={project.id}>
@@ -65,7 +62,10 @@ export function ProjectSidebar() {
                       isActive={isActive}
                       className={isActive ? 'border-l-2 border-primary' : ''}
                     >
-                      <Link href={`/projects/${project.id}`}>
+                      <Link
+                        to="/projects/$projectId"
+                        params={{ projectId: project.id }}
+                      >
                         <span
                           className="size-2 shrink-0 rounded-full"
                           style={{ backgroundColor: project.color }}
@@ -81,12 +81,18 @@ export function ProjectSidebar() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="right" align="start">
                         <DropdownMenuItem asChild>
-                          <Link href={`/projects/${project.id}`}>
+                          <Link
+                            to="/projects/$projectId"
+                            params={{ projectId: project.id }}
+                          >
                             {t('project.details')}
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href={`/projects/${project.id}/edit`}>
+                          <Link
+                            to="/projects/$projectId/edit"
+                            params={{ projectId: project.id }}
+                          >
                             {t('project.edit')}
                           </Link>
                         </DropdownMenuItem>
@@ -114,7 +120,7 @@ export function ProjectSidebar() {
             <p className="truncate text-sm font-medium">{currentUser.name}</p>
           </div>
           <Button variant="ghost" size="icon-sm" asChild>
-            <Link href="/login" title={t('nav.logout')}>
+            <Link to="/login" title={t('nav.logout')}>
               <LogOut className="size-4" />
             </Link>
           </Button>

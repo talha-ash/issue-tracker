@@ -19,7 +19,7 @@ export function LoginForm() {
     // Simulate login
     await new Promise((resolve) => setTimeout(resolve, 1000))
     setIsLoading(false)
-    navigate('/dashboard')
+    navigate({ to: '/dashboard' })
   }
 
   return (
@@ -40,7 +40,7 @@ export function LoginForm() {
           <div className="flex items-center justify-between">
             <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
             <Link
-              href="/forgot-password"
+              to="/login"
               className="text-xs text-primary hover:underline"
             >
               {t('auth.forgot')}

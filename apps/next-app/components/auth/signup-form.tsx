@@ -1,112 +1,126 @@
-'use client'
+'use client';
 
-import { useState, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@issue-tracker/ui/components'
-import { Input } from '@issue-tracker/ui/components'
-import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
+import { useActionState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  Button,
+  Input,
+  Field,
+  FieldGroup,
+  FieldLabel,
+} from '@issue-tracker/ui/components';
 
-function PasswordStrength({ password }: { password: string }) {
-  const strength = useMemo(() => {
-    let score = 0
-    if (password.length >= 8) score++
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++
-    if (/\d/.test(password)) score++
-    if (/[^a-zA-Z0-9]/.test(password)) score++
-    return score
-  }, [password])
+import { useLanguage } from '@/lib/i18n';
+import { signupAction, SignupState } from '@/app/actions/auth';
 
-  const colors = [
-    'bg-destructive',
-    'bg-orange-500',
-    'bg-yellow-500',
-    'bg-green-500',
-  ]
-
-  return (
-    <div className="mt-2 flex gap-1">
-      {[0, 1, 2, 3].map((index) => (
-        <div
-          key={index}
-          className={`h-1 flex-1 rounded-full transition-colors ${
-            index < strength ? colors[strength - 1] : 'bg-muted'
-          }`}
-        />
-      ))}
-    </div>
-  )
-}
+export const signupInitialState: SignupState = {
+  success: false,
+  errors: {},
+  message: '',
+};
 
 export function SignupForm() {
-  const { t } = useLanguage()
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [password, setPassword] = useState('')
+  const { t } = useLanguage();
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate signup
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsLoading(false)
-    router.push('/dashboard')
-  }
+  const [state, formAction, isPending] = useActionState(
+    signupAction,
+    signupInitialState
+  );
+
+  useEffect(() => {
+    if (state.success) {
+      router.push('/');
+    }
+  }, [state.success, router]);
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6">
+    <form action={formAction} className="mt-6">
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="fullname">{t('auth.fullname')}</FieldLabel>
           <Input
             id="fullname"
+            name="fullname"
             type="text"
             placeholder="John Doe"
             required
             autoComplete="name"
+            defaultValue={state.values?.fullname ?? ''}
+            aria-invalid={!!state.errors.fullname}
           />
+          {state.errors.fullname ? (
+            <p className="mt-1 text-xs text-destructive">
+              {state.errors.fullname[0]}
+            </p>
+          ) : null}
         </Field>
-        
+
         <Field>
           <FieldLabel htmlFor="email">{t('auth.email')}</FieldLabel>
           <Input
             id="email"
+            name="email"
             type="email"
             placeholder="name@example.com"
             required
             autoComplete="email"
+            defaultValue={state.values?.email ?? ''}
+            aria-invalid={!!state.errors.email}
           />
+          {state.errors.email ? (
+            <p className="mt-1 text-xs text-destructive">
+              {state.errors.email[0]}
+            </p>
+          ) : null}
         </Field>
-        
+
         <Field>
           <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
           <Input
             id="password"
+            name="password"
             type="password"
             placeholder="Create a password"
             required
             autoComplete="new-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={!!state.errors.password}
           />
-          <PasswordStrength password={password} />
+          {state.errors.password ? (
+            <p className="mt-1 text-xs text-destructive">
+              {state.errors.password[0]}
+            </p>
+          ) : null}
         </Field>
-        
+
         <Field>
-          <FieldLabel htmlFor="confirm-password">{t('auth.confirm.password')}</FieldLabel>
+          <FieldLabel htmlFor="confirm-password">
+            {t('auth.confirm.password')}
+          </FieldLabel>
           <Input
             id="confirm-password"
+            name="confirmPassword"
             type="password"
             placeholder="Confirm your password"
             required
             autoComplete="new-password"
+            aria-invalid={!!state.errors.confirmPassword}
           />
+          {state.errors.confirmPassword ? (
+            <p className="mt-1 text-xs text-destructive">
+              {state.errors.confirmPassword[0]}
+            </p>
+          ) : null}
         </Field>
       </FieldGroup>
 
-      <Button type="submit" className="mt-6 w-full" disabled={isLoading}>
-        {isLoading ? 'Creating account...' : t('action.create') + ' Account'}
+      {state.message && !state.success ? (
+        <p className="mt-4 text-sm text-destructive">{state.message}</p>
+      ) : null}
+
+      <Button type="submit" className="mt-6 w-full" disabled={isPending}>
+        {isPending ? 'Creating account...' : t('action.create') + ' Account'}
       </Button>
     </form>
-  )
+  );
 }

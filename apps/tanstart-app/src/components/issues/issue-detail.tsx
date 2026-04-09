@@ -1,6 +1,4 @@
-'use client'
-
-import Link from 'next/link'
+import { Link } from '@tanstack/react-router'
 import { Button } from '@issue-tracker/ui/components'
 import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
 import { Separator } from '@issue-tracker/ui/components'
@@ -64,7 +62,8 @@ export function IssueDetail({ issue, project, onEdit, onDelete }: IssueDetailPro
               </dt>
               <dd className="mt-1">
                 <Link
-                  href={`/projects/${project.id}`}
+                  to="/projects/$projectId"
+                  params={{ projectId: project.id }}
                   className="font-medium text-primary hover:underline"
                 >
                   {project.name}

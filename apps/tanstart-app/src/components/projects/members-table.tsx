@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge } from '@issue-tracker/ui/componentsbadge'
+import { Badge } from '@issue-tracker/ui/components'
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@issue-tracker/ui/componentstable'
+} from '@issue-tracker/ui/components'
 import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import type { Member } from '@/lib/mock-data'

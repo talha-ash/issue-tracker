@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Plus, MoreHorizontal, LogOut } from 'lucide-react'
+import Link from 'next/link';
+import { redirect, usePathname } from 'next/navigation';
+import { Plus, MoreHorizontal, LogOut } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -16,28 +16,35 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@issue-tracker/ui/components'
+} from '@issue-tracker/ui/components';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
-import { Button } from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
-import { projects, currentUser } from '@/lib/mock-data'
+} from '@issue-tracker/ui/components';
+import { Avatar, AvatarFallback } from '@issue-tracker/ui/components';
+import { Button } from '@issue-tracker/ui/components';
+import { useLanguage } from '@/lib/i18n';
+import { projects, currentUser } from '@/lib/mock-data';
+
 
 export function ProjectSidebar() {
-  const pathname = usePathname()
-  const { t } = useLanguage()
+  const pathname = usePathname();
+  const { t } = useLanguage();
+
+  const handleLogout = () => {    
+    redirect('/login');
+  };
 
   return (
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border p-4">
         <Link href="/dashboard" className="flex items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">IT</span>
+            <span className="text-sm font-bold text-primary-foreground">
+              IT
+            </span>
           </div>
           <span className="text-lg font-semibold">{t('app.name')}</span>
         </Link>
@@ -55,9 +62,10 @@ export function ProjectSidebar() {
           </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
-              {projects.map((project) => {
-                const isActive = pathname === `/projects/${project.id}` || 
-                                 pathname?.startsWith(`/projects/${project.id}/`)
+              {projects.map(project => {
+                const isActive =
+                  pathname === `/projects/${project.id}` ||
+                  pathname?.startsWith(`/projects/${project.id}/`);
                 return (
                   <SidebarMenuItem key={project.id}>
                     <SidebarMenuButton
@@ -96,7 +104,7 @@ export function ProjectSidebar() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -121,5 +129,5 @@ export function ProjectSidebar() {
         </div>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

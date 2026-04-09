@@ -1,12 +1,16 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useActionState, useMemo, useState } from 'react'
 
 import { Button } from '@issue-tracker/ui/components'
 import { Input } from '@issue-tracker/ui/components'
 import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { useNavigate } from '@tanstack/react-router'
+
+type SignupState = {
+  error?: string
+}
 
 function PasswordStrength({ password }: { password: string }) {
   const strength = useMemo(() => {
@@ -51,7 +55,7 @@ export function SignupForm() {
     // Simulate signup
     await new Promise((resolve) => setTimeout(resolve, 1000))
     setIsLoading(false)
-    navigate('/dashboard')
+    navigate({ to: '/dashboard' })
   }
 
   return (

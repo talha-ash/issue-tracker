@@ -93,7 +93,7 @@ export default tseslint.config(
     {
         files: ['apps/tanstart-app/**/*.{ts,tsx,js,jsx}'],
         extends: [...pluginRouter.configs['flat/recommended']],
-    },   
+    },
 
     // Package-specific: allow numbers/booleans in template literals
     {
@@ -113,7 +113,7 @@ export default tseslint.config(
             // Using allowModules (not resolvePaths) because resolvePaths only helps locate modules on disk;
             // the extraneous check walks up to the nearest package.json and checks its dependencies field,
             // so resolvePaths can't make the rule see root-level deps for a nested package.
-            'n/no-extraneous-import': ['error', { allowModules: ['neverthrow'] }],
+            'n/no-extraneous-import': ['error', { allowModules: ['neverthrow', '@supabase/ssr'] }],
         },
     },
     prettier, // Must be last — disables all formatting rules

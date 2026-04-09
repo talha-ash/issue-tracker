@@ -1,12 +1,10 @@
-'use client'
-
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useNavigate, useRouter } from '@tanstack/react-router'
 import { Lock, Globe, X, Search } from 'lucide-react'
 import { Button } from '@issue-tracker/ui/components'
 import { Input } from '@issue-tracker/ui/components'
 import { Textarea } from '@issue-tracker/ui/components'
-import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/componentsfield'
+import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
 import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { users, type Project, type User } from '@/lib/mock-data'
@@ -19,6 +17,7 @@ interface ProjectFormProps {
 
 export function ProjectForm({ project, className }: ProjectFormProps) {
   const { t } = useLanguage()
+  const navigate = useNavigate()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [name, setName] = useState(project?.name || '')
@@ -45,7 +44,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
     setIsLoading(true)
     await new Promise((resolve) => setTimeout(resolve, 1000))
     setIsLoading(false)
-    router.push('/dashboard')
+    navigate({ to: '/dashboard' })
   }
 
   const addMember = (user: User) => {
@@ -211,7 +210,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
         <Button
           type="button"
           variant="ghost"
-          onClick={() => router.back()}
+          onClick={() => router.history.back()}
           disabled={isLoading}
         >
           {t('action.cancel')}

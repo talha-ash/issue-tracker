@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@issue-tracker/ui/componentsdialog'
+} from '@issue-tracker/ui/components'
 import { Button } from '@issue-tracker/ui/components'
 import { Input } from '@issue-tracker/ui/components'
 import { Textarea } from '@issue-tracker/ui/components'
@@ -17,8 +17,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@issue-tracker/ui/componentsselect'
-import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/componentsfield'
+} from '@issue-tracker/ui/components'
+import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
 import { Separator } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { users, type Issue, type Status, type Priority } from '@/lib/mock-data'
