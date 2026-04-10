@@ -4,7 +4,7 @@ import { ProjectForm } from '@/components/projects/project-form';
 import { useLanguage } from '@/lib/i18n';
 import { getProjectById } from '@/lib/mock-data';
 
-export const Route = createFileRoute('/_app/projects/$projectId/edit')({
+export const Route = createFileRoute('/_authed/projects/$projectId/edit')({
   component: EditProjectPage,
   loader: ({ params }) => {
     const project = getProjectById(params.projectId);

@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, monorepoRoot, "");
   process.env["SUPABASE_URL"] = env["SUPABASE_URL"];
   process.env["SUPABASE_ANON_KEY"] = env["SUPABASE_ANON_KEY"];
+  
 
   return {
     plugins: [

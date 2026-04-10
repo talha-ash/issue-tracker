@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ProjectForm } from '@/components/projects/project-form';
 import { useLanguage } from '@/lib/i18n';
 
-export const Route = createFileRoute('/_app/projects/new')({
+export const Route = createFileRoute('/_authed/projects/new')({
   component: NewProjectPage,
 });
 

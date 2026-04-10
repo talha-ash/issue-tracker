@@ -26,6 +26,7 @@ export default tseslint.config(
     globalIgnores([
         "**/.next/**", "**/out/**", "**/build/**", "**/next-env.d.ts",
         '**/assets/**/*', '**/dist/**/*', 'dist', 'build', 'node_modules', 'coverage', '*.min.js', '.vinxi', '.output', '**/database.types.ts', '**/*.mjs', '**/*.cjs', '**/*.mts',
+        'temp-app-ui/**',
     ]),
     // Accessibility — scoped to non-Next apps (Next.js bundles its own jsx-a11y)
     {
@@ -80,7 +81,8 @@ export default tseslint.config(
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
             '@typescript-eslint/explicit-function-return-type': 'off', // TS infers return types
             '@typescript-eslint/explicit-module-boundary-types': 'off', // TS infers exported types
-            '@typescript-eslint/no-explicit-any': 'error', // Use unknown instead            
+            '@typescript-eslint/no-explicit-any': 'error', // Use unknown instead
+            '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { attributes: false } }], // Allow async handlers on HTML attributes (e.g. onSubmit)
         },
     },
 

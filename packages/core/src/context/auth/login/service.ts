@@ -3,18 +3,9 @@ import * as v from 'valibot'
 import type { DbClient } from '../../../shared/client.js'
 import { signInWithPassword } from './adapter.js'
 import type { LoginFieldErrors, LoginInput, LoginState } from './types.js'
+import { LoginSchema } from './validations.js'
 
-const LoginSchema = v.object({
-  email: v.pipe(
-    v.string('Email is required'),
-    v.trim(),
-    v.email('Please enter a valid email'),
-  ),
-  password: v.pipe(
-    v.string('Password is required'),
-    v.minLength(1, 'Password is required'),
-  ),
-})
+
 
 export async function loginService(
   client: DbClient,

@@ -1,38 +1,26 @@
-'use client';
+'use client'
 
-import { useActionState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   Button,
-  Input,
   Field,
   FieldGroup,
   FieldLabel,
-} from '@issue-tracker/ui/components';
+  Input,
+} from '@issue-tracker/ui/components'
 
-import { useLanguage } from '@/lib/i18n';
-import { signupAction, SignupState } from '@/app/actions/auth';
+import { SignupState } from '@/app/actions/auth'
+import { useLanguage } from '@/lib/i18n'
+import { useSignup } from '../useSignup'
 
 export const signupInitialState: SignupState = {
   success: false,
   errors: {},
   message: '',
-};
+}
 
 export function SignupForm() {
-  const { t } = useLanguage();
-  const router = useRouter();
-
-  const [state, formAction, isPending] = useActionState(
-    signupAction,
-    signupInitialState
-  );
-
-  useEffect(() => {
-    if (state.success) {
-      router.push('/');
-    }
-  }, [state.success, router]);
+  const { t } = useLanguage()
+  const { state, formAction, isPending } = useSignup()
 
   return (
     <form action={formAction} className="mt-6">
@@ -122,5 +110,5 @@ export function SignupForm() {
         {isPending ? 'Creating account...' : t('action.create') + ' Account'}
       </Button>
     </form>
-  );
+  )
 }

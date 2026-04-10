@@ -4,7 +4,7 @@ import { IssueAppShell } from '@/components/issue-app-shell';
 import { IssueDetail } from '@/components/issues/issue-detail';
 import { getIssueById, getProjectById } from '@/lib/mock-data';
 
-export const Route = createFileRoute('/projects/$projectId/issues/$issueId')({
+export const Route = createFileRoute('/_authed/projects/$projectId/issues/$issueId')({
   component: IssueDetailPage,
   loader: ({ params }) => {
     const project = getProjectById(params.projectId);

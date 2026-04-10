@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/issues/empty-state';
 import { useLanguage } from '@/lib/i18n';
 import { issues, projects } from '@/lib/mock-data';
 
-export const Route = createFileRoute('/_app/dashboard')({
+export const Route = createFileRoute('/_authed/')({
   component: DashboardPage,
 });
 

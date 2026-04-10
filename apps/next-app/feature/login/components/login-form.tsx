@@ -1,39 +1,20 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import {
   Button,
-  Input,
   Field,
   FieldGroup,
   FieldLabel,
+  Input,
 } from '@issue-tracker/ui/components';
+import Link from 'next/link';
 
 import { useLanguage } from '@/lib/i18n';
-import { loginAction, LoginState } from '@/app/actions/auth';
-
-export const loginInitialState: LoginState = {
-  success: false,
-  errors: {},
-  message: '',
-};
+import { useLogin } from '../useLogin';
 
 export function LoginForm() {
   const { t } = useLanguage();
-  const router = useRouter();
-
-  const [state, formAction, isPending] = useActionState(
-    loginAction,
-    loginInitialState
-  );
-
-  useEffect(() => {
-    if (state.success) {
-      router.push('/');
-    }
-  }, [state.success, router]);
+  const { state, formAction, isPending } = useLogin();
 
   return (
     <form action={formAction} className="mt-6">

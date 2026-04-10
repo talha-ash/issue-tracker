@@ -1,34 +1,43 @@
-'use client'
+'use client';
 
-import { use, useState } from 'react'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { Plus, Filter, ArrowUpDown } from 'lucide-react'
-import { Button } from '@issue-tracker/ui/components'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@issue-tracker/ui/components'
-import { IssueTable } from '@/components/issues/issue-table'
-import { EmptyState } from '@/components/issues/empty-state'
-import { MembersTable } from '@/components/projects/members-table'
-import { useLanguage } from '@/lib/i18n'
-import { getProjectById, getIssuesByProjectId, getMembersByProjectId } from '@/lib/mock-data'
+import { use, useState } from 'react';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Plus, Filter, ArrowUpDown } from 'lucide-react';
+import { Button } from '@issue-tracker/ui/components';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@issue-tracker/ui/components';
+import { IssueTable } from '@/components/issues/issue-table';
+import { EmptyState } from '@/components/issues/empty-state';
+import { MembersTable } from '@/components/projects/members-table';
+import { useLanguage } from '@/lib/i18n';
+import {
+  getProjectById,
+  getIssuesByProjectId,
+  getMembersByProjectId,
+} from '@/lib/mock-data';
 
 interface ProjectDetailPageProps {
   params: Promise<{
-    projectId: string
-  }>
+    projectId: string;
+  }>;
 }
 
 export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const { projectId } = use(params)
-  const { t } = useLanguage()
-  const [showIssueModal, setShowIssueModal] = useState(false)
-  
-  const project = getProjectById(projectId)
-  const issues = getIssuesByProjectId(projectId)
-  const members = getMembersByProjectId(projectId)
+  const { projectId } = use(params);
+  const { t } = useLanguage();
+  const [_, setShowIssueModal] = useState(false);
+
+  const project = getProjectById(projectId);
+  const issues = getIssuesByProjectId(projectId);
+  const members = getMembersByProjectId(projectId);
 
   if (!project) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -43,10 +52,13 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
             {project.key}
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">{project.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground">
+              {project.name}
+            </h1>
             <p className="mt-1 text-muted-foreground">{project.description}</p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Created {project.createdAt} &middot; {project.memberCount} Members &middot; {project.issueCount} Issues
+              Created {project.createdAt} &middot; {project.memberCount} Members
+              &middot; {project.issueCount} Issues
             </p>
           </div>
         </div>
@@ -94,7 +106,10 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
             {issues.length > 0 ? (
               <IssueTable issues={issues} projectId={projectId} />
             ) : (
-              <EmptyState type="issues" onAction={() => setShowIssueModal(true)} />
+              <EmptyState
+                type="issues"
+                onAction={() => setShowIssueModal(true)}
+              />
             )}
           </div>
         </TabsContent>
@@ -113,5 +128,5 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

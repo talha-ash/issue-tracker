@@ -1,5 +1,5 @@
-import { Link, useLocation } from '@tanstack/react-router'
-import { Plus, MoreHorizontal, LogOut } from 'lucide-react'
+import { Link, useLocation } from '@tanstack/react-router';
+import { Plus, MoreHorizontal, LogOut } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -13,28 +13,32 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@issue-tracker/ui/components'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
-import { Button } from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
-import { projects, currentUser } from '@/lib/mock-data'
+  Avatar,
+  AvatarFallback,
+  Button,
+} from '@issue-tracker/ui/components';
+
+import { useLanguage } from '@/lib/i18n';
+import { projects, currentUser } from '@/lib/mock-data';
+import { useLogout } from '#/feature/logout/useLogout';
 
 export function ProjectSidebar() {
-  const { pathname } = useLocation()
-  const { t } = useLanguage()
+  const { pathname } = useLocation();
+  const { t } = useLanguage();
 
+  const { handleLogout } = useLogout();
   return (
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border p-4">
         <Link to="/dashboard" className="flex items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">IT</span>
+            <span className="text-sm font-bold text-primary-foreground">
+              IT
+            </span>
           </div>
           <span className="text-lg font-semibold">{t('app.name')}</span>
         </Link>
@@ -52,9 +56,10 @@ export function ProjectSidebar() {
           </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
-              {projects.map((project) => {
-                const isActive = pathname === `/projects/${project.id}` ||
-                                 pathname?.startsWith(`/projects/${project.id}/`)
+              {projects.map(project => {
+                const isActive =
+                  pathname === `/projects/${project.id}` ||
+                  pathname.startsWith(`/projects/${project.id}/`);
                 return (
                   <SidebarMenuItem key={project.id}>
                     <SidebarMenuButton
@@ -102,7 +107,7 @@ export function ProjectSidebar() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -119,7 +124,7 @@ export function ProjectSidebar() {
           <div className="flex-1 truncate">
             <p className="truncate text-sm font-medium">{currentUser.name}</p>
           </div>
-          <Button variant="ghost" size="icon-sm" asChild>
+          <Button variant="ghost" size="icon-sm" asChild onClick={handleLogout}>
             <Link to="/login" title={t('nav.logout')}>
               <LogOut className="size-4" />
             </Link>
@@ -127,5 +132,5 @@ export function ProjectSidebar() {
         </div>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

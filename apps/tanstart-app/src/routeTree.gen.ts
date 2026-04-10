@@ -9,104 +9,101 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AppRouteImport } from './routes/_app'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
-import { Route as AppProjectsNewRouteImport } from './routes/_app.projects.new'
-import { Route as AppProjectsProjectIdIndexRouteImport } from './routes/_app.projects.$projectId.index'
-import { Route as ProjectsProjectIdIssuesIssueIdRouteImport } from './routes/projects.$projectId.issues.$issueId'
-import { Route as AppProjectsProjectIdEditRouteImport } from './routes/_app.projects.$projectId.edit'
+import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
+import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthedProjectsNewRouteImport } from './routes/_authed/projects.new'
+import { Route as AuthedProjectsProjectIdIndexRouteImport } from './routes/_authed/projects.$projectId.index'
+import { Route as AuthedProjectsProjectIdEditRouteImport } from './routes/_authed/projects.$projectId.edit'
+import { Route as AuthedProjectsProjectIdIssuesIssueIdRouteImport } from './routes/_authed/projects.$projectId.issues.$issueId'
 
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedIndexRoute = AuthedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthedRoute,
 } as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AppRoute,
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRoute,
 } as any)
-const AppProjectsNewRoute = AppProjectsNewRouteImport.update({
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthedProjectsNewRoute = AuthedProjectsNewRouteImport.update({
   id: '/projects/new',
   path: '/projects/new',
-  getParentRoute: () => AppRoute,
+  getParentRoute: () => AuthedRoute,
 } as any)
-const AppProjectsProjectIdIndexRoute =
-  AppProjectsProjectIdIndexRouteImport.update({
+const AuthedProjectsProjectIdIndexRoute =
+  AuthedProjectsProjectIdIndexRouteImport.update({
     id: '/projects/$projectId/',
     path: '/projects/$projectId/',
-    getParentRoute: () => AppRoute,
+    getParentRoute: () => AuthedRoute,
   } as any)
-const ProjectsProjectIdIssuesIssueIdRoute =
-  ProjectsProjectIdIssuesIssueIdRouteImport.update({
-    id: '/projects/$projectId/issues/$issueId',
-    path: '/projects/$projectId/issues/$issueId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AppProjectsProjectIdEditRoute =
-  AppProjectsProjectIdEditRouteImport.update({
+const AuthedProjectsProjectIdEditRoute =
+  AuthedProjectsProjectIdEditRouteImport.update({
     id: '/projects/$projectId/edit',
     path: '/projects/$projectId/edit',
-    getParentRoute: () => AppRoute,
+    getParentRoute: () => AuthedRoute,
+  } as any)
+const AuthedProjectsProjectIdIssuesIssueIdRoute =
+  AuthedProjectsProjectIdIssuesIssueIdRouteImport.update({
+    id: '/projects/$projectId/issues/$issueId',
+    path: '/projects/$projectId/issues/$issueId',
+    getParentRoute: () => AuthedRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof AuthedIndexRoute
   '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
-  '/signup': typeof SignupRoute
-  '/dashboard': typeof AppDashboardRoute
-  '/projects/new': typeof AppProjectsNewRoute
-  '/projects/$projectId/edit': typeof AppProjectsProjectIdEditRoute
-  '/projects/$projectId/issues/$issueId': typeof ProjectsProjectIdIssuesIssueIdRoute
-  '/projects/$projectId/': typeof AppProjectsProjectIdIndexRoute
+  '/login': typeof AuthLoginRoute
+  '/signup': typeof AuthSignupRoute
+  '/projects/new': typeof AuthedProjectsNewRoute
+  '/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute
+  '/projects/$projectId/': typeof AuthedProjectsProjectIdIndexRoute
+  '/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof AuthedIndexRoute
   '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
-  '/signup': typeof SignupRoute
-  '/dashboard': typeof AppDashboardRoute
-  '/projects/new': typeof AppProjectsNewRoute
-  '/projects/$projectId/edit': typeof AppProjectsProjectIdEditRoute
-  '/projects/$projectId/issues/$issueId': typeof ProjectsProjectIdIssuesIssueIdRoute
-  '/projects/$projectId': typeof AppProjectsProjectIdIndexRoute
+  '/login': typeof AuthLoginRoute
+  '/signup': typeof AuthSignupRoute
+  '/projects/new': typeof AuthedProjectsNewRoute
+  '/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute
+  '/projects/$projectId': typeof AuthedProjectsProjectIdIndexRoute
+  '/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_app': typeof AppRouteWithChildren
+  '/_auth': typeof AuthRouteWithChildren
+  '/_authed': typeof AuthedRouteWithChildren
   '/about': typeof AboutRoute
-  '/login': typeof LoginRoute
-  '/signup': typeof SignupRoute
-  '/_app/dashboard': typeof AppDashboardRoute
-  '/_app/projects/new': typeof AppProjectsNewRoute
-  '/_app/projects/$projectId/edit': typeof AppProjectsProjectIdEditRoute
-  '/projects/$projectId/issues/$issueId': typeof ProjectsProjectIdIssuesIssueIdRoute
-  '/_app/projects/$projectId/': typeof AppProjectsProjectIdIndexRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/signup': typeof AuthSignupRoute
+  '/_authed/': typeof AuthedIndexRoute
+  '/_authed/projects/new': typeof AuthedProjectsNewRoute
+  '/_authed/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute
+  '/_authed/projects/$projectId/': typeof AuthedProjectsProjectIdIndexRoute
+  '/_authed/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -115,61 +112,42 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/signup'
-    | '/dashboard'
     | '/projects/new'
     | '/projects/$projectId/edit'
-    | '/projects/$projectId/issues/$issueId'
     | '/projects/$projectId/'
+    | '/projects/$projectId/issues/$issueId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/login'
     | '/signup'
-    | '/dashboard'
     | '/projects/new'
     | '/projects/$projectId/edit'
-    | '/projects/$projectId/issues/$issueId'
     | '/projects/$projectId'
+    | '/projects/$projectId/issues/$issueId'
   id:
     | '__root__'
-    | '/'
-    | '/_app'
+    | '/_auth'
+    | '/_authed'
     | '/about'
-    | '/login'
-    | '/signup'
-    | '/_app/dashboard'
-    | '/_app/projects/new'
-    | '/_app/projects/$projectId/edit'
-    | '/projects/$projectId/issues/$issueId'
-    | '/_app/projects/$projectId/'
+    | '/_auth/login'
+    | '/_auth/signup'
+    | '/_authed/'
+    | '/_authed/projects/new'
+    | '/_authed/projects/$projectId/edit'
+    | '/_authed/projects/$projectId/'
+    | '/_authed/projects/$projectId/issues/$issueId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
+  AuthedRoute: typeof AuthedRouteWithChildren
   AboutRoute: typeof AboutRoute
-  LoginRoute: typeof LoginRoute
-  SignupRoute: typeof SignupRoute
-  ProjectsProjectIdIssuesIssueIdRoute: typeof ProjectsProjectIdIssuesIssueIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -177,91 +155,119 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app': {
-      id: '/_app'
+    '/_authed': {
+      id: '/_authed'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof AppRouteImport
+      preLoaderRoute: typeof AuthedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed/': {
+      id: '/_authed/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthedIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof AppRoute
+    '/_auth/signup': {
+      id: '/_auth/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/_app/projects/new': {
-      id: '/_app/projects/new'
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_authed/projects/new': {
+      id: '/_authed/projects/new'
       path: '/projects/new'
       fullPath: '/projects/new'
-      preLoaderRoute: typeof AppProjectsNewRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthedProjectsNewRouteImport
+      parentRoute: typeof AuthedRoute
     }
-    '/_app/projects/$projectId/': {
-      id: '/_app/projects/$projectId/'
+    '/_authed/projects/$projectId/': {
+      id: '/_authed/projects/$projectId/'
       path: '/projects/$projectId'
       fullPath: '/projects/$projectId/'
-      preLoaderRoute: typeof AppProjectsProjectIdIndexRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthedProjectsProjectIdIndexRouteImport
+      parentRoute: typeof AuthedRoute
     }
-    '/projects/$projectId/issues/$issueId': {
-      id: '/projects/$projectId/issues/$issueId'
-      path: '/projects/$projectId/issues/$issueId'
-      fullPath: '/projects/$projectId/issues/$issueId'
-      preLoaderRoute: typeof ProjectsProjectIdIssuesIssueIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_app/projects/$projectId/edit': {
-      id: '/_app/projects/$projectId/edit'
+    '/_authed/projects/$projectId/edit': {
+      id: '/_authed/projects/$projectId/edit'
       path: '/projects/$projectId/edit'
       fullPath: '/projects/$projectId/edit'
-      preLoaderRoute: typeof AppProjectsProjectIdEditRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthedProjectsProjectIdEditRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/projects/$projectId/issues/$issueId': {
+      id: '/_authed/projects/$projectId/issues/$issueId'
+      path: '/projects/$projectId/issues/$issueId'
+      fullPath: '/projects/$projectId/issues/$issueId'
+      preLoaderRoute: typeof AuthedProjectsProjectIdIssuesIssueIdRouteImport
+      parentRoute: typeof AuthedRoute
     }
   }
 }
 
-interface AppRouteChildren {
-  AppDashboardRoute: typeof AppDashboardRoute
-  AppProjectsNewRoute: typeof AppProjectsNewRoute
-  AppProjectsProjectIdEditRoute: typeof AppProjectsProjectIdEditRoute
-  AppProjectsProjectIdIndexRoute: typeof AppProjectsProjectIdIndexRoute
+interface AuthRouteChildren {
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
 }
 
-const AppRouteChildren: AppRouteChildren = {
-  AppDashboardRoute: AppDashboardRoute,
-  AppProjectsNewRoute: AppProjectsNewRoute,
-  AppProjectsProjectIdEditRoute: AppProjectsProjectIdEditRoute,
-  AppProjectsProjectIdIndexRoute: AppProjectsProjectIdIndexRoute,
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
 }
 
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface AuthedRouteChildren {
+  AuthedIndexRoute: typeof AuthedIndexRoute
+  AuthedProjectsNewRoute: typeof AuthedProjectsNewRoute
+  AuthedProjectsProjectIdEditRoute: typeof AuthedProjectsProjectIdEditRoute
+  AuthedProjectsProjectIdIndexRoute: typeof AuthedProjectsProjectIdIndexRoute
+  AuthedProjectsProjectIdIssuesIssueIdRoute: typeof AuthedProjectsProjectIdIssuesIssueIdRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedIndexRoute: AuthedIndexRoute,
+  AuthedProjectsNewRoute: AuthedProjectsNewRoute,
+  AuthedProjectsProjectIdEditRoute: AuthedProjectsProjectIdEditRoute,
+  AuthedProjectsProjectIdIndexRoute: AuthedProjectsProjectIdIndexRoute,
+  AuthedProjectsProjectIdIssuesIssueIdRoute:
+    AuthedProjectsProjectIdIssuesIssueIdRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
+  AuthedRoute: AuthedRouteWithChildren,
   AboutRoute: AboutRoute,
-  LoginRoute: LoginRoute,
-  SignupRoute: SignupRoute,
-  ProjectsProjectIdIssuesIssueIdRoute: ProjectsProjectIdIssuesIssueIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

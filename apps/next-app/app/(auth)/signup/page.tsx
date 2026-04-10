@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useLanguage } from '@/lib/i18n'
-import { SignupForm } from '@/components/auth/signup-form'
+import { SignupForm } from '@/feature/signup/components/signup-form'
 import { SocialAuth } from '@/components/auth/social-auth'
 import { AuthHeader } from '@/components/auth/auth-header'
 

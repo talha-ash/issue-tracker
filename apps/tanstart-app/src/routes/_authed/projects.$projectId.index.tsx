@@ -13,7 +13,7 @@ import {
   getProjectById,
 } from '@/lib/mock-data';
 
-export const Route = createFileRoute('/_app/projects/$projectId/')({
+export const Route = createFileRoute('/_authed/projects/$projectId/')({
   component: ProjectDetailPage,
   loader: ({ params }) => {
     const project = getProjectById(params.projectId);

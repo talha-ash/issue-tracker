@@ -1,9 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { redirect, usePathname } from 'next/navigation';
-import { Plus, MoreHorizontal, LogOut } from 'lucide-react';
 import {
+  Avatar,
+  AvatarFallback,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -17,25 +21,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@issue-tracker/ui/components';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@issue-tracker/ui/components';
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components';
-import { Button } from '@issue-tracker/ui/components';
-import { useLanguage } from '@/lib/i18n';
-import { projects, currentUser } from '@/lib/mock-data';
+import { LogOut, MoreHorizontal, Plus } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
+import { useLogout } from '@/feature/logout/useLogout';
+import { useLanguage } from '@/lib/i18n';
+import { currentUser, projects } from '@/lib/mock-data';
 
 export function ProjectSidebar() {
   const pathname = usePathname();
   const { t } = useLanguage();
-
-  const handleLogout = () => {    
-    redirect('/login');
-  };
+  const { handleLogout } = useLogout();
 
   return (
     <Sidebar className="border-r border-sidebar-border">
@@ -65,7 +62,7 @@ export function ProjectSidebar() {
               {projects.map(project => {
                 const isActive =
                   pathname === `/projects/${project.id}` ||
-                  pathname?.startsWith(`/projects/${project.id}/`);
+                  pathname.startsWith(`/projects/${project.id}/`);
                 return (
                   <SidebarMenuItem key={project.id}>
                     <SidebarMenuButton
@@ -121,7 +118,7 @@ export function ProjectSidebar() {
           <div className="flex-1 truncate">
             <p className="truncate text-sm font-medium">{currentUser.name}</p>
           </div>
-          <Button variant="ghost" size="icon-sm" asChild>
+          <Button variant="ghost" size="icon-sm" asChild onClick={handleLogout}>
             <Link href="/login" title={t('nav.logout')}>
               <LogOut className="size-4" />
             </Link>

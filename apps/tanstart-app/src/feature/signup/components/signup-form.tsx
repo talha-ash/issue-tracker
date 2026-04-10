@@ -1,14 +1,7 @@
-'use client'
-
 import { useMemo, useState } from 'react'
-import { Button } from '@issue-tracker/ui/components'
-import { Input } from '@issue-tracker/ui/components'
-import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
+import { Button, Field, FieldGroup, FieldLabel, Input } from '@issue-tracker/ui/components'
 import { useLanguage } from '#/lib/i18n'
-import { useNavigate } from '@tanstack/react-router'
-import { signupService } from '@issue-tracker/core/context/auth'
-import type { SignupFieldErrors } from '@issue-tracker/core/context/auth'
-import { useSupabase } from '#/lib/supabase/context'
+import { useSignup } from '../useSignup'
 
 function PasswordStrength({ password }: { password: string }) {
   const strength = useMemo(() => {
@@ -38,35 +31,8 @@ function PasswordStrength({ password }: { password: string }) {
 
 export function SignupForm() {
   const { t } = useLanguage()
-  const navigate = useNavigate()
-  const supabase = useSupabase()
-  const [isLoading, setIsLoading] = useState(false)
+  const { isPending, data, handleSubmit } = useSignup()
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState<SignupFieldErrors>({})
-  const [message, setMessage] = useState('')
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setErrors({})
-    setMessage('')
-
-    const form = e.currentTarget
-    const result = await signupService(supabase, {
-      fullname: (form.elements.namedItem('fullname') as HTMLInputElement).value,
-      email: (form.elements.namedItem('email') as HTMLInputElement).value,
-      password: (form.elements.namedItem('password') as HTMLInputElement).value,
-      confirmPassword: (form.elements.namedItem('confirmPassword') as HTMLInputElement).value,
-    })
-
-    setIsLoading(false)
-    if (result.success) {
-      navigate({ to: '/dashboard' })
-    } else {
-      setErrors(result.errors)
-      setMessage(result.message)
-    }
-  }
 
   return (
     <form onSubmit={handleSubmit} className="mt-6">
@@ -80,10 +46,10 @@ export function SignupForm() {
             placeholder="John Doe"
             required
             autoComplete="name"
-            aria-invalid={!!errors.fullname}
+            aria-invalid={!!data.errors.fullname}
           />
-          {errors.fullname ? (
-            <p className="mt-1 text-xs text-destructive">{errors.fullname[0]}</p>
+          {data.errors.fullname ? (
+            <p className="mt-1 text-xs text-destructive">{data.errors.fullname[0]}</p>
           ) : null}
         </Field>
 
@@ -96,10 +62,10 @@ export function SignupForm() {
             placeholder="name@example.com"
             required
             autoComplete="email"
-            aria-invalid={!!errors.email}
+            aria-invalid={!!data.errors.email}
           />
-          {errors.email ? (
-            <p className="mt-1 text-xs text-destructive">{errors.email[0]}</p>
+          {data.errors.email ? (
+            <p className="mt-1 text-xs text-destructive">{data.errors.email[0]}</p>
           ) : null}
         </Field>
 
@@ -114,11 +80,11 @@ export function SignupForm() {
             autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            aria-invalid={!!errors.password}
+            aria-invalid={!!data.errors.password}
           />
           <PasswordStrength password={password} />
-          {errors.password ? (
-            <p className="mt-1 text-xs text-destructive">{errors.password[0]}</p>
+          {data.errors.password ? (
+            <p className="mt-1 text-xs text-destructive">{data.errors.password[0]}</p>
           ) : null}
         </Field>
 
@@ -131,18 +97,20 @@ export function SignupForm() {
             placeholder="Confirm your password"
             required
             autoComplete="new-password"
-            aria-invalid={!!errors.confirmPassword}
+            aria-invalid={!!data.errors.confirmPassword}
           />
-          {errors.confirmPassword ? (
-            <p className="mt-1 text-xs text-destructive">{errors.confirmPassword[0]}</p>
+          {data.errors.confirmPassword ? (
+            <p className="mt-1 text-xs text-destructive">{data.errors.confirmPassword[0]}</p>
           ) : null}
         </Field>
       </FieldGroup>
 
-      {message ? <p className="mt-4 text-sm text-destructive">{message}</p> : null}
+      {data.message ? (
+        <p className="mt-4 text-sm text-destructive">{data.message}</p>
+      ) : null}
 
-      <Button type="submit" className="mt-6 w-full" disabled={isLoading}>
-        {isLoading ? 'Creating account...' : t('action.create') + ' Account'}
+      <Button type="submit" className="mt-6 w-full" disabled={isPending}>
+        {isPending ? 'Creating account...' : t('action.create') + ' Account'}
       </Button>
     </form>
   )
