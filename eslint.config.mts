@@ -102,19 +102,6 @@ export default tseslint.config(
             '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true, allowBoolean: true }],
         },
     },
-    // Node.js — scoped to backend only (browser apps and UI package don't need Node rules)
-    {
-        files: ['packages/backend/**/*.{ts,js}'],
-        extends: [nodePlugin.configs['flat/recommended-module']], // ESM-specific Node rules (deprecated APIs, engine compat)
-        rules: {
-            'n/no-missing-import': 'off', // Bundlers handle resolution (path aliases, workspace packages)
-            'n/no-unpublished-import': 'off', // Workspace deps like @issue-tracker/ui aren't published to npm
-            // neverthrow lives in root package.json but is hoisted — backend's own package.json doesn't list it.
-            // Using allowModules (not resolvePaths) because resolvePaths only helps locate modules on disk;
-            // the extraneous check walks up to the nearest package.json and checks its dependencies field,
-            // so resolvePaths can't make the rule see root-level deps for a nested package.
-            'n/no-extraneous-import': ['error', { allowModules: ['neverthrow', '@supabase/ssr'] }],
-        },
-    },
+
     prettier, // Must be last — disables all formatting rules
 )

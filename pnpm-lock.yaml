@@ -177,9 +177,9 @@ importers:
 
   apps/next-app:
     dependencies:
-      '@issue-tracker/backend':
+      '@issue-tracker/core':
         specifier: workspace:*
-        version: link:../../packages/backend
+        version: link:../../packages/core
       '@issue-tracker/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -192,9 +192,9 @@ importers:
 
   apps/tanstart-app:
     dependencies:
-      '@issue-tracker/backend':
+      '@issue-tracker/core':
         specifier: workspace:*
-        version: link:../../packages/backend
+        version: link:../../packages/core
       '@issue-tracker/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -221,20 +221,17 @@ importers:
         specifier: latest
         version: 0.6.0(vite@7.3.1(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0))
 
-  packages/backend:
-    dependencies:
-      '@supabase/postgrest-js':
-        specifier: ^2.101.1
-        version: 2.101.1
-      '@supabase/supabase-js':
-        specifier: ^2.101.0
-        version: 2.101.1
-
   packages/core:
     dependencies:
-      '@issue-tracker/ui':
-        specifier: workspace:*
-        version: link:../ui
+      '@supabase/supabase-js':
+        specifier: ^2.101.1
+        version: 2.101.1
+      neverthrow:
+        specifier: ^8.2.0
+        version: 8.2.0
+      valibot:
+        specifier: ^1.0.0
+        version: 1.3.1(typescript@5.9.3)
     devDependencies:
       rollup-plugin-node-externals:
         specifier: ^8.1.2

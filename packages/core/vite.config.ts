@@ -1,12 +1,10 @@
 import { resolve } from "path"
 import { defineConfig } from "vite"
 import { nodeExternals } from "rollup-plugin-node-externals"
-import react from "@vitejs/plugin-react"
 import dts from "vite-plugin-dts"
 
 export default defineConfig({
   plugins: [
-    react(),
     dts({
       tsconfigPath: "./tsconfig.json",
     }),
@@ -21,6 +19,8 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, "src/index.ts"),
+        "context/auth/index": resolve(__dirname, "src/context/auth/index.ts"),
+        "context/projects/index": resolve(__dirname, "src/context/projects/index.ts"),
       },
       formats: ["es"],
     },

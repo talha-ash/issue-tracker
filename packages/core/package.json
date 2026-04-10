@@ -10,6 +10,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./context/auth": {
+      "types": "./dist/context/auth/index.d.ts",
+      "import": "./dist/context/auth/index.js"
+    },
+    "./context/projects": {
+      "types": "./dist/context/projects/index.d.ts",
+      "import": "./dist/context/projects/index.js"
     }
   },
   "scripts": {
@@ -17,7 +25,9 @@
     "dev": "vite build --watch"
   },
   "dependencies": {
-    "@issue-tracker/ui": "workspace:*"
+    "@supabase/supabase-js": "^2.101.1",
+    "neverthrow": "^8.2.0",
+    "valibot": "^1.0.0"
   },
   "devDependencies": {
     "rollup-plugin-node-externals": "^8.1.2"

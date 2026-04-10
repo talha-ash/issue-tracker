@@ -1,24 +1,24 @@
 import { createFileRoute } from '@tanstack/react-router';
-
 import { createServerFn } from '@tanstack/react-start';
-
-import { Api } from '../apiClient';
+import { createClientSupabaseClient } from '#/lib/supabase/client';
+import { getProjects as getProjectsService } from '@issue-tracker/core/context/projects';
 
 export const getProjects = createServerFn().handler(async () => {
-  const result = await Api().getProjects();
+  const supabase = createClientSupabaseClient()
+  const result = await getProjectsService(supabase)
   if (result.isOk()) {
-    return result.value;
+    return result.value
   }
-  return [];
-});
+  return []
+})
 
 export const Route = createFileRoute('/')({
   component: App,
   loader: async () => getProjects(),
-});
+})
 
 function App() {
-  const projects = Route.useLoaderData();
+  const projects = Route.useLoaderData()
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -49,5 +49,5 @@ function App() {
         ))}
       </div>
     </div>
-  );
+  )
 }

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { LanguageProvider } from '@/lib/i18n'
+import { SupabaseProvider } from '@/lib/supabase/context'
 import '../global.css'
 
 const _geist = Geist({ subsets: ['latin'] })
@@ -53,9 +54,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
+          <SupabaseProvider>
+            <LanguageProvider>
+              {children}
+            </LanguageProvider>
+          </SupabaseProvider>
         </ThemeProvider>        
       </body>
     </html>
