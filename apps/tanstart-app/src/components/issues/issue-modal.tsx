@@ -1,27 +1,19 @@
 'use client'
 
 import { useState } from 'react'
-import { X } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-} from '@issue-tracker/ui/components'
-import { Button } from '@issue-tracker/ui/components'
-import { Input } from '@issue-tracker/ui/components'
-import { Textarea } from '@issue-tracker/ui/components'
-import {
+  DialogTitle, Button , Input , Textarea ,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue, Field, FieldGroup, FieldLabel , Separator 
 } from '@issue-tracker/ui/components'
-import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
-import { Separator } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
-import { users, type Issue, type Status, type Priority } from '@/lib/mock-data'
+import { users, type Issue } from '@/lib/mock-data'
 
 interface IssueModalProps {
   open: boolean
@@ -30,13 +22,13 @@ interface IssueModalProps {
   projectId: string
 }
 
-export function IssueModal({ open, onOpenChange, issue, projectId }: IssueModalProps) {
+export function IssueModal({ open, onOpenChange, issue, projectId: _projectId }: IssueModalProps) {
   const { t } = useLanguage()
   const [isLoading, setIsLoading] = useState(false)
 
   const isEditing = !!issue
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -144,7 +136,7 @@ export function IssueModal({ open, onOpenChange, issue, projectId }: IssueModalP
             <Button
               type="button"
               variant="ghost"
-              onClick={() => onOpenChange(false)}
+              onClick={() => { onOpenChange(false) }}
               disabled={isLoading}
             >
               {t('action.cancel')}

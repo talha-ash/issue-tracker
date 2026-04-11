@@ -1,8 +1,6 @@
 'use client'
 
 import { Button } from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
-
 function GoogleIcon() {
   return (
     <svg className="size-4" viewBox="0 0 24 24">
@@ -35,8 +33,6 @@ function GitHubIcon() {
 }
 
 export function SocialAuth() {
-  const { t } = useLanguage()
-
   return (
     <div className="flex flex-col gap-3 sm:flex-row">
       <Button variant="outline" className="flex-1 gap-2">

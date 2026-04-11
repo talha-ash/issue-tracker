@@ -2,9 +2,7 @@
 
 import { useState } from 'react'
 import { Reply } from 'lucide-react'
-import { Button } from '@issue-tracker/ui/components'
-import { Textarea } from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
+import { Button, Textarea , Avatar, AvatarFallback  } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { currentUser, type Comment } from '@/lib/mock-data'
 
@@ -45,7 +43,7 @@ function CommentItem({ comment, isReply = false }: { comment: Comment; isReply?:
           <p className="mt-1 text-sm text-foreground">{comment.content}</p>
           {!isReply && (
             <button
-              onClick={() => setShowReplyForm(!showReplyForm)}
+              onClick={() => { setShowReplyForm(!showReplyForm) }}
               className="mt-2 flex items-center gap-1 text-sm text-primary hover:underline"
             >
               <Reply className="size-3" />
@@ -53,7 +51,7 @@ function CommentItem({ comment, isReply = false }: { comment: Comment; isReply?:
             </button>
           )}
           
-          {showReplyForm && (
+          {showReplyForm ? (
             <div className="mt-3 flex gap-2">
               <Textarea
                 placeholder={t('issue.write.comment')}
@@ -64,28 +62,28 @@ function CommentItem({ comment, isReply = false }: { comment: Comment; isReply?:
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowReplyForm(false)}
+                  onClick={() => { setShowReplyForm(false) }}
                 >
                   {t('action.cancel')}
                 </Button>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
-      
-      {comment.replies && comment.replies.length > 0 && (
+
+      {comment.replies && comment.replies.length > 0 ? (
         <div className="mt-4 space-y-4">
           {comment.replies.map((reply) => (
             <CommentItem key={reply.id} comment={reply} isReply />
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   )
 }
 
-export function CommentSection({ issueId, comments }: CommentSectionProps) {
+export function CommentSection({ issueId: _issueId, comments }: CommentSectionProps) {
   const { t } = useLanguage()
 
   return (

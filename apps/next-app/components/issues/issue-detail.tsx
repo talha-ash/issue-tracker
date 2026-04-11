@@ -1,9 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
-import { Separator } from '@issue-tracker/ui/components'
+import { Button, Avatar, AvatarFallback , Separator  } from '@issue-tracker/ui/components'
 import { StatusBadge } from './status-badge'
 import { PriorityBadge } from './priority-badge'
 import { CommentSection } from './comment-section'
@@ -31,11 +29,11 @@ export function IssueDetail({ issue, project, onEdit, onDelete }: IssueDetailPro
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <StatusBadge status={issue.status} />
           <PriorityBadge priority={issue.priority} />
-          {issue.dueDate && (
+          {issue.dueDate ? (
             <span className="text-sm text-muted-foreground">
               {t('issue.due.date')}: {issue.dueDate}
             </span>
-          )}
+          ) : null}
         </div>
 
         <Separator className="my-6" />

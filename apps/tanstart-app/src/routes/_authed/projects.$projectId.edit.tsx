@@ -9,6 +9,7 @@ export const Route = createFileRoute('/_authed/projects/$projectId/edit')({
   loader: ({ params }) => {
     const project = getProjectById(params.projectId);
     if (!project) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
     }
     return { project };

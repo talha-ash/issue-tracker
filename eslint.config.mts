@@ -70,7 +70,7 @@ export default tseslint.config(
             'react/jsx-no-leaked-render': ['error', { validStrategies: ['coerce', 'ternary'] }], // Prevents {count && <Comp/>} rendering "0"
             'react/no-unstable-nested-components': ['error', { allowAsProps: true }], // Ban components defined inside render (causes remounts); allow when passed as a prop (common pattern in shadcn/Radix slot APIs)
             'react/jsx-handler-names': ['error', { eventHandlerPrefix: 'handle', eventHandlerPropPrefix: 'on' }], // Consistent handler naming
-            'react/hook-use-state': 'error', // Enforce [value, setValue] pattern
+            'react/hook-use-state': 'off', // Allow single-value destructure: const [value] = useState()
             'react/prop-types': 'off', // TypeScript handles prop validation
 
             // Hooks

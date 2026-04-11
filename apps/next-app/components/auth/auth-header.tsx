@@ -2,17 +2,15 @@
 
 import { Moon, Sun, Globe } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { Button } from '@issue-tracker/ui/components'
-import {
+import { Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@issue-tracker/ui/components'
+  DropdownMenuTrigger } from '@issue-tracker/ui/components'
 import { useLanguage, type Language } from '@/lib/i18n'
 
 export function AuthHeader() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage()
 
   const languages: { code: Language; label: string; flag: string }[] = [
@@ -43,7 +41,7 @@ export function AuthHeader() {
             {languages.map((lang) => (
               <DropdownMenuItem
                 key={lang.code}
-                onClick={() => setLanguage(lang.code)}
+                onClick={() => { setLanguage(lang.code) }}
                 className={language === lang.code ? 'bg-accent' : ''}
               >
                 <span className="mr-2 font-mono text-xs">{lang.flag}</span>
@@ -62,13 +60,13 @@ export function AuthHeader() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme('light')}>
+            <DropdownMenuItem onClick={() => { setTheme('light') }}>
               {t('theme.light')}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')}>
+            <DropdownMenuItem onClick={() => { setTheme('dark') }}>
               {t('theme.dark')}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')}>
+            <DropdownMenuItem onClick={() => { setTheme('system') }}>
               {t('theme.system')}
             </DropdownMenuItem>
           </DropdownMenuContent>

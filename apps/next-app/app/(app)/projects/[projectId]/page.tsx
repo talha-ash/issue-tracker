@@ -4,13 +4,11 @@ import { use, useState } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Plus, Filter, ArrowUpDown } from 'lucide-react';
-import { Button } from '@issue-tracker/ui/components';
-import {
+import { Button,
   Tabs,
   TabsContent,
   TabsList,
-  TabsTrigger,
-} from '@issue-tracker/ui/components';
+  TabsTrigger } from '@issue-tracker/ui/components';
 import { IssueTable } from '@/components/issues/issue-table';
 import { EmptyState } from '@/components/issues/empty-state';
 import { MembersTable } from '@/components/projects/members-table';
@@ -96,7 +94,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
                 {t('action.sort')}
               </Button>
             </div>
-            <Button size="sm" onClick={() => setShowIssueModal(true)}>
+            <Button size="sm" onClick={() => { setShowIssueModal(true) }}>
               <Plus className="mr-2 size-4" />
               {t('issue.new')}
             </Button>
@@ -108,7 +106,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
             ) : (
               <EmptyState
                 type="issues"
-                onAction={() => setShowIssueModal(true)}
+                onAction={() => { setShowIssueModal(true) }}
               />
             )}
           </div>

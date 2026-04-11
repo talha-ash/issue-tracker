@@ -21,7 +21,7 @@ function PasswordStrength({ password }: { password: string }) {
         <div
           key={index}
           className={`h-1 flex-1 rounded-full transition-colors ${
-            index < strength ? colors[strength - 1] : 'bg-muted'
+            index < strength ? (colors[strength - 1] ?? 'bg-muted') : 'bg-muted'
           }`}
         />
       ))}
@@ -79,7 +79,7 @@ export function SignupForm() {
             required
             autoComplete="new-password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => { setPassword(e.target.value) }}
             aria-invalid={!!data.errors.password}
           />
           <PasswordStrength password={password} />

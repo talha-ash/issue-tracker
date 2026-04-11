@@ -6,7 +6,7 @@ type SupabaseClient = ReturnType<typeof createClientSupabaseClient>
 const SupabaseContext = createContext<SupabaseClient | null>(null)
 
 export function SupabaseProvider({ children }: { children: React.ReactNode }) {
-  // eslint-disable-next-line react/hook-use-state
+   
   const [supabase] = useState(() => createClientSupabaseClient())
   return (
     <SupabaseContext.Provider value={supabase}>

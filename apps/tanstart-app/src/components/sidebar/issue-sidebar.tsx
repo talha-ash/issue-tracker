@@ -12,11 +12,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
+  SidebarSeparator, Avatar, AvatarFallback , Button , ScrollArea 
 } from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
-import { Button } from '@issue-tracker/ui/components'
-import { ScrollArea } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { getProjectById, getIssuesByProjectId, currentUser, type Issue } from '@/lib/mock-data'
 
@@ -71,7 +68,7 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
             <ScrollArea className="h-[calc(100vh-280px)]">
               <SidebarMenu>
                 {issues.map((issue) => {
-                  const isActive = pathname?.includes(`/issues/${issue.id}`) || currentIssueId === issue.id
+                  const isActive = pathname.includes(`/issues/${issue.id}`) || currentIssueId === issue.id
                   return (
                     <SidebarMenuItem key={issue.id}>
                       <SidebarMenuButton

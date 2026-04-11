@@ -1,8 +1,7 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { Plus, Filter, ArrowUpDown } from 'lucide-react';
 
-import { Button } from '@issue-tracker/ui/components';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@issue-tracker/ui/components';
+import { Button, Tabs, TabsContent, TabsList, TabsTrigger  } from '@issue-tracker/ui/components';
 import { IssueTable } from '@/components/issues/issue-table';
 import { EmptyState } from '@/components/issues/empty-state';
 import { MembersTable } from '@/components/projects/members-table';
@@ -18,6 +17,7 @@ export const Route = createFileRoute('/_authed/projects/$projectId/')({
   loader: ({ params }) => {
     const project = getProjectById(params.projectId);
     if (!project) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
     }
     return { project };

@@ -1,16 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { Button } from '@issue-tracker/ui/components'
-import {
+import { Button,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
+  TableRow, Avatar, AvatarFallback  } from '@issue-tracker/ui/components'
 import { StatusBadge } from './status-badge'
 import { PriorityBadge } from './priority-badge'
 import { useLanguage } from '@/lib/i18n'

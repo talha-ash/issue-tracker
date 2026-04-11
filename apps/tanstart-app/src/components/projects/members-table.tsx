@@ -1,15 +1,12 @@
 'use client'
 
-import { Badge } from '@issue-tracker/ui/components'
-import {
+import { Badge,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
+  TableRow, Avatar, AvatarFallback  } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import type { Member } from '@/lib/mock-data'
 

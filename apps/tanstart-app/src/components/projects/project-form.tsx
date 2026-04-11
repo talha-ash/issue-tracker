@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { Lock, Globe, X, Search } from 'lucide-react'
-import { Button } from '@issue-tracker/ui/components'
-import { Input } from '@issue-tracker/ui/components'
-import { Textarea } from '@issue-tracker/ui/components'
-import { Field, FieldGroup, FieldLabel } from '@issue-tracker/ui/components'
-import { Avatar, AvatarFallback } from '@issue-tracker/ui/components'
+import { Button, Input , Textarea , Field, FieldGroup, FieldLabel , Avatar, AvatarFallback  } from '@issue-tracker/ui/components'
 import { useLanguage } from '@/lib/i18n'
 import { users, type Project, type User } from '@/lib/mock-data'
 import { cn } from '@/lib/utils'
@@ -39,12 +35,12 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
         user.email.toLowerCase().includes(searchQuery.toLowerCase()))
   )
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     await new Promise((resolve) => setTimeout(resolve, 1000))
     setIsLoading(false)
-    navigate({ to: '/dashboard' })
+    await navigate({ to: '/dashboard' })
   }
 
   const addMember = (user: User) => {
@@ -65,7 +61,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
             <Input
               id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => { setName(e.target.value) }}
               placeholder="Enter project name"
               required
             />
@@ -100,7 +96,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
             <div className="mt-2 grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setVisibility('private')}
+                onClick={() => { setVisibility('private') }}
                 className={cn(
                   'flex flex-col items-start rounded-lg border-2 p-4 text-left transition-colors',
                   visibility === 'private'
@@ -116,7 +112,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
               </button>
               <button
                 type="button"
-                onClick={() => setVisibility('public')}
+                onClick={() => { setVisibility('public') }}
                 className={cn(
                   'flex flex-col items-start rounded-lg border-2 p-4 text-left transition-colors',
                   visibility === 'public'
@@ -139,14 +135,14 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => { setSearchQuery(e.target.value) }}
                 placeholder={t('project.search.members')}
                 className="pl-9"
               />
             </div>
 
             {/* Selected members */}
-            {selectedMembers.length > 0 && (
+            {selectedMembers.length > 0 ? (
               <div className="mt-3 flex flex-wrap gap-2">
                 {selectedMembers.map((member) => (
                   <div
@@ -161,7 +157,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
                     <span className="text-sm">{member.name}</span>
                     <button
                       type="button"
-                      onClick={() => removeMember(member.id)}
+                      onClick={() => { removeMember(member.id) }}
                       className="text-muted-foreground hover:text-foreground"
                     >
                       <X className="size-3" />
@@ -169,10 +165,10 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
                   </div>
                 ))}
               </div>
-            )}
+            ) : null}
 
             {/* Search results */}
-            {searchQuery && filteredUsers.length > 0 && (
+            {searchQuery && filteredUsers.length > 0 ? (
               <div className="mt-2 rounded-lg border border-border bg-popover shadow-md">
                 {filteredUsers.slice(0, 5).map((user) => (
                   <div
@@ -194,14 +190,14 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => addMember(user)}
+                      onClick={() => { addMember(user) }}
                     >
                       {t('action.add')}
                     </Button>
                   </div>
                 ))}
               </div>
-            )}
+            ) : null}
           </Field>
         </FieldGroup>
       </div>
@@ -210,7 +206,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
         <Button
           type="button"
           variant="ghost"
-          onClick={() => router.history.back()}
+          onClick={() => { router.history.back() }}
           disabled={isLoading}
         >
           {t('action.cancel')}
