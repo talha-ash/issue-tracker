@@ -105,7 +105,7 @@ export function IssueModal({ open, onOpenChange, issue, projectId: _projectId }:
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <FieldLabel htmlFor="assignee">{t('issue.assignee')}</FieldLabel>
-                <Select defaultValue={issue?.assignee?.id}>
+                <Select defaultValue={issue?.assignee?.id || ""}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select assignee" />
                   </SelectTrigger>

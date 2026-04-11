@@ -22,7 +22,7 @@ import { getProjectById, getIssuesByProjectId, currentUser, type Issue } from '@
 
 interface IssueSidebarProps {
   projectId: string
-  currentIssueId?: string
+  currentIssueId: string | undefined
 }
 
 function StatusDot({ status }: { status: Issue['status'] }) {

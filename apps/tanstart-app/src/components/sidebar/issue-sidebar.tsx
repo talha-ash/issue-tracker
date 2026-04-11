@@ -19,7 +19,7 @@ import { getProjectById, getIssuesByProjectId, currentUser, type Issue } from '@
 
 interface IssueSidebarProps {
   projectId: string
-  currentIssueId?: string
+  currentIssueId: string| undefined
 }
 
 function StatusDot({ status }: { status: Issue['status'] }) {
@@ -45,7 +45,7 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="p-4">
         <Link
-          to="/dashboard"
+          to="/"
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="size-4" />

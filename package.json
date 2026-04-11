@@ -17,7 +17,16 @@
     "build:core": "pnpm --filter @issue-tracker/core build",
     "build:next": "pnpm --filter @issue-tracker/next-app build",
     "build:tan": "pnpm --filter @issue-tracker/tanstart-app build",
-    "lint": "pnpm --filter @issue-tracker/next-app lint",
+    "typecheck": "concurrently -n ui,core,next,tan -c blue,magenta,cyan,yellow \"pnpm typecheck:ui\" \"pnpm typecheck:core\" \"pnpm typecheck:next\" \"pnpm typecheck:tan\"",
+    "typecheck:ui": "pnpm --filter @issue-tracker/ui typecheck",
+    "typecheck:core": "pnpm --filter @issue-tracker/core typecheck",
+    "typecheck:next": "pnpm --filter @issue-tracker/next-app typecheck",
+    "typecheck:tan": "pnpm --filter @issue-tracker/tanstart-app typecheck",
+    "lint": "pnpm -r lint",
+    "lint:ui": "pnpm --filter @issue-tracker/ui lint",
+    "lint:core": "pnpm --filter @issue-tracker/core lint",
+    "lint:next": "pnpm --filter @issue-tracker/next-app lint",
+    "lint:tan": "pnpm --filter @issue-tracker/tanstart-app lint",
     "test": "pnpm --filter @issue-tracker/tanstart-app test"
   },
   "keywords": [],
@@ -64,10 +73,10 @@
     "vite": "^7.3.1",
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.5",
+    "yaml": "^2.8.3"
   },
-  "dependencies": {
-    "@clerk/tanstack-react-start": "^1.0.12",
+  "dependencies": {    
     "@radix-ui/react-slot": "^1.2.4",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.101.1",

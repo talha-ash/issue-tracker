@@ -40,7 +40,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
     setIsLoading(true)
     await new Promise((resolve) => setTimeout(resolve, 1000))
     setIsLoading(false)
-    await navigate({ to: '/dashboard' })
+    await navigate({ to: '/' })
   }
 
   const addMember = (user: User) => {
