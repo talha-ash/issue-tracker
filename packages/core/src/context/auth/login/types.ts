@@ -1,4 +1,5 @@
 import type { Session, User } from '@supabase/supabase-js'
+import type { ActionState } from '../../../shared/action-state.js'
 
 export type LoginInput = {
   email: string
@@ -14,17 +15,4 @@ export type LoginValues = {
   email?: string
 }
 
-export type LoginState =
-  | {
-      success: false
-      errors: LoginFieldErrors
-      message: string
-      values?: LoginValues
-    }
-  | {
-      success: true
-      errors: LoginFieldErrors
-      message: string
-      data: { user: User; session: Session }
-      values?: LoginValues
-    }
+export type LoginState = ActionState<{ user: User; session: Session }, LoginFieldErrors, LoginValues>

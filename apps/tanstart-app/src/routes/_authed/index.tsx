@@ -13,13 +13,19 @@ export const Route = createFileRoute('/_authed/')({
 
 function DashboardPage() {
   const { t } = useLanguage();
+  const navigate = Route.useNavigate();
   const recentIssues = issues.slice(0, 5);
-
+  const handleLogout = () => {
+    void navigate({ to: '/login' });
+  };
   return (
     <div className="p-6">
+      <button onClick={handleLogout}>Logout</button>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">{t('nav.dashboard')}</h1>
+          <h1 className="text-2xl font-bold text-foreground">
+            {t('nav.dashboard')}
+          </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Welcome back! Here&apos;s an overview of your workspace.
           </p>
@@ -30,16 +36,27 @@ function DashboardPage() {
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
           { label: 'Total Projects', value: projects.length },
-          { label: 'Open Issues', value: issues.filter((i) => i.status === 'open').length },
-          { label: 'In Progress', value: issues.filter((i) => i.status === 'in-progress').length },
-          { label: 'Resolved', value: issues.filter((i) => i.status === 'resolved').length },
-        ].map((stat) => (
+          {
+            label: 'Open Issues',
+            value: issues.filter(i => i.status === 'open').length,
+          },
+          {
+            label: 'In Progress',
+            value: issues.filter(i => i.status === 'in-progress').length,
+          },
+          {
+            label: 'Resolved',
+            value: issues.filter(i => i.status === 'resolved').length,
+          },
+        ].map(stat => (
           <div
             key={stat.label}
             className="rounded-xl border border-border bg-card p-6"
           >
             <p className="text-sm text-muted-foreground">{stat.label}</p>
-            <p className="mt-2 text-3xl font-bold text-foreground">{stat.value}</p>
+            <p className="mt-2 text-3xl font-bold text-foreground">
+              {stat.value}
+            </p>
           </div>
         ))}
       </div>
@@ -47,7 +64,9 @@ function DashboardPage() {
       {/* Recent Issues */}
       <div className="mt-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-foreground">Recent Issues</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            Recent Issues
+          </h2>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm">
               <Filter className="mr-2 size-4" />
@@ -72,7 +91,9 @@ function DashboardPage() {
       {/* Projects Grid */}
       <div className="mt-8">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-foreground">{t('nav.projects')}</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            {t('nav.projects')}
+          </h2>
           <Button size="sm" asChild>
             <Link to="/projects/new">
               <Plus className="mr-2 size-4" />
@@ -82,7 +103,7 @@ function DashboardPage() {
         </div>
 
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
+          {projects.map(project => (
             <Link
               key={project.id}
               to="/projects/$projectId"
@@ -101,7 +122,8 @@ function DashboardPage() {
                     {project.name}
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    {project.issueCount} issues &middot; {project.memberCount} members
+                    {project.issueCount} issues &middot; {project.memberCount}{' '}
+                    members
                   </p>
                 </div>
               </div>

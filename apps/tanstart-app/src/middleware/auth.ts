@@ -1,9 +1,8 @@
-import { createMiddleware } from '@tanstack/react-start'
-import { setResponseHeader, setResponseStatus } from '@tanstack/react-start/server'
 import { createServerSupabaseClient } from '#/lib/supabase/server'
 import { redirect } from '@tanstack/react-router'
+import { createMiddleware } from '@tanstack/react-start'
 
-const PUBLIC_PATHS = ['/_auth/login', '/_auth/signup', '/login', '/signup']
+const PUBLIC_PATHS = ['/_auth/login', '/_auth/signup', '/login', '/signup', "/about"]
 
 function isPublicPath(pathname: string) {
   return PUBLIC_PATHS.some((p) => pathname.startsWith(p))
@@ -14,22 +13,21 @@ function isPublicPath(pathname: string) {
  * Validates the session and redirects unauthenticated GET requests to /login.
  * Attaches the user to context for downstream middleware and server functions.
  */
-export const authRequestMiddleware = createMiddleware().server(
-  async ({ request, next }) => {    
+
+export const authRequestMiddleware = createMiddleware({ type: "request" }).server(
+  async ({ request, next }) => {
     // Only guard page/SSR requests — server function RPCs are POST requests
     // and are protected by authFunctionMiddleware instead.
-    if (request.method !== 'GET' || isPublicPath(new URL(request.url).pathname)) {
+    const pathname = new URL(request.url).pathname    
+    if (pathname.includes("serverFn") || request.method !== 'GET' || isPublicPath(pathname)) {
       return next()
     }
 
     const supabase = createServerSupabaseClient()
     const { data } = await supabase.auth.getUser()
 
-    if (!data.user) {
-      setResponseStatus(302)
-      setResponseHeader('Location', '/login')
-      console.log("I do Redirect")
-      return redirect({ to: "/login" })
+    if (!data.user && !request.referrer.includes("login")) {     
+      return redirect({ href: "/login" })
     }
 
     return next({

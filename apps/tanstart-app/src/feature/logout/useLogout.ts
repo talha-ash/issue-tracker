@@ -1,16 +1,16 @@
-import { useSupabase } from "@/lib/supabase/context";
-import { redirect } from "@tanstack/react-router";
+import { useSupabase } from "#/lib/supabase/context";
+import { useNavigate } from "@tanstack/react-router";
+
 
 
 
 export const useLogout = () => {
     const { auth } = useSupabase();
-
+    const navigation = useNavigate();
     const handleLogout = async () => {
-        await auth.signOut()
-        redirect({ to: "/login" })
+        void navigation({ to: "/login" })
+        // await auth.signOut();
     }
-
 
     return { handleLogout }
 }

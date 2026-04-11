@@ -1,11 +1,9 @@
-import type { Session, User } from '@supabase/supabase-js'
 import * as v from 'valibot'
 import type { DbClient } from '../../../shared/client.js'
+import { fail, ok } from '../../../shared/result.js'
 import { signInWithPassword } from './adapter.js'
 import type { LoginFieldErrors, LoginInput, LoginState } from './types.js'
 import { LoginSchema } from './validations.js'
-
-
 
 export async function loginService(
   client: DbClient,
@@ -14,27 +12,23 @@ export async function loginService(
   const result = v.safeParse(LoginSchema, input)
   if (!result.success) {
     const flat = v.flatten<typeof LoginSchema>(result.issues)
-    return {
-      success: false,
-      errors: (flat.nested ?? {}) as LoginFieldErrors,
-      message: 'Please fix the errors',
-      values: { email: input.email },
-    }
+    return fail(
+      flat.nested as LoginFieldErrors,
+      'Please fix the errors',
+      { email: input.email },
+    )
   }
 
   const { data, error } = await signInWithPassword(client, input.email, input.password)
   if (data.user) {
-    return {
-      success: true,
-      errors: {},
-      message: 'Login successful',
-      data: data as { user: User; session: Session },
-    }
+    return ok(
+      data,
+      'Login successful',
+    )
   }
-  return {
-    success: false,
-    errors: {},
-    message: error ? error.message : 'Login failed',
-    values: { email: input.email },
-  }
+  return fail(
+    {},
+    error ? error.message : 'Login failed',
+    { email: input.email },
+  )
 }

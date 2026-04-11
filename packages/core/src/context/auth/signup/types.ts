@@ -1,4 +1,5 @@
 import type { Session, User } from '@supabase/supabase-js'
+import type { ActionState } from '../../../shared/action-state.js'
 
 export type SignupInput = {
   fullname: string
@@ -19,17 +20,4 @@ export type SignupValues = {
   email?: string
 }
 
-export type SignupState =
-  | {
-      success: false
-      errors: SignupFieldErrors
-      message: string
-      values?: SignupValues
-    }
-  | {
-      success: true
-      errors: SignupFieldErrors
-      message: string
-      data: { user: User; session: Session }
-      values?: SignupValues
-    }
+export type SignupState = ActionState<{ user: User; session: Session }, SignupFieldErrors, SignupValues>
