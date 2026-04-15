@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "#/lib/supabase/server";
-import { loginService } from "@issue-tracker/core/context/auth";
+import { validateLoginFormData } from "@issue-tracker/core/context/auth";
 import { createServerFn } from "@tanstack/react-start";
 
 export const loginFn = createServerFn({ method: 'POST' })
@@ -9,9 +9,10 @@ export const loginFn = createServerFn({ method: 'POST' })
     .handler(async ({ data }) => {
         const supabase = createServerSupabaseClient()
 
-        return loginService(supabase, {
+        const loginResult =  validateLoginFormData({
             email: data.email,
             password: data.password
         })
+
     })
 

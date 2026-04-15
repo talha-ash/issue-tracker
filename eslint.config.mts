@@ -105,5 +105,31 @@ export default tseslint.config(
         },
     },
 
+    // Package boundary enforcement
+    // backend may only use @issue-tracker/repo/backend — never the client entry point
+    {
+        files: ['packages/backend/**/*.{ts,tsx}'],
+        rules: {
+            'no-restricted-imports': ['error', {
+                patterns: [{
+                    group: ['@issue-tracker/repo/client'],
+                    message: 'Backend package must not import from the client repo entry point. Use @issue-tracker/repo/backend instead.',
+                }],
+            }],
+        },
+    },
+    // client may only use @issue-tracker/repo/client — never the backend entry point
+    {
+        files: ['packages/client/**/*.{ts,tsx}'],
+        rules: {
+            'no-restricted-imports': ['error', {
+                patterns: [{
+                    group: ['@issue-tracker/repo/backend'],
+                    message: 'Client package must not import from the backend repo entry point. Use @issue-tracker/repo/client instead.',
+                }],
+            }],
+        },
+    },
+
     prettier, // Must be last — disables all formatting rules
 )

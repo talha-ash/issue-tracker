@@ -5,3 +5,4 @@ export type ActionState<
 > =
   | { success: false; errors: TErrors; message: string; values?: TValues }
   | { success: true; errors: TErrors; message: string; data: TData; values?: TValues }
+  | { success: true }

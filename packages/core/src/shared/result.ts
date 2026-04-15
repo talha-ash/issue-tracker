@@ -1,15 +1,16 @@
+import { Ok, ok } from 'neverthrow'
 import type { ActionState } from './action-state.js'
 
-export function ok<
+export function success<
   TData,
   TErrors extends Record<string, string[] | undefined> = Record<string, never>,
   TValues = never,
 >(
-  data: TData,
-  message: string,
+  data?: TData,
+  message?: string,
   errors: TErrors = {} as TErrors,
-): ActionState<TData, TErrors, TValues> {
-  return { success: true, data, message, errors }
+): Ok<ActionState<TData, TErrors, TValues>, never> {
+  return ok({ success: true, data, message, errors })
 }
 
 export function fail<

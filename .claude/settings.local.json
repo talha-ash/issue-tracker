@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm:*)",
+      "Bash(find /media/x/mafia/mafia/ReactApps/issue-tracker/node_modules -name \"*.d.ts\" -exec grep -l \"getWebRequest\\\\|getCookie\" {} \\\\;)",
+      "Bash(find /media/x/mafia/mafia/ReactApps/issue-tracker/apps/tanstart-app/node_modules/@tanstack -name \"*.d.ts\" -exec grep -l \"getCookie\\\\|setCookie\" {} \\\\;)",
+      "Bash(ls:*)",
+      "Bash(find /media/x/mafia/mafia/ReactApps/issue-tracker/node_modules/.pnpm -path \"*/start-server-core*\" -name \"*.d.ts\" -exec grep -l \"createMiddleware\" {} \\\\;)",
+      "Bash(find /media/x/mafia/mafia/ReactApps/issue-tracker/node_modules/.pnpm -name \"*.d.ts\" -exec grep -l \"createMiddleware\" {} \\\\;)",
+      "Bash(grep -v \"^$\")",
+      "Bash(python3 -c ':*)",
+      "Bash(grep -r '\"yaml\"' /media/x/mafia/mafia/ReactApps/issue-tracker/node_modules/.pnpm/vite@7.3.1*/node_modules/vite/package.json)",
+      "Bash(grep -A 30 \"^  vite@7.3.1:$\" /media/x/mafia/mafia/ReactApps/issue-tracker/pnpm-lock.yaml)",
+      "Bash(grep -A 50 \"^  vite@7.3.1:$\" /media/x/mafia/mafia/ReactApps/issue-tracker/pnpm-lock.yaml)",
+      "Bash(grep -rn \"tsx@4.21.0\\\\\"$\\\\|tsx@4.21.0'\" /media/x/mafia/mafia/ReactApps/issue-tracker/pnpm-lock.yaml)",
+      "Bash(xargs -I{} readlink {})"
+    ]
+  }
+}

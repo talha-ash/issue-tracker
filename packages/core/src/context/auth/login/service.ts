@@ -1,23 +1,29 @@
+import { Err, err, Ok, ok } from 'neverthrow'
 import * as v from 'valibot'
-import type { DbClient } from '../../../shared/client.js'
-import { fail, ok } from '../../../shared/result.js'
-import { signInWithPassword } from './adapter.js'
-import type { LoginFieldErrors, LoginInput, LoginState } from './types.js'
+import type { LoginFieldErrors, LoginInput } from './types.js'
 import { LoginSchema } from './validations.js'
 
-export async function loginService(
-  client: DbClient,
-  input: LoginInput,
-): Promise<LoginState> {
+
+export function validateLoginFormData(input: LoginInput):
+  (Ok<true, never> | Err<never, { errors: LoginFieldErrors, message: string }>) {
+
   const result = v.safeParse(LoginSchema, input)
   if (!result.success) {
     const flat = v.flatten<typeof LoginSchema>(result.issues)
-    return fail(
-      flat.nested as LoginFieldErrors,
-      'Please fix the errors',
-      { email: input.email },
-    )
+    return err({
+      errors: flat.nested as LoginFieldErrors,
+      message: 'Please fix the errors',
+    })
+
   }
+
+  return ok(true)
+
+  
+}
+
+
+export function login(client, {email, password}){
 
   const { data, error } = await signInWithPassword(client, input.email, input.password)
   if (data.user) {

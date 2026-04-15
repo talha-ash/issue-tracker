@@ -1,0 +1,26 @@
+{
+  "name": "@issue-tracker/backend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@issue-tracker/repo": "workspace:*",
+    "rollup-plugin-node-externals": "^8.1.2"
+  }
+}
