@@ -1,8 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import type { Database } from '@issue-tracker/core'
+import type { Database, DbClient } from '@issue-tracker/backend'
 
-export async function createServerSupabaseClient() {
+export async function createServerSupabaseClient(): Promise<DbClient> {
   const cookieStore = await cookies()
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -23,5 +23,5 @@ export async function createServerSupabaseClient() {
         },
       },
     },
-  )
+  ) as DbClient
 }

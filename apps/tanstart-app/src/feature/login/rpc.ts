@@ -1,6 +1,6 @@
-import { createServerSupabaseClient } from "#/lib/supabase/server";
-import { validateLoginFormData } from "@issue-tracker/core/context/auth";
-import { createServerFn } from "@tanstack/react-start";
+import { loginHandler } from '@issue-tracker/backend'
+import { createServerSupabaseClient } from '#/lib/supabase/server'
+import { createServerFn } from '@tanstack/react-start'
 
 export const loginFn = createServerFn({ method: 'POST' })
     .inputValidator(
@@ -8,11 +8,8 @@ export const loginFn = createServerFn({ method: 'POST' })
     )
     .handler(async ({ data }) => {
         const supabase = createServerSupabaseClient()
-
-        const loginResult =  validateLoginFormData({
+        return loginHandler.login(supabase, {
             email: data.email,
-            password: data.password
+            password: data.password,
         })
-
     })
-

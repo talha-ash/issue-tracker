@@ -201,9 +201,6 @@ importers:
       '@issue-tracker/backend':
         specifier: workspace:*
         version: link:../../packages/backend
-      '@issue-tracker/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@issue-tracker/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -216,9 +213,9 @@ importers:
 
   apps/tanstart-app:
     dependencies:
-      '@issue-tracker/core':
+      '@issue-tracker/backend':
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/backend
       '@issue-tracker/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -246,22 +243,10 @@ importers:
         version: 0.6.0(vite@7.3.1(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.3))
 
   packages/backend:
-    devDependencies:
+    dependencies:
       '@issue-tracker/repo':
         specifier: workspace:*
         version: link:../repo
-      rollup-plugin-node-externals:
-        specifier: ^8.1.2
-        version: 8.1.2(rollup@4.60.1)
-
-  packages/client:
-    devDependencies:
-      rollup-plugin-node-externals:
-        specifier: ^8.1.2
-        version: 8.1.2(rollup@4.60.1)
-
-  packages/core:
-    dependencies:
       '@supabase/supabase-js':
         specifier: ^2.101.1
         version: 2.101.1
@@ -276,7 +261,20 @@ importers:
         specifier: ^8.1.2
         version: 8.1.2(rollup@4.60.1)
 
+  packages/client:
+    devDependencies:
+      rollup-plugin-node-externals:
+        specifier: ^8.1.2
+        version: 8.1.2(rollup@4.60.1)
+
   packages/repo:
+    dependencies:
+      '@supabase/supabase-js':
+        specifier: ^2.101.1
+        version: 2.101.1
+      neverthrow:
+        specifier: ^8.2.0
+        version: 8.2.0
     devDependencies:
       rollup-plugin-node-externals:
         specifier: ^8.1.2

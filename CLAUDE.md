@@ -13,6 +13,27 @@ A fully responsive Issue Tracker web application inspired by Linear/Plane. Built
 - **UI Components**: Radix UI primitives, Lucide icons, class-variance-authority, tailwind-merge
 - **Testing**: Vitest + Testing Library + jsdom
 
+## Architecture Flow
+
+```
+browser → client pkg → RPC (app-level) → backend pkg → repo pkg (Supabase)
+```
+
+- **`client`** — browser-side hooks, API calls, client-side business logic. No framework-specific APIs.
+- **RPC layer** — app-level glue: `createServerFn` (TanStack Start) or `'use server'` (Next.js). Lives in apps, calls into `backend`.
+- **`backend`** — server-side logic: validation, handlers. No React. Called from RPC layer.
+- **`repo`** — sole Supabase communication. Every function receives a `DbClient` as first param.
+
+## Package Dependency Rules
+
+```
+repo      ← no internal deps
+backend   ← @issue-tracker/repo
+client    ← @issue-tracker/repo  (+ @issue-tracker/backend for types only)
+ui        ← no internal deps
+apps      ← ui, backend, client, repo
+```
+
 ## Project Structure
 
 ```
@@ -21,7 +42,10 @@ issue-tracker/
 │   ├── next-app/          # Next.js 16 app (@issue-tracker/next-app)
 │   └── tanstart-app/      # TanStack Start app (@issue-tracker/tanstart-app)
 ├── packages/
-│   └── ui/                # Shared UI components (@issue-tracker/ui)
+│   ├── ui/                # Shared UI components (@issue-tracker/ui)
+│   ├── repo/              # Data access layer (@issue-tracker/repo)
+│   ├── backend/           # Server-side logic (@issue-tracker/backend)
+│   └── client/            # Browser-side logic (@issue-tracker/client)
 ├── package.json           # Root - shared deps hoisted here
 ├── pnpm-workspace.yaml
 └── tsconfig.json          # Root TS config
@@ -39,9 +63,31 @@ issue-tracker/
 - Uses `#/*` import alias for `./src/*`
 - Scripts: `pnpm dev` (port 3000), `pnpm build`, `pnpm test`
 
-## Shared UI Package (`packages/ui`)
+## Packages
 
+### `repo` (`packages/repo`)
+- Package: `@issue-tracker/repo`
+- Sole communication layer with Supabase. Every function receives a `DbClient` as the first param.
+- Entry points:
+  - `@issue-tracker/repo/backend` → `src/backend.ts` — backend Supabase functions only
+  - `@issue-tracker/repo/client` → `src/client.ts` — client Supabase functions only
+  - `@issue-tracker/repo/shared` → `src/shared/index.ts` — shared types (`ActionState`, `DbClient`, `Database`)
+
+### `backend` (`packages/backend`)
+- Package: `@issue-tracker/backend`
+- Server-side logic. **No React code.**
+- File structure: `src/feature/<domain>/<feature>/` with `handler.ts`, `service.ts`, `types.ts`, `validationSchemas.ts`
+- Validation schema files are named `validationSchemas.ts` (not `validations.ts`)
+- Exports handlers and types from root entry point `@issue-tracker/backend`
+
+### `client` (`packages/client`)
+- Package: `@issue-tracker/client`
+- Browser-side hooks, API calls, client-side business logic.
+- **No framework-specific APIs** (`createServerFn`, `useRouter`, etc.) — those stay in apps.
+
+### `ui` (`packages/ui`)
 - Package: `@issue-tracker/ui`
+- Generic reusable components. No feature logic.
 - Entry points:
   - `@issue-tracker/ui/components` → `src/components/index.ts`
   - `@issue-tracker/ui/lib` → `src/lib/index.ts`
@@ -55,9 +101,20 @@ issue-tracker/
 # Install dependencies
 pnpm install
 
+# Build all packages (required before running apps)
+pnpm build:packages
+
 # Run apps
 pnpm --filter @issue-tracker/next-app dev
 pnpm --filter @issue-tracker/tanstart-app dev
+
+# Run individual package in watch mode
+pnpm dev:repo
+pnpm dev:backend
+pnpm dev:client
+
+# Typecheck everything
+pnpm typecheck
 
 # Run tests
 pnpm --filter @issue-tracker/tanstart-app test
@@ -111,10 +168,14 @@ The sidebar is context-aware:
 
 ## Conventions
 
-- Both apps consume `@issue-tracker/ui` as a workspace dependency
 - UI components live in `packages/ui/src/components/ui/`
 - Utility functions in `packages/ui/src/lib/utils.ts`
-- Root `tsconfig.json` is the base config; apps extend it
+- Root `tsconfig.json` is the base config; packages and apps extend it
+- Backend feature files follow: `src/feature/<domain>/<feature>/{handler,service,types,validationSchemas}.ts`
+- Validation schema files are always named `validationSchemas.ts`
+- RPC files (`createServerFn`, server actions) are **app-level only** — they call into `@issue-tracker/backend`
+- `repo/backend` is restricted to `backend` package; `repo/client` is restricted to `client` package (enforced by ESLint `no-restricted-imports`)
+- Apps import `Database`, `DbClient`, `ActionState` from `@issue-tracker/backend` — never directly from `@issue-tracker/repo`
 
 
 ## Get Package Skill md 

@@ -1,5 +1,5 @@
-import { Ok, ok } from 'neverthrow'
-import type { ActionState } from './action-state.js'
+import { ok } from 'neverthrow'
+import type { ActionState } from '@issue-tracker/repo/shared'
 
 export function success<
   TData,
@@ -9,8 +9,8 @@ export function success<
   data?: TData,
   message?: string,
   errors: TErrors = {} as TErrors,
-): Ok<ActionState<TData, TErrors, TValues>, never> {
-  return ok({ success: true, data, message, errors })
+) {
+  return ok({ success: true, data, message, errors } as ActionState<TData, TErrors, TValues> & { success: true })
 }
 
 export function fail<

@@ -1,16 +1,16 @@
 import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@issue-tracker/core'
+import type { Database, DbClient } from '@issue-tracker/backend'
 
-export function createClientSupabaseClient() {
+export function createClientSupabaseClient(): DbClient {
   return createBrowserClient<Database>(
     import.meta.env.VITE_SUPABASE_URL as string,
     import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string,
-  )
+  ) as DbClient
 }
 
-let _singleton: ReturnType<typeof createClientSupabaseClient> | null = null
+let _singleton: DbClient | null = null
 
-export function getBrowserSupabaseClient() {
+export function getBrowserSupabaseClient(): DbClient {
   if (!_singleton) _singleton = createClientSupabaseClient()
   return _singleton
 }

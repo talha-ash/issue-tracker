@@ -18,9 +18,13 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@issue-tracker/repo": "workspace:*",
+    "@supabase/supabase-js": "^2.101.1",
+    "neverthrow": "^8.2.0",
+    "valibot": "^1.0.0"
+  },
+  "devDependencies": {
     "rollup-plugin-node-externals": "^8.1.2"
   }
 }

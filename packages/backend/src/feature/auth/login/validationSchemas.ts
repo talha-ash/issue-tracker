@@ -1,6 +1,5 @@
 import * as v from 'valibot'
 
-
 export const LoginSchema = v.object({
     email: v.pipe(
         v.string('Email is required'),

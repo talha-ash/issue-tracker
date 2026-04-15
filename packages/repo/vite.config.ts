@@ -20,6 +20,7 @@ export default defineConfig({
       entry: {
         backend: resolve(__dirname, "src/backend.ts"),
         client: resolve(__dirname, "src/client.ts"),
+        "shared/index": resolve(__dirname, "src/shared/index.ts"),
       },
       formats: ["es"],
     },
