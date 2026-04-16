@@ -43,7 +43,9 @@ export default tseslint.config(
                 ...globals.es2020, // Promise, BigInt, globalThis, etc.
             },
             parserOptions: {
-                projectService: true, // Connect to TS language service for type-aware rules
+                projectService: {
+                    allowDefaultProject: ['vite.config.ts'],  // vite configs live outside src/ so no package tsconfig claims them
+                },
                 tsconfigRootDir: process.cwd(),
             },
         },

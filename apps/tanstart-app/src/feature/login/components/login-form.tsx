@@ -5,13 +5,17 @@ import {
   FieldLabel,
   Input,
 } from '@issue-tracker/ui/components';
-import { Link } from '@tanstack/react-router';
+import { Link, Navigate } from '@tanstack/react-router';
 import { useLanguage } from '#/lib/i18n';
 import { useLogin } from '../useLogin';
 
 export function LoginForm() {
   const { t } = useLanguage();
   const { isPending, data, handleSubmit } = useLogin();
+
+  if (data.success) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="mt-6">

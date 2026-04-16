@@ -4,5 +4,4 @@ export type ActionState<
   TValues = unknown,
 > =
   | { success: false; errors: TErrors; message: string; values?: TValues }
-  | { success: true; errors: TErrors; message: string; data: TData; values?: TValues }
-  | { success: true }
+  | { success: true; message?: string; data?: TData; values?: TValues }

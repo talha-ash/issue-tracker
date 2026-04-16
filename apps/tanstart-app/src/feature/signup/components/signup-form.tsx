@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Button, Field, FieldGroup, FieldLabel, Input } from '@issue-tracker/ui/components'
 import { useLanguage } from '#/lib/i18n'
 import { useSignup } from '../useSignup'
+import { Navigate } from '@tanstack/react-router'
 
 function PasswordStrength({ password }: { password: string }) {
   const strength = useMemo(() => {
@@ -34,6 +35,11 @@ export function SignupForm() {
   const { isPending, data, handleSubmit } = useSignup()
   const [password, setPassword] = useState('')
 
+  if(data.success){
+
+    return <Navigate to='/'/>
+  }
+  
   return (
     <form onSubmit={handleSubmit} className="mt-6">
       <FieldGroup>

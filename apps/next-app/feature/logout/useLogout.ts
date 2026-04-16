@@ -8,6 +8,7 @@ export const useLogout = () => {
 
     const handleLogout = async () => {
         await auth.signOut()
+        // req.set('clear-site-data', '"cache", "cookies", "storage')
         redirect('/login')
     }
 

@@ -23,5 +23,5 @@ export async function createServerSupabaseClient(): Promise<DbClient> {
         },
       },
     },
-  ) as DbClient
+  ) 
 }

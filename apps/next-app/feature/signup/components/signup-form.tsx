@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Button,
@@ -6,21 +6,29 @@ import {
   FieldGroup,
   FieldLabel,
   Input,
-} from '@issue-tracker/ui/components'
+} from '@issue-tracker/ui/components';
 
-import { SignupState } from '@/app/actions/auth'
-import { useLanguage } from '@/lib/i18n'
-import { useSignup } from '../useSignup'
+import { SignupState } from '@/app/actions/auth';
+import { useLanguage } from '@/lib/i18n';
+import { useSignup } from '../useSignup';
+import { useRouter } from 'next/navigation';
 
 export const signupInitialState: SignupState = {
   success: false,
   errors: {},
   message: '',
-}
+};
 
 export function SignupForm() {
-  const { t } = useLanguage()
-  const { state, formAction, isPending } = useSignup()
+  const { t } = useLanguage();
+  const { state, formAction, isPending } = useSignup();
+
+  const router = useRouter();
+
+  if (state.success) {
+    router.replace('/');
+    return;
+  }
 
   return (
     <form action={formAction} className="mt-6">
@@ -102,7 +110,7 @@ export function SignupForm() {
         </Field>
       </FieldGroup>
 
-      {state.message && !state.success ? (
+      {state.message ? (
         <p className="mt-4 text-sm text-destructive">{state.message}</p>
       ) : null}
 
@@ -110,5 +118,5 @@ export function SignupForm() {
         {isPending ? 'Creating account...' : t('action.create') + ' Account'}
       </Button>
     </form>
-  )
+  );
 }

@@ -17,8 +17,7 @@ export async function login(client: DbClient, input: LoginInput): Promise<LoginS
     const { data, error } = await backendRepo.auth.signIn(client, input.email, input.password)
     if (data.user) {
         return {
-            success: true,
-            errors: {},
+            success: true,            
             message: 'Login successful',
             data: { user: data.user, session: data.session },
         }

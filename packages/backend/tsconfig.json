@@ -5,8 +5,7 @@
         "moduleResolution": "bundler",
         "declaration": true,
         "declarationMap": true,
-        "outDir": "./dist",
-        "baseUrl": ".",
+        "outDir": "./dist",        
         "paths": {
             "@/*": [
                 "./src/*"
@@ -14,5 +13,5 @@
         }
     },
     "include": ["src"],
-    "exclude": ["dist", "node_modules", "vite.config.ts"]
+    "exclude": ["dist", "node_modules"]
 }

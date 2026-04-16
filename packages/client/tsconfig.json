@@ -5,8 +5,7 @@
         "moduleResolution": "bundler",
         "declaration": true,
         "declarationMap": true,
-        "outDir": "./dist",
-        "baseUrl": ".",
+        "outDir": "./dist",        
         "paths": {
             "@/*": [
                 "./src/*"

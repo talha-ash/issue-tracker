@@ -11,10 +11,18 @@ import Link from 'next/link';
 
 import { useLanguage } from '@/lib/i18n';
 import { useLogin } from '../useLogin';
+import { useRouter } from 'next/navigation';
 
 export function LoginForm() {
   const { t } = useLanguage();
   const { state, formAction, isPending } = useLogin();
+  const router = useRouter()
+  
+
+  if(state.success){
+    router.replace("/")
+    return;
+  }
 
   return (
     <form action={formAction} className="mt-6">
@@ -65,7 +73,7 @@ export function LoginForm() {
         </Field>
       </FieldGroup>
 
-      {state.message && !state.success ? (
+      {state.message ? (
         <p className="mt-4 text-sm text-destructive">{state.message}</p>
       ) : null}
 

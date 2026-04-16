@@ -134,14 +134,21 @@ languageOptions: {
         ...globals.es2020,     // Line 42 — Promise, BigInt, globalThis, Map, Set, etc.
     },
     parserOptions: {
-        projectService: true,  // Line 45
-        tsconfigRootDir: process.cwd(), // Line 46
+        projectService: {
+            allowDefaultProject: ['vite.config.ts'],
+        },
+        tsconfigRootDir: process.cwd(),
     },
 },
 ```
 
-- **Line 45: `projectService: true`** — The modern way to connect ESLint to TypeScript's type system. It uses the same TypeScript language service your IDE uses. This is what enables rules like `no-floating-promises`, `no-unsafe-assignment`, `await-thenable` — they need to actually know the types of your variables. Replaced the older `project: ['./tsconfig.json']` approach which was slower and less reliable.
-- **Line 46: `tsconfigRootDir`** — Tells the project service where to find tsconfig files. `process.cwd()` = the repo root.
+- **`projectService`** — The modern way to connect ESLint to TypeScript's type system. It uses the same TypeScript language service your IDE uses. This is what enables rules like `no-floating-promises`, `no-unsafe-assignment`, `await-thenable` — they need to actually know the types of your variables. Replaced the older `project: ['./tsconfig.json']` approach which was slower and less reliable.
+- **`projectService.allowDefaultProject: ['vite.config.ts']`** — ESLint's project service walks up the directory tree to find a `tsconfig.json` that claims each file. `vite.config.ts` files live at the package root, outside `src/`, so no package tsconfig includes them. Without `allowDefaultProject`, ESLint errors: *"was not found by the project service"*. This option tells the project service to use a minimal default config for matched files instead of failing.
+
+  > **`allowDefaultProject` vs `tsconfig.node.json` — they are not related.** A common misconception is that `allowDefaultProject` falls back to `tsconfig.node.json` when it can't find a regular tsconfig. This is wrong. `tsconfig.node.json` fixes the **TS language server** (editor red squiggles). `allowDefaultProject` fixes **ESLint's project service**. They are completely separate systems that both happen to be needed for the same file. Removing either one breaks its respective tool — neither is a fallback for the other.
+  >
+  > Note: `allowDefaultProject` patterns cannot contain `**` (banned for performance — it would pull too many files into the default project). Use a single-level pattern like `vite.config.ts` (matches by filename) instead.
+- **`tsconfigRootDir`** — Tells the project service where to find tsconfig files. `process.cwd()` = the repo root.
 
 #### Lines 48–53: Settings
 

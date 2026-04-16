@@ -22,8 +22,7 @@ export async function signup(client: DbClient, input: SignupInput): Promise<Sign
     )
     if (data.user && data.session) {
         return {
-            success: true,
-            errors: {},
+            success: true,            
             message: 'Signup successful! Please check your email to confirm your account.',
             data: { user: data.user, session: data.session },
         }

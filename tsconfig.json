@@ -32,7 +32,6 @@
         "packages/**/tests/*/*.tsx",
         // "**/tailwind.config.js",
         // "**/postcss.config.cjs",
-        "**/vite.config.ts",
         "./eslint.config.mts"
     ],
     "exclude": [
