@@ -8,105 +8,105 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AuthedRouteImport } from './routes/_authed'
-import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as AuthedIndexRouteImport } from './routes/_authed/index'
-import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
-import { Route as AuthLoginRouteImport } from './routes/_auth/login'
-import { Route as AuthedProjectsNewRouteImport } from './routes/_authed/projects.new'
-import { Route as AuthedProjectsProjectIdIndexRouteImport } from './routes/_authed/projects.$projectId.index'
-import { Route as AuthedProjectsProjectIdEditRouteImport } from './routes/_authed/projects.$projectId.edit'
-import { Route as AuthedProjectsProjectIdIssuesIssueIdRouteImport } from './routes/_authed/projects.$projectId.issues.$issueId'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as AboutRouteImport } from './routes/about';
+import { Route as AuthedRouteImport } from './routes/_authed';
+import { Route as AuthRouteImport } from './routes/_auth';
+import { Route as AuthedIndexRouteImport } from './routes/_authed/index';
+import { Route as AuthSignupRouteImport } from './routes/_auth/signup';
+import { Route as AuthLoginRouteImport } from './routes/_auth/login';
+import { Route as AuthedProjectsNewRouteImport } from './routes/_authed/projects.new';
+import { Route as AuthedProjectsProjectIdIndexRouteImport } from './routes/_authed/projects.$projectId.index';
+import { Route as AuthedProjectsProjectIdEditRouteImport } from './routes/_authed/projects.$projectId.edit';
+import { Route as AuthedProjectsProjectIdIssuesIssueIdRouteImport } from './routes/_authed/projects.$projectId.issues.$issueId';
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthedIndexRoute = AuthedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedRoute,
-} as any)
+} as any);
 const AuthSignupRoute = AuthSignupRouteImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => AuthRoute,
-} as any)
+} as any);
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
-} as any)
+} as any);
 const AuthedProjectsNewRoute = AuthedProjectsNewRouteImport.update({
   id: '/projects/new',
   path: '/projects/new',
   getParentRoute: () => AuthedRoute,
-} as any)
+} as any);
 const AuthedProjectsProjectIdIndexRoute =
   AuthedProjectsProjectIdIndexRouteImport.update({
     id: '/projects/$projectId/',
     path: '/projects/$projectId/',
     getParentRoute: () => AuthedRoute,
-  } as any)
+  } as any);
 const AuthedProjectsProjectIdEditRoute =
   AuthedProjectsProjectIdEditRouteImport.update({
     id: '/projects/$projectId/edit',
     path: '/projects/$projectId/edit',
     getParentRoute: () => AuthedRoute,
-  } as any)
+  } as any);
 const AuthedProjectsProjectIdIssuesIssueIdRoute =
   AuthedProjectsProjectIdIssuesIssueIdRouteImport.update({
     id: '/projects/$projectId/issues/$issueId',
     path: '/projects/$projectId/issues/$issueId',
     getParentRoute: () => AuthedRoute,
-  } as any)
+  } as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthedIndexRoute
-  '/about': typeof AboutRoute
-  '/login': typeof AuthLoginRoute
-  '/signup': typeof AuthSignupRoute
-  '/projects/new': typeof AuthedProjectsNewRoute
-  '/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute
-  '/projects/$projectId/': typeof AuthedProjectsProjectIdIndexRoute
-  '/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute
+  '/': typeof AuthedIndexRoute;
+  '/about': typeof AboutRoute;
+  '/login': typeof AuthLoginRoute;
+  '/signup': typeof AuthSignupRoute;
+  '/projects/new': typeof AuthedProjectsNewRoute;
+  '/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute;
+  '/projects/$projectId/': typeof AuthedProjectsProjectIdIndexRoute;
+  '/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof AuthedIndexRoute
-  '/about': typeof AboutRoute
-  '/login': typeof AuthLoginRoute
-  '/signup': typeof AuthSignupRoute
-  '/projects/new': typeof AuthedProjectsNewRoute
-  '/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute
-  '/projects/$projectId': typeof AuthedProjectsProjectIdIndexRoute
-  '/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute
+  '/': typeof AuthedIndexRoute;
+  '/about': typeof AboutRoute;
+  '/login': typeof AuthLoginRoute;
+  '/signup': typeof AuthSignupRoute;
+  '/projects/new': typeof AuthedProjectsNewRoute;
+  '/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute;
+  '/projects/$projectId': typeof AuthedProjectsProjectIdIndexRoute;
+  '/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/_auth': typeof AuthRouteWithChildren
-  '/_authed': typeof AuthedRouteWithChildren
-  '/about': typeof AboutRoute
-  '/_auth/login': typeof AuthLoginRoute
-  '/_auth/signup': typeof AuthSignupRoute
-  '/_authed/': typeof AuthedIndexRoute
-  '/_authed/projects/new': typeof AuthedProjectsNewRoute
-  '/_authed/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute
-  '/_authed/projects/$projectId/': typeof AuthedProjectsProjectIdIndexRoute
-  '/_authed/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute
+  __root__: typeof rootRouteImport;
+  '/_auth': typeof AuthRouteWithChildren;
+  '/_authed': typeof AuthedRouteWithChildren;
+  '/about': typeof AboutRoute;
+  '/_auth/login': typeof AuthLoginRoute;
+  '/_auth/signup': typeof AuthSignupRoute;
+  '/_authed/': typeof AuthedIndexRoute;
+  '/_authed/projects/new': typeof AuthedProjectsNewRoute;
+  '/_authed/projects/$projectId/edit': typeof AuthedProjectsProjectIdEditRoute;
+  '/_authed/projects/$projectId/': typeof AuthedProjectsProjectIdIndexRoute;
+  '/_authed/projects/$projectId/issues/$issueId': typeof AuthedProjectsProjectIdIssuesIssueIdRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
     | '/about'
@@ -115,8 +115,8 @@ export interface FileRouteTypes {
     | '/projects/new'
     | '/projects/$projectId/edit'
     | '/projects/$projectId/'
-    | '/projects/$projectId/issues/$issueId'
-  fileRoutesByTo: FileRoutesByTo
+    | '/projects/$projectId/issues/$issueId';
+  fileRoutesByTo: FileRoutesByTo;
   to:
     | '/'
     | '/about'
@@ -125,7 +125,7 @@ export interface FileRouteTypes {
     | '/projects/new'
     | '/projects/$projectId/edit'
     | '/projects/$projectId'
-    | '/projects/$projectId/issues/$issueId'
+    | '/projects/$projectId/issues/$issueId';
   id:
     | '__root__'
     | '/_auth'
@@ -137,108 +137,108 @@ export interface FileRouteTypes {
     | '/_authed/projects/new'
     | '/_authed/projects/$projectId/edit'
     | '/_authed/projects/$projectId/'
-    | '/_authed/projects/$projectId/issues/$issueId'
-  fileRoutesById: FileRoutesById
+    | '/_authed/projects/$projectId/issues/$issueId';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  AuthRoute: typeof AuthRouteWithChildren
-  AuthedRoute: typeof AuthedRouteWithChildren
-  AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRouteWithChildren;
+  AuthedRoute: typeof AuthedRouteWithChildren;
+  AboutRoute: typeof AboutRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/about';
+      path: '/about';
+      fullPath: '/about';
+      preLoaderRoute: typeof AboutRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_authed': {
-      id: '/_authed'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/_authed';
+      path: '';
+      fullPath: '/';
+      preLoaderRoute: typeof AuthedRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/_auth';
+      path: '';
+      fullPath: '/';
+      preLoaderRoute: typeof AuthRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/_authed/': {
-      id: '/_authed/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthedIndexRouteImport
-      parentRoute: typeof AuthedRoute
-    }
+      id: '/_authed/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof AuthedIndexRouteImport;
+      parentRoute: typeof AuthedRoute;
+    };
     '/_auth/signup': {
-      id: '/_auth/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof AuthSignupRouteImport
-      parentRoute: typeof AuthRoute
-    }
+      id: '/_auth/signup';
+      path: '/signup';
+      fullPath: '/signup';
+      preLoaderRoute: typeof AuthSignupRouteImport;
+      parentRoute: typeof AuthRoute;
+    };
     '/_auth/login': {
-      id: '/_auth/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
-    }
+      id: '/_auth/login';
+      path: '/login';
+      fullPath: '/login';
+      preLoaderRoute: typeof AuthLoginRouteImport;
+      parentRoute: typeof AuthRoute;
+    };
     '/_authed/projects/new': {
-      id: '/_authed/projects/new'
-      path: '/projects/new'
-      fullPath: '/projects/new'
-      preLoaderRoute: typeof AuthedProjectsNewRouteImport
-      parentRoute: typeof AuthedRoute
-    }
+      id: '/_authed/projects/new';
+      path: '/projects/new';
+      fullPath: '/projects/new';
+      preLoaderRoute: typeof AuthedProjectsNewRouteImport;
+      parentRoute: typeof AuthedRoute;
+    };
     '/_authed/projects/$projectId/': {
-      id: '/_authed/projects/$projectId/'
-      path: '/projects/$projectId'
-      fullPath: '/projects/$projectId/'
-      preLoaderRoute: typeof AuthedProjectsProjectIdIndexRouteImport
-      parentRoute: typeof AuthedRoute
-    }
+      id: '/_authed/projects/$projectId/';
+      path: '/projects/$projectId';
+      fullPath: '/projects/$projectId/';
+      preLoaderRoute: typeof AuthedProjectsProjectIdIndexRouteImport;
+      parentRoute: typeof AuthedRoute;
+    };
     '/_authed/projects/$projectId/edit': {
-      id: '/_authed/projects/$projectId/edit'
-      path: '/projects/$projectId/edit'
-      fullPath: '/projects/$projectId/edit'
-      preLoaderRoute: typeof AuthedProjectsProjectIdEditRouteImport
-      parentRoute: typeof AuthedRoute
-    }
+      id: '/_authed/projects/$projectId/edit';
+      path: '/projects/$projectId/edit';
+      fullPath: '/projects/$projectId/edit';
+      preLoaderRoute: typeof AuthedProjectsProjectIdEditRouteImport;
+      parentRoute: typeof AuthedRoute;
+    };
     '/_authed/projects/$projectId/issues/$issueId': {
-      id: '/_authed/projects/$projectId/issues/$issueId'
-      path: '/projects/$projectId/issues/$issueId'
-      fullPath: '/projects/$projectId/issues/$issueId'
-      preLoaderRoute: typeof AuthedProjectsProjectIdIssuesIssueIdRouteImport
-      parentRoute: typeof AuthedRoute
-    }
+      id: '/_authed/projects/$projectId/issues/$issueId';
+      path: '/projects/$projectId/issues/$issueId';
+      fullPath: '/projects/$projectId/issues/$issueId';
+      preLoaderRoute: typeof AuthedProjectsProjectIdIssuesIssueIdRouteImport;
+      parentRoute: typeof AuthedRoute;
+    };
   }
 }
 
 interface AuthRouteChildren {
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthSignupRoute: typeof AuthSignupRoute
+  AuthLoginRoute: typeof AuthLoginRoute;
+  AuthSignupRoute: typeof AuthSignupRoute;
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
-}
+};
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
 
 interface AuthedRouteChildren {
-  AuthedIndexRoute: typeof AuthedIndexRoute
-  AuthedProjectsNewRoute: typeof AuthedProjectsNewRoute
-  AuthedProjectsProjectIdEditRoute: typeof AuthedProjectsProjectIdEditRoute
-  AuthedProjectsProjectIdIndexRoute: typeof AuthedProjectsProjectIdIndexRoute
-  AuthedProjectsProjectIdIssuesIssueIdRoute: typeof AuthedProjectsProjectIdIssuesIssueIdRoute
+  AuthedIndexRoute: typeof AuthedIndexRoute;
+  AuthedProjectsNewRoute: typeof AuthedProjectsNewRoute;
+  AuthedProjectsProjectIdEditRoute: typeof AuthedProjectsProjectIdEditRoute;
+  AuthedProjectsProjectIdIndexRoute: typeof AuthedProjectsProjectIdIndexRoute;
+  AuthedProjectsProjectIdIssuesIssueIdRoute: typeof AuthedProjectsProjectIdIssuesIssueIdRoute;
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
@@ -248,26 +248,26 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedProjectsProjectIdIndexRoute: AuthedProjectsProjectIdIndexRoute,
   AuthedProjectsProjectIdIssuesIssueIdRoute:
     AuthedProjectsProjectIdIssuesIssueIdRoute,
-}
+};
 
 const AuthedRouteWithChildren =
-  AuthedRoute._addFileChildren(AuthedRouteChildren)
+  AuthedRoute._addFileChildren(AuthedRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   AuthedRoute: AuthedRouteWithChildren,
   AboutRoute: AboutRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
+import type { getRouter } from './router.tsx';
+import type { startInstance } from './start.ts';
 declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>;
   }
 }

@@ -1,6 +1,6 @@
-import { createServerClient } from '@supabase/ssr'
-import { getCookies, setCookie } from '@tanstack/react-start/server'
-import type { Database, DbClient } from '@issue-tracker/backend'
+import { createServerClient } from '@supabase/ssr';
+import { getCookies, setCookie } from '@tanstack/react-start/server';
+import type { Database, DbClient } from '@issue-tracker/backend';
 
 export function createServerSupabaseClient(): DbClient {
   return createServerClient<Database>(
@@ -9,15 +9,15 @@ export function createServerSupabaseClient(): DbClient {
     {
       cookies: {
         getAll() {
-          const all = getCookies()
-          return Object.entries(all).map(([name, value]) => ({ name, value }))
+          const all = getCookies();
+          return Object.entries(all).map(([name, value]) => ({ name, value }));
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) => {
-            setCookie(name, value, options)
-          })
+            setCookie(name, value, options);
+          });
         },
       },
-    },
-  ) as DbClient
+    }
+  ) as DbClient;
 }

@@ -1,7 +1,13 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { Plus, Filter, ArrowUpDown } from 'lucide-react';
 
-import { Button, Tabs, TabsContent, TabsList, TabsTrigger  } from '@issue-tracker/ui/components';
+import {
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@issue-tracker/ui/components';
 import { IssueTable } from '@/components/issues/issue-table';
 import { EmptyState } from '@/components/issues/empty-state';
 import { MembersTable } from '@/components/projects/members-table';
@@ -44,19 +50,19 @@ function ProjectDetailPage() {
             {project.key}
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">{project.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground">
+              {project.name}
+            </h1>
             <p className="mt-1 text-muted-foreground">{project.description}</p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Created {project.createdAt} &middot; {project.memberCount} Members &middot; {project.issueCount} Issues
+              Created {project.createdAt} &middot; {project.memberCount} Members
+              &middot; {project.issueCount} Issues
             </p>
           </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" asChild>
-            <Link
-              to="/projects/$projectId/edit"
-              params={{ projectId }}
-            >
+            <Link to="/projects/$projectId/edit" params={{ projectId }}>
               {t('project.edit')}
             </Link>
           </Button>

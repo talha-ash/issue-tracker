@@ -35,7 +35,9 @@
     "lint:client": "pnpm --filter @issue-tracker/client lint",
     "lint:next": "pnpm --filter @issue-tracker/next-app lint",
     "lint:tan": "pnpm --filter @issue-tracker/tanstart-app lint",
-    "test": "pnpm --filter @issue-tracker/tanstart-app test"
+    "test": "pnpm --filter @issue-tracker/tanstart-app test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .gitignore",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .gitignore"
   },
   "keywords": [],
   "author": "",
@@ -84,7 +86,7 @@
     "vitest": "^3.0.5",
     "yaml": "^2.8.3"
   },
-  "dependencies": {    
+  "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.101.1",

@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { ArrowLeft, Plus, LogOut } from 'lucide-react'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ArrowLeft, Plus, LogOut } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -15,14 +15,23 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator, Avatar, AvatarFallback , Button , ScrollArea 
-} from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
-import { getProjectById, getIssuesByProjectId, currentUser, type Issue } from '@/lib/mock-data'
+  SidebarSeparator,
+  Avatar,
+  AvatarFallback,
+  Button,
+  ScrollArea,
+} from '@issue-tracker/ui/components';
+import { useLanguage } from '@/lib/i18n';
+import {
+  getProjectById,
+  getIssuesByProjectId,
+  currentUser,
+  type Issue,
+} from '@/lib/mock-data';
 
 interface IssueSidebarProps {
-  projectId: string
-  currentIssueId: string | undefined
+  projectId: string;
+  currentIssueId: string | undefined;
 }
 
 function StatusDot({ status }: { status: Issue['status'] }) {
@@ -31,18 +40,18 @@ function StatusDot({ status }: { status: Issue['status'] }) {
     'in-progress': 'bg-[var(--status-in-progress)]',
     resolved: 'bg-[var(--status-resolved)]',
     closed: 'bg-[var(--status-closed)]',
-  }
-  
-  return <span className={`size-2 shrink-0 rounded-full ${colors[status]}`} />
+  };
+
+  return <span className={`size-2 shrink-0 rounded-full ${colors[status]}`} />;
 }
 
 export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
-  const pathname = usePathname()
-  const { t } = useLanguage()
-  const project = getProjectById(projectId)
-  const issues = getIssuesByProjectId(projectId)
+  const pathname = usePathname();
+  const { t } = useLanguage();
+  const project = getProjectById(projectId);
+  const issues = getIssuesByProjectId(projectId);
 
-  if (!project) return null
+  if (!project) return null;
 
   return (
     <Sidebar className="border-r border-sidebar-border">
@@ -70,8 +79,10 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
           <SidebarGroupContent>
             <ScrollArea className="h-[calc(100vh-280px)]">
               <SidebarMenu>
-                {issues.map((issue) => {
-                  const isActive = pathname.includes(`/issues/${issue.id}`) || currentIssueId === issue.id
+                {issues.map(issue => {
+                  const isActive =
+                    pathname.includes(`/issues/${issue.id}`) ||
+                    currentIssueId === issue.id;
                   return (
                     <SidebarMenuItem key={issue.id}>
                       <SidebarMenuButton
@@ -79,13 +90,15 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
                         isActive={isActive}
                         className={isActive ? 'border-l-2 border-primary' : ''}
                       >
-                        <Link href={`/projects/${projectId}/issues/${issue.id}`}>
+                        <Link
+                          href={`/projects/${projectId}/issues/${issue.id}`}
+                        >
                           <StatusDot status={issue.status} />
                           <span className="truncate">{issue.title}</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
-                  )
+                  );
                 })}
               </SidebarMenu>
             </ScrollArea>
@@ -111,5 +124,5 @@ export function IssueSidebar({ projectId, currentIssueId }: IssueSidebarProps) {
         </div>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

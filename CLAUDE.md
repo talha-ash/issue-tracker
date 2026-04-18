@@ -54,11 +54,13 @@ issue-tracker/
 ## Apps
 
 ### Next.js App (`apps/next-app`)
+
 - Next.js 16 (App Router)
 - **WARNING**: This Next.js version has breaking changes vs training data. Always read `node_modules/next/dist/docs/` before writing code.
 - Scripts: `pnpm dev`, `pnpm build`, `pnpm start`, `pnpm lint`
 
 ### TanStack Start App (`apps/tanstart-app`)
+
 - TanStack Start + TanStack Router + Vite
 - Uses `#/*` import alias for `./src/*`
 - Scripts: `pnpm dev` (port 3000), `pnpm build`, `pnpm test`
@@ -66,6 +68,7 @@ issue-tracker/
 ## Packages
 
 ### `repo` (`packages/repo`)
+
 - Package: `@issue-tracker/repo`
 - Sole communication layer with Supabase. Every function receives a `DbClient` as the first param.
 - Entry points:
@@ -74,6 +77,7 @@ issue-tracker/
   - `@issue-tracker/repo/shared` → `src/shared/index.ts` — shared types (`ActionState`, `DbClient`, `Database`)
 
 ### `backend` (`packages/backend`)
+
 - Package: `@issue-tracker/backend`
 - Server-side logic. **No React code.**
 - File structure: `src/feature/<domain>/<feature>/` with `handler.ts`, `service.ts`, `types.ts`, `validationSchemas.ts`
@@ -81,11 +85,13 @@ issue-tracker/
 - Exports handlers and types from root entry point `@issue-tracker/backend`
 
 ### `client` (`packages/client`)
+
 - Package: `@issue-tracker/client`
 - Browser-side hooks, API calls, client-side business logic.
 - **No framework-specific APIs** (`createServerFn`, `useRouter`, etc.) — those stay in apps.
 
 ### `ui` (`packages/ui`)
+
 - Package: `@issue-tracker/ui`
 - Generic reusable components. No feature logic.
 - Entry points:
@@ -123,6 +129,7 @@ pnpm --filter @issue-tracker/tanstart-app test
 ## Design System
 
 ### Colors
+
 - Primary: `indigo-600` / hover `indigo-700`
 - Danger: `red-500` / outlined `border-red-300 text-red-600`
 - Success: `green-500`
@@ -132,6 +139,7 @@ pnpm --filter @issue-tracker/tanstart-app test
 - Cards: `white` with `border-gray-200`
 
 ### Component Patterns
+
 - Primary button: `bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700`
 - Outlined button: `border border-gray-300 text-gray-700 rounded-lg px-4 py-2 hover:bg-gray-50`
 - Inputs: `border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-indigo-500`
@@ -140,29 +148,32 @@ pnpm --filter @issue-tracker/tanstart-app test
 - Sidebar: `w-64` fixed, full height
 
 ### Status Colors
+
 - Open: `indigo` (bg-indigo-100 text-indigo-700)
 - In Progress: `amber` (bg-amber-100 text-amber-700)
 - Resolved: `green` (bg-green-100 text-green-700)
 - Closed: `gray` (bg-gray-100 text-gray-600)
 
 ### Priority Colors
+
 - Urgent: red, High: orange, Medium: yellow, Low: gray
 
 ## App Pages
 
-| Page | File | Sidebar Context |
-|------|------|-----------------|
-| Login | `login` | None (full-page centered) |
-| Sign Up | `signup` | None (full-page centered) |
-| Issue List | `issues` | Issue List View (back btn + project name + issues) |
-| Issue Detail | `issue-detail` | Issue List View (current issue highlighted) |
-| Project Create | `project-create` | Project List View |
-| Project Detail | `project-detail` | Project List View (tabs: Issues, Members) |
-| Project Update | `project-update` | Project List View |
+| Page           | File             | Sidebar Context                                    |
+| -------------- | ---------------- | -------------------------------------------------- |
+| Login          | `login`          | None (full-page centered)                          |
+| Sign Up        | `signup`         | None (full-page centered)                          |
+| Issue List     | `issues`         | Issue List View (back btn + project name + issues) |
+| Issue Detail   | `issue-detail`   | Issue List View (current issue highlighted)        |
+| Project Create | `project-create` | Project List View                                  |
+| Project Detail | `project-detail` | Project List View (tabs: Issues, Members)          |
+| Project Update | `project-update` | Project List View                                  |
 
 ## Sidebar Behavior
 
 The sidebar is context-aware:
+
 1. **Project List View** — shown outside a specific project (dashboard, project pages). Shows app logo, project list with 3-dot menus, user info.
 2. **Issue List View** — shown inside a project (issue list, issue detail). Shows back button, project name, scrollable issue list, user info.
 
@@ -177,8 +188,8 @@ The sidebar is context-aware:
 - `repo/backend` is restricted to `backend` package; `repo/client` is restricted to `client` package (enforced by ESLint `no-restricted-imports`)
 - Apps import `Database`, `DbClient`, `ActionState` from `@issue-tracker/backend` — never directly from `@issue-tracker/repo`
 
+## Get Package Skill md
 
-## Get Package Skill md 
 You are an AI assistant helping a developer set up skill-to-task mappings for their project.
 
 Follow these steps in order:
@@ -222,23 +233,26 @@ Follow these steps in order:
    Use this exact block:
 
 <!-- intent-skills:start -->
+
 # Skill mappings - when working in these areas, load the linked skill file into context.
+
 skills:
-  - task: "describe the task or code area here"
-    load: "node_modules/package-name/skills/skill-name/SKILL.md"
+
+- task: "describe the task or code area here"
+load: "node_modules/package-name/skills/skill-name/SKILL.md"
 <!-- intent-skills:end -->
 
-   Rules:
-   - Use the user's own words for task descriptions
-   - Include the exact path from `npx @tanstack/intent@latest list` output so agents can load it directly
-   - Paths should use the stable `node_modules/<package-name>/skills/...` format (no version numbers)
-   - If a skill path from `list` contains package-manager-internal directories (e.g. `.pnpm/`, `.bun/`)
-     with version numbers, it is a transitive dependency without a stable top-level symlink.
-     For these skills, do NOT embed the versioned path. Instead, add a comment telling the agent
-     how to locate the skill at runtime:
-       - task: "describe the task"
-         # To load this skill, run: npx @tanstack/intent@latest list | grep <skill-name>
-   - Keep entries concise - this block is read on every agent task
-   - Preserve all content outside the block tags unchanged
-   - If the user is on Deno, note that this setup is best-effort today and relies on npm interop
+Rules:
 
+- Use the user's own words for task descriptions
+- Include the exact path from `npx @tanstack/intent@latest list` output so agents can load it directly
+- Paths should use the stable `node_modules/<package-name>/skills/...` format (no version numbers)
+- If a skill path from `list` contains package-manager-internal directories (e.g. `.pnpm/`, `.bun/`)
+  with version numbers, it is a transitive dependency without a stable top-level symlink.
+  For these skills, do NOT embed the versioned path. Instead, add a comment telling the agent
+  how to locate the skill at runtime:
+  - task: "describe the task"
+    # To load this skill, run: npx @tanstack/intent@latest list | grep <skill-name>
+- Keep entries concise - this block is read on every agent task
+- Preserve all content outside the block tags unchanged
+- If the user is on Deno, note that this setup is best-effort today and relies on npm interop

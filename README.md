@@ -2,7 +2,8 @@
 
 A fully responsive issue tracking app inspired by Linear/Plane. Built as a monorepo with two frontend apps sharing a common UI package.
 
-## Purpose 
+## Purpose
+
 Learn SSR Frameworks and compare their developer experience and performance. The Next.js app uses the App Router, while the TanStack Start app uses TanStack Router.
 
 ## Structure

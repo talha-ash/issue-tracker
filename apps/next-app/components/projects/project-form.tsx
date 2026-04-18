@@ -1,57 +1,69 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Lock, Globe, X, Search } from 'lucide-react'
-import { Button, Input , Textarea , Field, FieldGroup, FieldLabel , Avatar, AvatarFallback  } from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
-import { users, type Project, type User } from '@/lib/mock-data'
-import { cn } from '@/lib/utils'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Lock, Globe, X, Search } from 'lucide-react';
+import {
+  Button,
+  Input,
+  Textarea,
+  Field,
+  FieldGroup,
+  FieldLabel,
+  Avatar,
+  AvatarFallback,
+} from '@issue-tracker/ui/components';
+import { useLanguage } from '@/lib/i18n';
+import { users, type Project, type User } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 interface ProjectFormProps {
-  project?: Project
-  className?: string
+  project?: Project;
+  className?: string;
 }
 
 export function ProjectForm({ project, className }: ProjectFormProps) {
-  const { t } = useLanguage()
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [name, setName] = useState(project?.name || '')
-  const [visibility, setVisibility] = useState<'private' | 'public'>(project?.visibility || 'private')
-  const [selectedMembers, setSelectedMembers] = useState<User[]>([])
-  const [searchQuery, setSearchQuery] = useState('')
+  const { t } = useLanguage();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState(project?.name || '');
+  const [visibility, setVisibility] = useState<'private' | 'public'>(
+    project?.visibility || 'private'
+  );
+  const [selectedMembers, setSelectedMembers] = useState<User[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const projectKey = name
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 4) || 'PROJ'
+  const projectKey =
+    name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 4) || 'PROJ';
 
   const filteredUsers = users.filter(
-    (user) =>
-      !selectedMembers.find((m) => m.id === user.id) &&
+    user =>
+      !selectedMembers.find(m => m.id === user.id) &&
       (user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email.toLowerCase().includes(searchQuery.toLowerCase()))
-  )
+  );
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsLoading(false)
-    router.push('/dashboard')
-  }
+    e.preventDefault();
+    setIsLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsLoading(false);
+    router.push('/dashboard');
+  };
 
   const addMember = (user: User) => {
-    setSelectedMembers([...selectedMembers, user])
-    setSearchQuery('')
-  }
+    setSelectedMembers([...selectedMembers, user]);
+    setSearchQuery('');
+  };
 
   const removeMember = (userId: string) => {
-    setSelectedMembers(selectedMembers.filter((m) => m.id !== userId))
-  }
+    setSelectedMembers(selectedMembers.filter(m => m.id !== userId));
+  };
 
   return (
     <form onSubmit={handleSubmit} className={cn('max-w-2xl', className)}>
@@ -62,7 +74,9 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
             <Input
               id="name"
               value={name}
-              onChange={(e) => { setName(e.target.value) }}
+              onChange={e => {
+                setName(e.target.value);
+              }}
               placeholder="Enter project name"
               required
             />
@@ -70,19 +84,16 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
 
           <Field>
             <FieldLabel htmlFor="key">{t('project.key')}</FieldLabel>
-            <Input
-              id="key"
-              value={projectKey}
-              readOnly
-              className="font-mono"
-            />
+            <Input id="key" value={projectKey} readOnly className="font-mono" />
             <p className="mt-1 text-xs text-muted-foreground">
               Key will be: {projectKey}
             </p>
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="description">{t('project.description')}</FieldLabel>
+            <FieldLabel htmlFor="description">
+              {t('project.description')}
+            </FieldLabel>
             <Textarea
               id="description"
               placeholder="Describe your project"
@@ -97,7 +108,9 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
             <div className="mt-2 grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => { setVisibility('private') }}
+                onClick={() => {
+                  setVisibility('private');
+                }}
                 className={cn(
                   'flex flex-col items-start rounded-lg border-2 p-4 text-left transition-colors',
                   visibility === 'private'
@@ -113,7 +126,9 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
               </button>
               <button
                 type="button"
-                onClick={() => { setVisibility('public') }}
+                onClick={() => {
+                  setVisibility('public');
+                }}
                 className={cn(
                   'flex flex-col items-start rounded-lg border-2 p-4 text-left transition-colors',
                   visibility === 'public'
@@ -136,7 +151,9 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={searchQuery}
-                onChange={(e) => { setSearchQuery(e.target.value) }}
+                onChange={e => {
+                  setSearchQuery(e.target.value);
+                }}
                 placeholder={t('project.search.members')}
                 className="pl-9"
               />
@@ -145,7 +162,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
             {/* Selected members */}
             {selectedMembers.length > 0 ? (
               <div className="mt-3 flex flex-wrap gap-2">
-                {selectedMembers.map((member) => (
+                {selectedMembers.map(member => (
                   <div
                     key={member.id}
                     className="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1"
@@ -158,7 +175,9 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
                     <span className="text-sm">{member.name}</span>
                     <button
                       type="button"
-                      onClick={() => { removeMember(member.id) }}
+                      onClick={() => {
+                        removeMember(member.id);
+                      }}
                       className="text-muted-foreground hover:text-foreground"
                     >
                       <X className="size-3" />
@@ -171,7 +190,7 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
             {/* Search results */}
             {searchQuery && filteredUsers.length > 0 ? (
               <div className="mt-2 rounded-lg border border-border bg-popover shadow-md">
-                {filteredUsers.slice(0, 5).map((user) => (
+                {filteredUsers.slice(0, 5).map(user => (
                   <div
                     key={user.id}
                     className="flex items-center justify-between p-3 hover:bg-accent"
@@ -184,14 +203,18 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
                       </Avatar>
                       <div>
                         <p className="font-medium">{user.name}</p>
-                        <p className="text-xs text-muted-foreground">{user.email}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {user.email}
+                        </p>
                       </div>
                     </div>
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => { addMember(user) }}
+                      onClick={() => {
+                        addMember(user);
+                      }}
                     >
                       {t('action.add')}
                     </Button>
@@ -207,7 +230,9 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
         <Button
           type="button"
           variant="ghost"
-          onClick={() => { router.back() }}
+          onClick={() => {
+            router.back();
+          }}
           disabled={isLoading}
         >
           {t('action.cancel')}
@@ -216,10 +241,10 @@ export function ProjectForm({ project, className }: ProjectFormProps) {
           {isLoading
             ? 'Saving...'
             : project
-            ? t('action.save')
-            : t('project.create')}
+              ? t('action.save')
+              : t('project.create')}
         </Button>
       </div>
     </form>
-  )
+  );
 }

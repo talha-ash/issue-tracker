@@ -25,44 +25,44 @@ Server functions are type-safe RPCs created with `createServerFn`. They run excl
 ## Basic Usage
 
 ```tsx
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 
 // GET (default)
 const getData = createServerFn().handler(async () => {
-  return { message: 'Hello from server!' }
-})
+  return { message: 'Hello from server!' };
+});
 
 // POST
 const saveData = createServerFn({ method: 'POST' }).handler(async () => {
-  return { success: true }
-})
+  return { success: true };
+});
 ```
 
 ## Calling from Loaders
 
 ```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
+import { createFileRoute } from '@tanstack/react-router';
+import { createServerFn } from '@tanstack/react-start';
 
 const getPosts = createServerFn({ method: 'GET' }).handler(async () => {
-  const posts = await db.query('SELECT * FROM posts')
-  return { posts }
-})
+  const posts = await db.query('SELECT * FROM posts');
+  return { posts };
+});
 
 export const Route = createFileRoute('/posts')({
   loader: () => getPosts(),
   component: PostList,
-})
+});
 
 function PostList() {
-  const { posts } = Route.useLoaderData()
+  const { posts } = Route.useLoaderData();
   return (
     <ul>
-      {posts.map((p) => (
+      {posts.map(p => (
         <li key={p.id}>{p.title}</li>
       ))}
     </ul>
-  )
+  );
 }
 ```
 
@@ -71,23 +71,23 @@ function PostList() {
 Use the `useServerFn` hook to call server functions from event handlers:
 
 ```tsx
-import { useServerFn } from '@tanstack/react-start'
+import { useServerFn } from '@tanstack/react-start';
 
 const deletePost = createServerFn({ method: 'POST' })
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data }) => {
-    await db.delete('posts').where({ id: data.id })
-    return { success: true }
-  })
+    await db.delete('posts').where({ id: data.id });
+    return { success: true };
+  });
 
 function DeleteButton({ postId }: { postId: string }) {
-  const deletePostFn = useServerFn(deletePost)
+  const deletePostFn = useServerFn(deletePost);
 
   return (
     <button onClick={() => deletePostFn({ data: { id: postId } })}>
       Delete
     </button>
-  )
+  );
 }
 ```
 
@@ -99,45 +99,45 @@ function DeleteButton({ postId }: { postId: string }) {
 const greetUser = createServerFn({ method: 'GET' })
   .inputValidator((data: { name: string }) => data)
   .handler(async ({ data }) => {
-    return `Hello, ${data.name}!`
-  })
+    return `Hello, ${data.name}!`;
+  });
 
-await greetUser({ data: { name: 'John' } })
+await greetUser({ data: { name: 'John' } });
 ```
 
 ### Zod Validator
 
 ```tsx
-import { z } from 'zod'
+import { z } from 'zod';
 
 const createUser = createServerFn({ method: 'POST' })
   .inputValidator(
     z.object({
       name: z.string().min(1),
       age: z.number().min(0),
-    }),
+    })
   )
   .handler(async ({ data }) => {
-    return `Created user: ${data.name}, age ${data.age}`
-  })
+    return `Created user: ${data.name}, age ${data.age}`;
+  });
 ```
 
 ### FormData
 
 ```tsx
 const submitForm = createServerFn({ method: 'POST' })
-  .inputValidator((data) => {
+  .inputValidator(data => {
     if (!(data instanceof FormData)) {
-      throw new Error('Expected FormData')
+      throw new Error('Expected FormData');
     }
     return {
       name: data.get('name')?.toString() || '',
       email: data.get('email')?.toString() || '',
-    }
+    };
   })
   .handler(async ({ data }) => {
-    return { success: true }
-  })
+    return { success: true };
+  });
 ```
 
 ## Error Handling
@@ -146,44 +146,44 @@ const submitForm = createServerFn({ method: 'POST' })
 
 ```tsx
 const riskyFunction = createServerFn().handler(async () => {
-  throw new Error('Something went wrong!')
-})
+  throw new Error('Something went wrong!');
+});
 
 try {
-  await riskyFunction()
+  await riskyFunction();
 } catch (error) {
-  console.log(error.message) // "Something went wrong!"
+  console.log(error.message); // "Something went wrong!"
 }
 ```
 
 ### Redirects
 
 ```tsx
-import { redirect } from '@tanstack/react-router'
+import { redirect } from '@tanstack/react-router';
 
 const requireAuth = createServerFn().handler(async () => {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
   if (!user) {
-    throw redirect({ to: '/login' })
+    throw redirect({ to: '/login' });
   }
-  return user
-})
+  return user;
+});
 ```
 
 ### Not Found
 
 ```tsx
-import { notFound } from '@tanstack/react-router'
+import { notFound } from '@tanstack/react-router';
 
 const getPost = createServerFn()
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data }) => {
-    const post = await db.findPost(data.id)
+    const post = await db.findPost(data.id);
     if (!post) {
-      throw notFound()
+      throw notFound();
     }
-    return post
-  })
+    return post;
+  });
 ```
 
 ## Server Context Utilities
@@ -191,25 +191,25 @@ const getPost = createServerFn()
 Access request/response details inside server function handlers:
 
 ```tsx
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 import {
   getRequest,
   getRequestHeader,
   setResponseHeaders,
   setResponseStatus,
-} from '@tanstack/react-start/server'
+} from '@tanstack/react-start/server';
 
 const getCachedData = createServerFn({ method: 'GET' }).handler(async () => {
-  const request = getRequest()
-  const authHeader = getRequestHeader('Authorization')
+  const request = getRequest();
+  const authHeader = getRequestHeader('Authorization');
 
   setResponseHeaders({
     'Cache-Control': 'public, max-age=300',
-  })
-  setResponseStatus(200)
+  });
+  setResponseStatus(200);
 
-  return fetchData()
-})
+  return fetchData();
+});
 ```
 
 Available utilities:
@@ -231,23 +231,23 @@ src/utils/
 
 ```tsx
 // users.server.ts — server-only helpers
-import { db } from '~/db'
+import { db } from '~/db';
 
 export async function findUserById(id: string) {
-  return db.query.users.findFirst({ where: eq(users.id, id) })
+  return db.query.users.findFirst({ where: eq(users.id, id) });
 }
 ```
 
 ```tsx
 // users.functions.ts — server functions
-import { createServerFn } from '@tanstack/react-start'
-import { findUserById } from './users.server'
+import { createServerFn } from '@tanstack/react-start';
+import { findUserById } from './users.server';
 
 export const getUser = createServerFn({ method: 'GET' })
   .inputValidator((data: { id: string }) => data)
   .handler(async ({ data }) => {
-    return findUserById(data.id)
-  })
+    return findUserById(data.id);
+  });
 ```
 
 Static imports of server functions are safe — the build replaces implementations with RPC stubs in client bundles.
@@ -260,20 +260,20 @@ Static imports of server functions are safe — the build replaces implementatio
 // WRONG — loader is ISOMORPHIC, runs on BOTH client and server
 export const Route = createFileRoute('/posts')({
   loader: async () => {
-    const posts = await db.query('SELECT * FROM posts')
-    return { posts }
+    const posts = await db.query('SELECT * FROM posts');
+    return { posts };
   },
-})
+});
 
 // CORRECT — use createServerFn for server-only logic
 const getPosts = createServerFn({ method: 'GET' }).handler(async () => {
-  const posts = await db.query('SELECT * FROM posts')
-  return { posts }
-})
+  const posts = await db.query('SELECT * FROM posts');
+  return { posts };
+});
 
 export const Route = createFileRoute('/posts')({
   loader: () => getPosts(),
-})
+});
 ```
 
 ### 2. CRITICAL: Using Next.js/Remix server patterns
@@ -295,10 +295,10 @@ const getUser = createServerFn({ method: 'GET' })
 
 ```tsx
 // WRONG — can cause bundler issues
-const { getUser } = await import('~/utils/users.functions')
+const { getUser } = await import('~/utils/users.functions');
 
 // CORRECT — static imports are safe, build handles environment shaking
-import { getUser } from '~/utils/users.functions'
+import { getUser } from '~/utils/users.functions';
 ```
 
 ### 4. HIGH: Awaiting server function without calling it
@@ -307,13 +307,13 @@ import { getUser } from '~/utils/users.functions'
 
 ```tsx
 // WRONG — getItems is a function, not a Promise
-const data = await getItems
+const data = await getItems;
 
 // CORRECT — call the function
-const data = await getItems()
+const data = await getItems();
 
 // With validated input
-const data = await getItems({ data: { id: '1' } })
+const data = await getItems({ data: { id: '1' } });
 ```
 
 ### 5. MEDIUM: Not using useServerFn for component calls

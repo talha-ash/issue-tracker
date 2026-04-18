@@ -1,21 +1,25 @@
-'use client'
+'use client';
 
-import { Badge,
+import {
+  Badge,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow, Avatar, AvatarFallback  } from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
-import type { Member } from '@/lib/mock-data'
+  TableRow,
+  Avatar,
+  AvatarFallback,
+} from '@issue-tracker/ui/components';
+import { useLanguage } from '@/lib/i18n';
+import type { Member } from '@/lib/mock-data';
 
 interface MembersTableProps {
-  members: Member[]
+  members: Member[];
 }
 
 export function MembersTable({ members }: MembersTableProps) {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   return (
     <div className="rounded-lg border border-border">
@@ -30,7 +34,7 @@ export function MembersTable({ members }: MembersTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {members.map((member) => (
+          {members.map(member => (
             <TableRow key={member.id}>
               <TableCell>
                 <div className="flex items-center gap-3">
@@ -63,5 +67,5 @@ export function MembersTable({ members }: MembersTableProps) {
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

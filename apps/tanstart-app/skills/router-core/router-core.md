@@ -70,46 +70,46 @@ Need server-side rendering?
 
 ```tsx
 // src/routes/__root.tsx
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 
 export const Route = createRootRoute({
   component: () => <Outlet />,
-})
+});
 ```
 
 ```tsx
 // src/routes/index.tsx
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
   component: () => <h1>Home</h1>,
-})
+});
 ```
 
 ```tsx
 // src/router.tsx
-import { createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
+import { createRouter } from '@tanstack/react-router';
+import { routeTree } from './routeTree.gen';
 
-const router = createRouter({ routeTree })
+const router = createRouter({ routeTree });
 
 // REQUIRED for type safety — without this, Link/useNavigate have no autocomplete
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
 
-export default router
+export default router;
 ```
 
 ```tsx
 // src/main.tsx
-import { RouterProvider } from '@tanstack/react-router'
-import router from './router'
+import { RouterProvider } from '@tanstack/react-router';
+import router from './router';
 
 function App() {
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }
 ```
 
@@ -124,12 +124,12 @@ The Vite plugin manages the path string in `createFileRoute`. Do not change it m
 export const Route = createFileRoute('/posts/$postId')({
   // ✅ matches file path
   component: PostPage,
-})
+});
 
 export const Route = createFileRoute('/post/$postId')({
   // ❌ silent mismatch
   component: PostPage,
-})
+});
 ```
 
 The plugin auto-generates this string. If you rename a route file, the plugin updates it. Never edit the path string by hand.

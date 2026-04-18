@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { useLanguage } from '@/lib/i18n'
-import { LoginForm } from '@/feature/login/components/login-form'
-import { SocialAuth } from '@/components/auth/social-auth'
-import { AuthHeader } from '@/components/auth/auth-header'
+import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n';
+import { LoginForm } from '@/feature/login/components/login-form';
+import { SocialAuth } from '@/components/auth/social-auth';
+import { AuthHeader } from '@/components/auth/auth-header';
 
 export default function LoginPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted p-4">
       <div className="w-full max-w-md">
         <div className="rounded-xl border border-border bg-card p-8 shadow-lg">
           <AuthHeader />
-          
+
           <div className="mt-8 text-center">
             <h1 className="text-2xl font-bold text-card-foreground">
               {t('auth.welcome')}
@@ -51,5 +51,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

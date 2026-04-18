@@ -1,9 +1,12 @@
-'use client'
+'use client';
 
-import { useLanguage } from '@/lib/i18n'
-import type { Priority } from '@/lib/mock-data'
+import { useLanguage } from '@/lib/i18n';
+import type { Priority } from '@/lib/mock-data';
 
-const priorityConfig: Record<Priority, { dotColor: string; translationKey: string }> = {
+const priorityConfig: Record<
+  Priority,
+  { dotColor: string; translationKey: string }
+> = {
   urgent: {
     dotColor: 'bg-red-500',
     translationKey: 'priority.urgent',
@@ -20,11 +23,11 @@ const priorityConfig: Record<Priority, { dotColor: string; translationKey: strin
     dotColor: 'bg-muted-foreground',
     translationKey: 'priority.low',
   },
-}
+};
 
 export function PriorityBadge({ priority }: { priority: Priority }) {
-  const { t } = useLanguage()
-  const config = priorityConfig[priority]
+  const { t } = useLanguage();
+  const config = priorityConfig[priority];
 
   return (
     <div className="flex items-center gap-1.5">
@@ -33,5 +36,5 @@ export function PriorityBadge({ priority }: { priority: Priority }) {
         {t(config.translationKey)}
       </span>
     </div>
-  )
+  );
 }

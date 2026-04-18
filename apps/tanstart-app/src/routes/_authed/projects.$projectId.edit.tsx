@@ -23,7 +23,9 @@ function EditProjectPage() {
   return (
     <div className="p-6">
       <div className="max-w-2xl">
-        <h1 className="text-2xl font-bold text-foreground">{t('project.update')}</h1>
+        <h1 className="text-2xl font-bold text-foreground">
+          {t('project.update')}
+        </h1>
       </div>
 
       <ProjectForm className="mt-8" project={project} />

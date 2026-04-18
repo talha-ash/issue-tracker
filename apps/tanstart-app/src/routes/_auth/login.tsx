@@ -1,15 +1,15 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useLanguage } from '#/lib/i18n'
-import { LoginForm } from '#/feature/login/components/login-form'
-import { SocialAuth } from '#/components/auth/social-auth'
-import { AuthHeader } from '#/components/auth/auth-header'
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useLanguage } from '#/lib/i18n';
+import { LoginForm } from '#/feature/login/components/login-form';
+import { SocialAuth } from '#/components/auth/social-auth';
+import { AuthHeader } from '#/components/auth/auth-header';
 
 export const Route = createFileRoute('/_auth/login')({
   component: LoginPage,
-})
+});
 
 function LoginPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted p-4">
@@ -43,12 +43,15 @@ function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {t('auth.no.account')}{' '}
-            <Link to="/signup" className="font-medium text-primary hover:underline">
+            <Link
+              to="/signup"
+              className="font-medium text-primary hover:underline"
+            >
               {t('auth.signup')}
             </Link>
           </p>
         </div>
       </div>
     </div>
-  )
+  );
 }

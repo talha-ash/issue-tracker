@@ -1,29 +1,39 @@
-import { Link } from '@tanstack/react-router'
-import { Button, Avatar, AvatarFallback , Separator  } from '@issue-tracker/ui/components'
-import { StatusBadge } from './status-badge'
-import { PriorityBadge } from './priority-badge'
-import { CommentSection } from './comment-section'
-import { useLanguage } from '@/lib/i18n'
-import { getCommentsByIssueId } from '@/lib/mock-data'
-import type { Issue, Project } from '@/lib/mock-data'
+import { Link } from '@tanstack/react-router';
+import {
+  Button,
+  Avatar,
+  AvatarFallback,
+  Separator,
+} from '@issue-tracker/ui/components';
+import { StatusBadge } from './status-badge';
+import { PriorityBadge } from './priority-badge';
+import { CommentSection } from './comment-section';
+import { useLanguage } from '@/lib/i18n';
+import { getCommentsByIssueId } from '@/lib/mock-data';
+import type { Issue, Project } from '@/lib/mock-data';
 
 interface IssueDetailProps {
-  issue: Issue
-  project: Project
-  onEdit?: () => void
-  onDelete?: () => void
+  issue: Issue;
+  project: Project;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-export function IssueDetail({ issue, project, onEdit, onDelete }: IssueDetailProps) {
-  const { t } = useLanguage()
-  const comments = getCommentsByIssueId(issue.id)
+export function IssueDetail({
+  issue,
+  project,
+  onEdit,
+  onDelete,
+}: IssueDetailProps) {
+  const { t } = useLanguage();
+  const comments = getCommentsByIssueId(issue.id);
 
   return (
     <div className="flex gap-6">
       {/* Left column - Main content */}
       <div className="flex-1 min-w-0">
         <h1 className="text-2xl font-bold text-foreground">{issue.title}</h1>
-        
+
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <StatusBadge status={issue.status} />
           <PriorityBadge priority={issue.priority} />
@@ -155,5 +165,5 @@ export function IssueDetail({ issue, project, onEdit, onDelete }: IssueDetailPro
         </div>
       </div>
     </div>
-  )
+  );
 }

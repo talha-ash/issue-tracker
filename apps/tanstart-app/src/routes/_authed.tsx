@@ -2,7 +2,7 @@ import { AppShell } from '#/components/app-shell';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_authed')({
-  beforeLoad: ({ context }) => {    
+  beforeLoad: ({ context }) => {
     if (!context.user) {
       redirect({ to: '/login', throw: true });
       //   throw new Error('Not authenticated');

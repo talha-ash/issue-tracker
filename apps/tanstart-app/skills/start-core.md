@@ -64,9 +64,9 @@ npm i -D vite @vitejs/plugin-react typescript
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vite'
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import viteReact from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import viteReact from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [
@@ -74,23 +74,23 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
   ],
-})
+});
 ```
 
 ### 3. Create Router Factory
 
 ```tsx
 // src/router.tsx
-import { createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
+import { createRouter } from '@tanstack/react-router';
+import { routeTree } from './routeTree.gen';
 
 export function getRouter() {
   const router = createRouter({
     routeTree,
     scrollRestoration: true,
-  })
+  });
 
-  return router
+  return router;
 }
 ```
 
@@ -98,13 +98,13 @@ export function getRouter() {
 
 ```tsx
 // src/routes/__root.tsx
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 import {
   Outlet,
   createRootRoute,
   HeadContent,
   Scripts,
-} from '@tanstack/react-router'
+} from '@tanstack/react-router';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -115,7 +115,7 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
@@ -128,7 +128,7 @@ function RootComponent() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -136,21 +136,21 @@ function RootComponent() {
 
 ```tsx
 // src/routes/index.tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
+import { createFileRoute } from '@tanstack/react-router';
+import { createServerFn } from '@tanstack/react-start';
 
 const getGreeting = createServerFn({ method: 'GET' }).handler(async () => {
-  return { message: 'Hello from the server!' }
-})
+  return { message: 'Hello from the server!' };
+});
 
 export const Route = createFileRoute('/')({
   loader: () => getGreeting(),
   component: HomePage,
-})
+});
 
 function HomePage() {
-  const data = Route.useLoaderData()
-  return <h1>{data.message}</h1>
+  const data = Route.useLoaderData();
+  return <h1>{data.message}</h1>;
 }
 ```
 
@@ -160,10 +160,10 @@ function HomePage() {
 
 ```ts
 // WRONG — route generation and server function compilation fail
-plugins: [react(), tanstackStart()]
+plugins: [react(), tanstackStart()];
 
 // CORRECT — Start plugin must come first
-plugins: [tanstackStart(), react()]
+plugins: [tanstackStart(), react()];
 ```
 
 ### 2. HIGH: Enabling verbatimModuleSyntax in tsconfig
@@ -186,7 +186,7 @@ function RootComponent() {
         <Outlet />
       </body>
     </html>
-  )
+  );
 }
 
 // CORRECT — Scripts in body
@@ -201,7 +201,7 @@ function RootComponent() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
 ```
 

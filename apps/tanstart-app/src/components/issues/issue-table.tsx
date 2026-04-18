@@ -1,25 +1,34 @@
-import { Link } from '@tanstack/react-router'
-import { Button,
+import { Link } from '@tanstack/react-router';
+import {
+  Button,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow, Avatar, AvatarFallback  } from '@issue-tracker/ui/components'
-import { StatusBadge } from './status-badge'
-import { PriorityBadge } from './priority-badge'
-import { useLanguage } from '@/lib/i18n'
-import type { Issue } from '@/lib/mock-data'
+  TableRow,
+  Avatar,
+  AvatarFallback,
+} from '@issue-tracker/ui/components';
+import { StatusBadge } from './status-badge';
+import { PriorityBadge } from './priority-badge';
+import { useLanguage } from '@/lib/i18n';
+import type { Issue } from '@/lib/mock-data';
 
 interface IssueTableProps {
-  issues: Issue[]
-  projectId: string
-  onEdit?: (issue: Issue) => void
-  onDelete?: (issue: Issue) => void
+  issues: Issue[];
+  projectId: string;
+  onEdit?: (issue: Issue) => void;
+  onDelete?: (issue: Issue) => void;
 }
 
-export function IssueTable({ issues, projectId, onEdit, onDelete }: IssueTableProps) {
-  const { t } = useLanguage()
+export function IssueTable({
+  issues,
+  projectId,
+  onEdit,
+  onDelete,
+}: IssueTableProps) {
+  const { t } = useLanguage();
 
   return (
     <div className="rounded-lg border border-border">
@@ -100,5 +109,5 @@ export function IssueTable({ issues, projectId, onEdit, onDelete }: IssueTablePr
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

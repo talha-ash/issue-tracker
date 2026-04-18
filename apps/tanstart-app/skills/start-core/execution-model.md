@@ -43,15 +43,15 @@ The primary way to run server-only code. On the client, calls become fetch reque
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 
 const fetchUser = createServerFn().handler(async () => {
-  const secret = process.env.API_SECRET // safe — server only
-  return await db.users.find()
-})
+  const secret = process.env.API_SECRET; // safe — server only
+  return await db.users.find();
+});
 
 // Client calls this via network request
-const user = await fetchUser()
+const user = await fetchUser();
 ```
 
 ### createServerOnlyFn (throws on client)
@@ -60,9 +60,9 @@ For utility functions that must never run on client:
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerOnlyFn } from '@tanstack/react-start'
+import { createServerOnlyFn } from '@tanstack/react-start';
 
-const getSecret = createServerOnlyFn(() => process.env.DATABASE_URL)
+const getSecret = createServerOnlyFn(() => process.env.DATABASE_URL);
 
 // Server: returns the value
 // Client: THROWS an error
@@ -74,25 +74,25 @@ const getSecret = createServerOnlyFn(() => process.env.DATABASE_URL)
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createClientOnlyFn } from '@tanstack/react-start'
+import { createClientOnlyFn } from '@tanstack/react-start';
 
 const saveToStorage = createClientOnlyFn((key: string, value: string) => {
-  localStorage.setItem(key, value)
-})
+  localStorage.setItem(key, value);
+});
 ```
 
 ### ClientOnly Component
 
 ```tsx
 // Use @tanstack/<framework>-router for your framework (react, solid, vue)
-import { ClientOnly } from '@tanstack/react-router'
+import { ClientOnly } from '@tanstack/react-router';
 
 function Analytics() {
   return (
     <ClientOnly fallback={null}>
       <GoogleAnalyticsScript />
     </ClientOnly>
-  )
+  );
 }
 ```
 
@@ -100,15 +100,15 @@ function Analytics() {
 
 ```tsx
 // Use @tanstack/<framework>-router for your framework (react, solid, vue)
-import { useHydrated } from '@tanstack/react-router'
+import { useHydrated } from '@tanstack/react-router';
 
 function TimeZoneDisplay() {
-  const hydrated = useHydrated()
+  const hydrated = useHydrated();
   const timeZone = hydrated
     ? Intl.DateTimeFormat().resolvedOptions().timeZone
-    : 'UTC'
+    : 'UTC';
 
-  return <div>Your timezone: {timeZone}</div>
+  return <div>Your timezone: {timeZone}</div>;
 }
 ```
 
@@ -118,11 +118,11 @@ Behavior: SSR → `false`, first client render → `false`, after hydration → 
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createIsomorphicFn } from '@tanstack/react-start'
+import { createIsomorphicFn } from '@tanstack/react-start';
 
 const getDeviceInfo = createIsomorphicFn()
   .server(() => ({ type: 'server', platform: process.platform }))
-  .client(() => ({ type: 'client', userAgent: navigator.userAgent }))
+  .client(() => ({ type: 'client', userAgent: navigator.userAgent }));
 ```
 
 ## Environment Variables
@@ -133,9 +133,9 @@ Access any variable via `process.env`:
 
 ```tsx
 const connectDb = createServerFn().handler(async () => {
-  const url = process.env.DATABASE_URL // no prefix needed
-  return createConnection(url)
-})
+  const url = process.env.DATABASE_URL; // no prefix needed
+  return createConnection(url);
+});
 ```
 
 ### Client-Side (components)
@@ -145,11 +145,11 @@ Only `VITE_` prefixed variables are available:
 ```tsx
 // Framework-specific component type (React.ReactNode, JSX.Element, etc.)
 function ApiProvider({ children }: { children: React.ReactNode }) {
-  const apiUrl = import.meta.env.VITE_API_URL // available
+  const apiUrl = import.meta.env.VITE_API_URL; // available
   // import.meta.env.DATABASE_URL → undefined (security)
   return (
     <ApiContext.Provider value={{ apiUrl }}>{children}</ApiContext.Provider>
-  )
+  );
 }
 ```
 
@@ -159,19 +159,19 @@ If you need server-side variables on the client without `VITE_` prefix, pass the
 
 ```tsx
 const getRuntimeVar = createServerFn({ method: 'GET' }).handler(() => {
-  return process.env.MY_RUNTIME_VAR
-})
+  return process.env.MY_RUNTIME_VAR;
+});
 
 export const Route = createFileRoute('/')({
   loader: async () => {
-    const foo = await getRuntimeVar()
-    return { foo }
+    const foo = await getRuntimeVar();
+    return { foo };
   },
   component: () => {
-    const { foo } = Route.useLoaderData()
-    return <div>{foo}</div>
+    const { foo } = Route.useLoaderData();
+    return <div>{foo}</div>;
   },
-})
+});
 ```
 
 ### Type Safety for Environment Variables
@@ -181,24 +181,24 @@ export const Route = createFileRoute('/')({
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_APP_NAME: string
-  readonly VITE_API_URL: string
+  readonly VITE_APP_NAME: string;
+  readonly VITE_API_URL: string;
 }
 
 interface ImportMeta {
-  readonly env: ImportMetaEnv
+  readonly env: ImportMetaEnv;
 }
 
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      readonly DATABASE_URL: string
-      readonly JWT_SECRET: string
+      readonly DATABASE_URL: string;
+      readonly JWT_SECRET: string;
     }
   }
 }
 
-export {}
+export {};
 ```
 
 ## Common Mistakes
@@ -209,40 +209,40 @@ export {}
 // WRONG — loader runs on BOTH server and client
 export const Route = createFileRoute('/dashboard')({
   loader: async () => {
-    const secret = process.env.API_SECRET // LEAKED to client
+    const secret = process.env.API_SECRET; // LEAKED to client
     return fetch(`https://api.example.com/data`, {
       headers: { Authorization: secret },
-    })
+    });
   },
-})
+});
 
 // CORRECT — use createServerFn
 const getData = createServerFn({ method: 'GET' }).handler(async () => {
-  const secret = process.env.API_SECRET
+  const secret = process.env.API_SECRET;
   return fetch(`https://api.example.com/data`, {
     headers: { Authorization: secret },
-  })
-})
+  });
+});
 
 export const Route = createFileRoute('/dashboard')({
   loader: () => getData(),
-})
+});
 ```
 
 ### 2. CRITICAL: Exposing secrets via module-level process.env
 
 ```tsx
 // WRONG — runs in both environments, value in client bundle
-const apiKey = process.env.SECRET_KEY
+const apiKey = process.env.SECRET_KEY;
 export function fetchData() {
   /* uses apiKey */
 }
 
 // CORRECT — access inside server function only
 const fetchData = createServerFn({ method: 'GET' }).handler(async () => {
-  const apiKey = process.env.SECRET_KEY
-  return fetch(url, { headers: { Authorization: apiKey } })
-})
+  const apiKey = process.env.SECRET_KEY;
+  return fetch(url, { headers: { Authorization: apiKey } });
+});
 ```
 
 ### 3. CRITICAL: Using VITE\_ prefix for server secrets
@@ -263,16 +263,16 @@ VITE_APP_NAME=My App
 ```tsx
 // WRONG — different content server vs client
 function CurrentTime() {
-  return <div>{new Date().toLocaleString()}</div>
+  return <div>{new Date().toLocaleString()}</div>;
 }
 
 // CORRECT — consistent rendering
 function CurrentTime() {
-  const [time, setTime] = useState<string>()
+  const [time, setTime] = useState<string>();
   useEffect(() => {
-    setTime(new Date().toLocaleString())
-  }, [])
-  return <div>{time || 'Loading...'}</div>
+    setTime(new Date().toLocaleString());
+  }, []);
+  return <div>{time || 'Loading...'}</div>;
 }
 ```
 

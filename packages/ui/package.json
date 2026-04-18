@@ -14,7 +14,7 @@
     "./lib": {
       "types": "./dist/lib/index.d.ts",
       "import": "./dist/lib.js"
-    },    
+    },
     "./style.css": "./dist/assets/ui.css"
   },
   "scripts": {

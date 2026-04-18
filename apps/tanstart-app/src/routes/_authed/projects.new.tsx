@@ -13,7 +13,9 @@ function NewProjectPage() {
   return (
     <div className="p-6">
       <div className="max-w-2xl">
-        <h1 className="text-2xl font-bold text-foreground">{t('project.create')}</h1>
+        <h1 className="text-2xl font-bold text-foreground">
+          {t('project.create')}
+        </h1>
         <p className="mt-1 text-muted-foreground">{t('project.setup')}</p>
       </div>
 

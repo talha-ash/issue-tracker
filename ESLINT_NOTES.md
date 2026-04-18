@@ -7,48 +7,63 @@ This project uses ESLint 9 **flat config** format (`eslint.config.mts`).
 ## Imports (Lines 2–17)
 
 ### Line 3: `import eslint from '@eslint/js'`
+
 **Package: `@eslint/js`** — The official ESLint core rules package. Provides `eslint.configs.recommended` which includes ~50 battle-tested JS rules like `no-undef`, `no-dupe-keys`, `no-unreachable`, `no-unused-vars` (JS version). This is the baseline every JS project should have.
 
 ### Line 4: `import tseslint from 'typescript-eslint'`
+
 **Package: `typescript-eslint`** — The unified package for TypeScript ESLint support. Replaces the older separate `@typescript-eslint/parser` + `@typescript-eslint/eslint-plugin` imports. Provides the parser (so ESLint understands TS syntax), type-aware rule configs (`strictTypeChecked`), and the `tseslint.config()` helper for type-safe flat config authoring.
 
 ### Line 5: `import pluginReact from 'eslint-plugin-react'`
+
 **Package: `eslint-plugin-react`** — React-specific linting rules. Catches issues like missing `key` props in lists, direct state mutation, usage of deprecated APIs, and unsafe patterns in JSX. The `recommended` preset enables ~25 rules. The `jsx-runtime` preset disables `react-in-jsx-scope` (not needed since React 17's automatic JSX transform).
 
 ### Line 6: `import globals from 'globals'`
+
 **Package: `globals`** — A JSON database of global variables for different environments. We use `globals.browser` (adds `window`, `document`, `fetch`, `localStorage`, etc.) and `globals.es2020` (adds `Promise`, `BigInt`, `globalThis`, etc.) so ESLint doesn't flag these as undefined.
 
 ### Line 7: `import jsxA11y from 'eslint-plugin-jsx-a11y'`
+
 **Package: `eslint-plugin-jsx-a11y`** — Accessibility rules for JSX. Checks things like: images must have `alt` text, clickable elements must be keyboard-accessible, `<label>` must be associated with a form control, no `autoFocus`, no redundant roles. Helps meet WCAG guidelines.
 
 ### Line 8: `import nextVitals from "eslint-config-next/core-web-vitals"`
+
 **Package: `eslint-config-next`** (sub-export `core-web-vitals`) — Next.js official ESLint config focused on Core Web Vitals. Includes rules for proper `<Image>` usage, no `<a>` tags (use `<Link>`), font optimization, and other Next.js-specific performance patterns. Stricter than the base `eslint-config-next`.
 
 ### Line 9: `import nextTs from "eslint-config-next/typescript"`
+
 **Package: `eslint-config-next`** (sub-export `typescript`) — Next.js TypeScript-specific rules. Catches type issues specific to Next.js APIs like `getServerSideProps`, page components, and API routes.
 
 ### Line 10: `import { globalIgnores } from 'eslint/config'`
+
 **Package: `eslint`** (built-in) — Helper to create a global ignore config object. In flat config, ignores must be a standalone object (no `files` or `rules` alongside) to apply globally. This helper ensures the correct shape.
 
 ### Line 11: `import pluginRouter from '@tanstack/eslint-plugin-router'`
+
 **Package: `@tanstack/eslint-plugin-router`** — TanStack Router ESLint plugin. Validates route definitions, ensures loaders return correct types, and catches common routing mistakes specific to TanStack Router/Start.
 
 ### Line 12: `import reactHooks from 'eslint-plugin-react-hooks'`
+
 **Package: `eslint-plugin-react-hooks`** — Official React team plugin. Two critical rules: `rules-of-hooks` (hooks only at top level, not inside conditions/loops) and `exhaustive-deps` (dependency arrays must include all referenced values). These prevent some of the most common and hard-to-debug React bugs.
 
 ### Line 13: `import reactRefresh from 'eslint-plugin-react-refresh'`
+
 **Package: `eslint-plugin-react-refresh`** — Ensures files only export React components so that Fast Refresh (HMR) works correctly during development. If a file exports both a component and a constant, HMR can't safely hot-reload it and falls back to a full reload. **Currently disabled** (see Lines 65–67) — both app frameworks handle their own HMR, and shadcn components export non-components by convention.
 
 ### Line 14: `import importX from 'eslint-plugin-import-x'`
+
 **Package: `eslint-plugin-import-x`** — A maintained fork of `eslint-plugin-import` with flat config support. Validates imports: no duplicates, no circular dependencies, named exports must exist in the target module, consistent import ordering. The `typescript` sub-config teaches it to resolve `.ts`/`.tsx` files.
 
 ### Line 15: `import nodePlugin from 'eslint-plugin-n'`
+
 **Package: `eslint-plugin-n`** — Node.js specific rules. The `flat/recommended-module` config is for ESM projects. Catches: usage of deprecated Node APIs (`fs.exists`), unsupported syntax for your Node version, missing hashbang in CLI scripts, and ensures `engines` field compatibility.
 
 ### Line 16: `import prettier from 'eslint-config-prettier'`
+
 **Package: `eslint-config-prettier`** — Not a plugin — it's a config that **disables** all ESLint rules that would conflict with Prettier's formatting (indentation, quotes, semicolons, trailing commas, etc.). **Must always be the last config** in the array so it overrides everything before it.
 
 ### Line 17: `import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'`
+
 **Package: `eslint-import-resolver-typescript`** — Teaches `eslint-plugin-import-x` how to resolve TypeScript-specific import patterns: path aliases (`@/*`, `#/*` defined in tsconfig `paths`), `.ts`/`.tsx` extensions, `exports` field in package.json, and workspace packages in a monorepo. Without this, `import-x` would flag aliased imports as unresolved.
 
 ---
@@ -56,6 +71,7 @@ This project uses ESLint 9 **flat config** format (`eslint.config.mts`).
 ## Config Array (Lines 19–114)
 
 ### Line 19: `export default tseslint.config(...)`
+
 The `tseslint.config()` wrapper is a typed helper — it provides autocomplete and type checking for the config objects inside. Functionally identical to exporting a plain array, but catches config mistakes at authoring time.
 
 ---
@@ -91,18 +107,18 @@ globalIgnores([
 ]),
 ```
 
-| Pattern | Why |
-|---------|-----|
-| `**/.next/**` | Next.js build output. Uses `**/` prefix because it's at `apps/next-app/.next/`, not root |
-| `**/out/**` | Next.js static export output |
-| `**/build/**`, `**/dist/**` | Compiled/bundled output from any package |
-| `**/next-env.d.ts` | Auto-generated Next.js type declarations |
-| `**/assets/**/*` | Static assets (images, fonts) |
-| `node_modules` | Dependencies — never lint these |
-| `coverage` | Test coverage reports |
-| `*.min.js` | Minified vendor files |
-| `.vinxi`, `.output` | TanStack Start / Vinxi build artifacts |
-| `**/database.types.ts` | Auto-generated by Supabase CLI. Contains redundant type unions that trigger false positives. Re-generated on schema changes, so manual fixes would be overwritten |
+| Pattern                            | Why                                                                                                                                                                                |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `**/.next/**`                      | Next.js build output. Uses `**/` prefix because it's at `apps/next-app/.next/`, not root                                                                                           |
+| `**/out/**`                        | Next.js static export output                                                                                                                                                       |
+| `**/build/**`, `**/dist/**`        | Compiled/bundled output from any package                                                                                                                                           |
+| `**/next-env.d.ts`                 | Auto-generated Next.js type declarations                                                                                                                                           |
+| `**/assets/**/*`                   | Static assets (images, fonts)                                                                                                                                                      |
+| `node_modules`                     | Dependencies — never lint these                                                                                                                                                    |
+| `coverage`                         | Test coverage reports                                                                                                                                                              |
+| `*.min.js`                         | Minified vendor files                                                                                                                                                              |
+| `.vinxi`, `.output`                | TanStack Start / Vinxi build artifacts                                                                                                                                             |
+| `**/database.types.ts`             | Auto-generated by Supabase CLI. Contains redundant type unions that trigger false positives. Re-generated on schema changes, so manual fixes would be overwritten                  |
 | `**/*.mjs`, `**/*.cjs`, `**/*.mts` | Config files (postcss.config.mjs, eslint.config.mts). These aren't included in any tsconfig, so type-aware rules from `strictTypeChecked` would crash with "parserOptions not set" |
 
 ---
@@ -123,6 +139,7 @@ Scoped to TanStack app and packages **only**. Not applied to Next.js app because
 ### Lines 36–83: Main TypeScript + React Config
 
 #### Line 38: `files: ['**/*.{ts,tsx,js,jsx}']`
+
 Applies this config block to all TS/JS files. This is the primary config where most rules live.
 
 #### Lines 39–47: Language Options
@@ -143,11 +160,12 @@ languageOptions: {
 ```
 
 - **`projectService`** — The modern way to connect ESLint to TypeScript's type system. It uses the same TypeScript language service your IDE uses. This is what enables rules like `no-floating-promises`, `no-unsafe-assignment`, `await-thenable` — they need to actually know the types of your variables. Replaced the older `project: ['./tsconfig.json']` approach which was slower and less reliable.
-- **`projectService.allowDefaultProject: ['vite.config.ts']`** — ESLint's project service walks up the directory tree to find a `tsconfig.json` that claims each file. `vite.config.ts` files live at the package root, outside `src/`, so no package tsconfig includes them. Without `allowDefaultProject`, ESLint errors: *"was not found by the project service"*. This option tells the project service to use a minimal default config for matched files instead of failing.
+- **`projectService.allowDefaultProject: ['vite.config.ts']`** — ESLint's project service walks up the directory tree to find a `tsconfig.json` that claims each file. `vite.config.ts` files live at the package root, outside `src/`, so no package tsconfig includes them. Without `allowDefaultProject`, ESLint errors: _"was not found by the project service"_. This option tells the project service to use a minimal default config for matched files instead of failing.
 
   > **`allowDefaultProject` vs `tsconfig.node.json` — they are not related.** A common misconception is that `allowDefaultProject` falls back to `tsconfig.node.json` when it can't find a regular tsconfig. This is wrong. `tsconfig.node.json` fixes the **TS language server** (editor red squiggles). `allowDefaultProject` fixes **ESLint's project service**. They are completely separate systems that both happen to be needed for the same file. Removing either one breaks its respective tool — neither is a fallback for the other.
   >
   > Note: `allowDefaultProject` patterns cannot contain `**` (banned for performance — it would pull too many files into the default project). Use a single-level pattern like `vite.config.ts` (matches by filename) instead.
+
 - **`tsconfigRootDir`** — Tells the project service where to find tsconfig files. `process.cwd()` = the repo root.
 
 #### Lines 48–53: Settings
@@ -197,30 +215,30 @@ Note: `typescript-eslint`, `import-x`, `n`, and `jsx-a11y` are already registere
 
 #### Lines 65–72: Custom React Rules
 
-| Line | Rule | Setting | What it does |
-|------|------|---------|-------------|
-| 65–67 | `react-refresh/only-export-components` | **off** | Disabled for this monorepo. **Why**: (1) Next.js has its own built-in Fast Refresh — it doesn't rely on this plugin. (2) TanStack Start handles its own HMR and route files conventionally export `Route` + server functions alongside components. (3) The shared UI package (shadcn/ui) exports variants/constants alongside components by convention, causing persistent false positives. The plugin was producing only noise with no actionable warnings. |
-| 68 | `react/jsx-no-leaked-render` | error, coerce | Prevents `{count && <Comp/>}`. When `count` is `0`, React renders the string `"0"` instead of nothing. The `coerce` strategy requires `{!!count && <Comp/>}` or `{Boolean(count) && <Comp/>}`. |
-| 69 | `react/no-unstable-nested-components` | error | Bans defining components inside other components' render. Each render creates a new component identity, causing React to unmount/remount it — destroying state, losing focus, killing performance. |
-| 70 | `react/jsx-handler-names` | error | Enforces naming convention: event handler functions start with `handle` (e.g., `handleClick`), event handler props start with `on` (e.g., `onClick`). Makes it easy to identify what's a handler vs a regular function. |
-| 71 | `react/hook-use-state` | error | Enforces `const [value, setValue] = useState()` pattern. Catches `const [setValue, value] = useState()` (swapped) or single-variable destructuring. |
-| 72 | `react/prop-types` | off | Disabled because TypeScript interfaces/types handle prop validation at compile time. Runtime PropTypes are redundant in a TS codebase. |
+| Line  | Rule                                   | Setting       | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ----- | -------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 65–67 | `react-refresh/only-export-components` | **off**       | Disabled for this monorepo. **Why**: (1) Next.js has its own built-in Fast Refresh — it doesn't rely on this plugin. (2) TanStack Start handles its own HMR and route files conventionally export `Route` + server functions alongside components. (3) The shared UI package (shadcn/ui) exports variants/constants alongside components by convention, causing persistent false positives. The plugin was producing only noise with no actionable warnings. |
+| 68    | `react/jsx-no-leaked-render`           | error, coerce | Prevents `{count && <Comp/>}`. When `count` is `0`, React renders the string `"0"` instead of nothing. The `coerce` strategy requires `{!!count && <Comp/>}` or `{Boolean(count) && <Comp/>}`.                                                                                                                                                                                                                                                               |
+| 69    | `react/no-unstable-nested-components`  | error         | Bans defining components inside other components' render. Each render creates a new component identity, causing React to unmount/remount it — destroying state, losing focus, killing performance.                                                                                                                                                                                                                                                           |
+| 70    | `react/jsx-handler-names`              | error         | Enforces naming convention: event handler functions start with `handle` (e.g., `handleClick`), event handler props start with `on` (e.g., `onClick`). Makes it easy to identify what's a handler vs a regular function.                                                                                                                                                                                                                                      |
+| 71    | `react/hook-use-state`                 | error         | Enforces `const [value, setValue] = useState()` pattern. Catches `const [setValue, value] = useState()` (swapped) or single-variable destructuring.                                                                                                                                                                                                                                                                                                          |
+| 72    | `react/prop-types`                     | off           | Disabled because TypeScript interfaces/types handle prop validation at compile time. Runtime PropTypes are redundant in a TS codebase.                                                                                                                                                                                                                                                                                                                       |
 
 #### Lines 75–76: Hook Rules
 
-| Line | Rule | Setting | What it does |
-|------|------|---------|-------------|
-| 75 | `react-hooks/rules-of-hooks` | error | Hooks must be called at the top level — not inside conditions, loops, or nested functions. React relies on call order to track hook state. Violating this corrupts state. |
-| 76 | `react-hooks/exhaustive-deps` | error | Every variable referenced inside `useEffect`/`useMemo`/`useCallback` must be in the dependency array. Missing deps cause stale closures — your effect reads old values. **Upgraded from default `warn` to `error`** because stale closure bugs are extremely hard to debug. |
+| Line | Rule                          | Setting | What it does                                                                                                                                                                                                                                                                |
+| ---- | ----------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 75   | `react-hooks/rules-of-hooks`  | error   | Hooks must be called at the top level — not inside conditions, loops, or nested functions. React relies on call order to track hook state. Violating this corrupts state.                                                                                                   |
+| 76   | `react-hooks/exhaustive-deps` | error   | Every variable referenced inside `useEffect`/`useMemo`/`useCallback` must be in the dependency array. Missing deps cause stale closures — your effect reads old values. **Upgraded from default `warn` to `error`** because stale closure bugs are extremely hard to debug. |
 
 #### Lines 79–82: TypeScript Rules
 
-| Line | Rule | Setting | What it does |
-|------|------|---------|-------------|
-| 79 | `@typescript-eslint/no-unused-vars` | error, ignore `_` prefix | Flags variables/args that are declared but never used. The `argsIgnorePattern: '^_'` and `varsIgnorePattern: '^_'` exceptions allow `_unused` naming for intentionally unused params (common in callbacks: `array.map((_item, index) => ...)`). |
-| 80 | `@typescript-eslint/explicit-function-return-type` | off | Doesn't require explicit return types on functions. TypeScript's inference is accurate enough — adding `: string` to every function that clearly returns a string is noise. |
-| 81 | `@typescript-eslint/explicit-module-boundary-types` | off | Same philosophy — doesn't require explicit types on exported functions. The inference is sufficient and reducing boilerplate improves readability. |
-| 82 | `@typescript-eslint/no-explicit-any` | error | Bans `any` type. Use `unknown` instead — it's type-safe (`unknown` requires narrowing before use, `any` silently disables all type checking). This prevents `any` from spreading through your codebase and silently breaking type safety. |
+| Line | Rule                                                | Setting                  | What it does                                                                                                                                                                                                                                    |
+| ---- | --------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 79   | `@typescript-eslint/no-unused-vars`                 | error, ignore `_` prefix | Flags variables/args that are declared but never used. The `argsIgnorePattern: '^_'` and `varsIgnorePattern: '^_'` exceptions allow `_unused` naming for intentionally unused params (common in callbacks: `array.map((_item, index) => ...)`). |
+| 80   | `@typescript-eslint/explicit-function-return-type`  | off                      | Doesn't require explicit return types on functions. TypeScript's inference is accurate enough — adding `: string` to every function that clearly returns a string is noise.                                                                     |
+| 81   | `@typescript-eslint/explicit-module-boundary-types` | off                      | Same philosophy — doesn't require explicit types on exported functions. The inference is sufficient and reducing boilerplate improves readability.                                                                                              |
+| 82   | `@typescript-eslint/no-explicit-any`                | error                    | Bans `any` type. Use `unknown` instead — it's type-safe (`unknown` requires narrowing before use, `any` silently disables all type checking). This prevents `any` from spreading through your codebase and silently breaking type safety.       |
 
 ---
 
@@ -300,6 +318,7 @@ Disables every ESLint rule that conflicts with Prettier's formatting. This inclu
 ## Removed Plugins
 
 ### eslint-plugin-neverthrow
+
 **Why removed**: Uses the legacy `parserServices.esTreeNodeToTSNodeMap` API, incompatible with `typescript-eslint` v8 + `projectService`. The plugin hasn't been updated in 3+ years. TypeScript's type system already forces proper `Result` handling — if you ignore a `Result`, the type checker catches it.
 
 ---
@@ -319,10 +338,10 @@ pnpm eslint --fix
 
 ## Troubleshooting
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| "types not available" / "parserOptions not set" | File not in any tsconfig | Add to tsconfig `include` or add to `globalIgnores` |
-| "not found by the project service" | Same — file exists but no tsconfig claims it | Add to relevant tsconfig `include` or `allowDefaultProject` |
-| VS Code not showing errors | Extension doesn't use flat config | Add `"eslint.useFlatConfig": true` to `.vscode/settings.json` |
-| Import path not resolving (`@/...`) | Resolver doesn't know the alias | Check `import-x/resolver-next` `project` array includes the right tsconfig |
-| Rule conflicts with Prettier | Something added after `prettier` in config | Move `prettier` back to last position |
+| Error                                           | Cause                                        | Fix                                                                        |
+| ----------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------- |
+| "types not available" / "parserOptions not set" | File not in any tsconfig                     | Add to tsconfig `include` or add to `globalIgnores`                        |
+| "not found by the project service"              | Same — file exists but no tsconfig claims it | Add to relevant tsconfig `include` or `allowDefaultProject`                |
+| VS Code not showing errors                      | Extension doesn't use flat config            | Add `"eslint.useFlatConfig": true` to `.vscode/settings.json`              |
+| Import path not resolving (`@/...`)             | Resolver doesn't know the alias              | Check `import-x/resolver-next` `project` array includes the right tsconfig |
+| Rule conflicts with Prettier                    | Something added after `prettier` in config   | Move `prettier` back to last position                                      |

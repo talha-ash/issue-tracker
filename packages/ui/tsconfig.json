@@ -1,20 +1,18 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "module": "esnext",
-        "moduleResolution": "bundler",
-        "exactOptionalPropertyTypes": false,
-        "declaration": true,
-        "declarationMap": true,
-        "rootDir": "./src",
-        "outDir": "./dist",
-        "baseUrl": ".",
-        "paths": {
-            "@/*": [
-                "./src/*"
-            ]
-        }
-    },
-    "include": ["src"],
-    "exclude": ["dist", "node_modules", "vite.config.ts"]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "exactOptionalPropertyTypes": false,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules", "vite.config.ts"]
 }

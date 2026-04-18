@@ -1,9 +1,9 @@
-import { getBrowserSupabaseClient } from './client'
-import { createServerSupabaseClient } from './server'
+import { getBrowserSupabaseClient } from './client';
+import { createServerSupabaseClient } from './server';
 
 export function resolveSupabase() {
   if (typeof window === 'undefined') {
-    return createServerSupabaseClient()
+    return createServerSupabaseClient();
   }
-  return getBrowserSupabaseClient()
+  return getBrowserSupabaseClient();
 }

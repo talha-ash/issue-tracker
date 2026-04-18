@@ -1,11 +1,11 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "module": "esnext",
-        "moduleResolution": "bundler",
-        "exactOptionalPropertyTypes": false,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false
-    },
-    "include": ["vite.config.ts"]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "exactOptionalPropertyTypes": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": ["vite.config.ts"]
 }

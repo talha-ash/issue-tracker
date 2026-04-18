@@ -23,17 +23,17 @@ Server routes are API endpoints defined alongside app routes in the `src/routes`
 
 ```ts
 // src/routes/api/hello.ts
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/api/hello')({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        return new Response('Hello, World!')
+        return new Response('Hello, World!');
       },
     },
   },
-})
+});
 ```
 
 ## Combining Server Route and App Route
@@ -42,23 +42,23 @@ The same file can define both a server route and a UI route:
 
 ```tsx
 // src/routes/hello.tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
 
 export const Route = createFileRoute('/hello')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const body = await request.json()
-        return Response.json({ message: `Hello, ${body.name}!` })
+        const body = await request.json();
+        return Response.json({ message: `Hello, ${body.name}!` });
       },
     },
   },
   component: HelloComponent,
-})
+});
 
 function HelloComponent() {
-  const [reply, setReply] = useState('')
+  const [reply, setReply] = useState('');
   return (
     <button
       onClick={() => {
@@ -67,13 +67,13 @@ function HelloComponent() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: 'Tanner' }),
         })
-          .then((res) => res.json())
-          .then((data) => setReply(data.message))
+          .then(res => res.json())
+          .then(data => setReply(data.message));
       }}
     >
       Say Hello {reply && `- ${reply}`}
     </button>
-  )
+  );
 }
 ```
 
@@ -111,34 +111,34 @@ Each handler receives:
 
 ```ts
 // routes/users/$id.ts
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/users/$id')({
   server: {
     handlers: {
       GET: async ({ params }) => {
-        return new Response(`User ID: ${params.id}`)
+        return new Response(`User ID: ${params.id}`);
       },
     },
   },
-})
+});
 ```
 
 ## Splat/Wildcard Params
 
 ```ts
 // routes/file/$.ts
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/file/$')({
   server: {
     handlers: {
       GET: async ({ params }) => {
-        return new Response(`File: ${params._splat}`)
+        return new Response(`File: ${params._splat}`);
       },
     },
   },
-})
+});
 ```
 
 ## Request Body Handling
@@ -148,12 +148,12 @@ export const Route = createFileRoute('/api/users')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const body = await request.json()
-        return Response.json({ created: body.name })
+        const body = await request.json();
+        return Response.json({ created: body.name });
       },
     },
   },
-})
+});
 ```
 
 Other body methods: `request.text()`, `request.formData()`.
@@ -208,7 +208,7 @@ export const Route = createFileRoute('/api/admin')({
       },
     },
   },
-})
+});
 ```
 
 ### Specific handlers with createHandlers
@@ -222,12 +222,12 @@ export const Route = createFileRoute('/api/data')({
         POST: {
           middleware: [authMiddleware],
           handler: async ({ context }) => {
-            return Response.json({ user: context.session.user })
+            return Response.json({ user: context.session.user });
           },
         },
       }),
   },
-})
+});
 ```
 
 ### Combined route-level and handler-specific
@@ -242,13 +242,13 @@ export const Route = createFileRoute('/api/posts')({
         POST: {
           middleware: [validationMiddleware], // runs after auth, POST only
           handler: async ({ request }) => {
-            const body = await request.json()
-            return Response.json({ created: true })
+            const body = await request.json();
+            return Response.json({ created: true });
           },
         },
       }),
   },
-})
+});
 ```
 
 ## Common Mistakes
@@ -268,10 +268,10 @@ routes/users.ts
 
 ```ts
 // WRONG — body is a Promise, not the actual data
-const body = request.json()
+const body = request.json();
 
 // CORRECT — await the promise
-const body = await request.json()
+const body = await request.json();
 ```
 
 ## Cross-References

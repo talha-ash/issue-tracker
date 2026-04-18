@@ -41,15 +41,15 @@ Runs on ALL server requests (SSR, server routes, server functions):
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createMiddleware } from '@tanstack/react-start'
+import { createMiddleware } from '@tanstack/react-start';
 
 const loggingMiddleware = createMiddleware().server(
   async ({ next, context, request }) => {
-    console.log('Request:', request.url)
-    const result = await next()
-    return result
-  },
-)
+    console.log('Request:', request.url);
+    const result = await next();
+    return result;
+  }
+);
 ```
 
 ## Server Function Middleware
@@ -58,35 +58,35 @@ Has both client and server phases:
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createMiddleware } from '@tanstack/react-start'
+import { createMiddleware } from '@tanstack/react-start';
 
 const authMiddleware = createMiddleware({ type: 'function' })
   .client(async ({ next }) => {
     // Runs on client BEFORE the RPC call
-    const result = await next()
+    const result = await next();
     // Runs on client AFTER the RPC response
-    return result
+    return result;
   })
   .server(async ({ next, context }) => {
     // Runs on server BEFORE the handler
-    const result = await next()
+    const result = await next();
     // Runs on server AFTER the handler
-    return result
-  })
+    return result;
+  });
 ```
 
 ## Attaching Middleware to Server Functions
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 
 const fn = createServerFn()
   .middleware([authMiddleware])
   .handler(async ({ context }) => {
     // context contains data from middleware
-    return { user: context.user }
-  })
+    return { user: context.user };
+  });
 ```
 
 ## Context Passing via next()
@@ -95,20 +95,20 @@ Pass context down the middleware chain:
 
 ```tsx
 const authMiddleware = createMiddleware().server(async ({ next, request }) => {
-  const session = await getSession(request.headers)
-  if (!session) throw new Error('Unauthorized')
+  const session = await getSession(request.headers);
+  if (!session) throw new Error('Unauthorized');
 
   return next({
     context: { session },
-  })
-})
+  });
+});
 
 const roleMiddleware = createMiddleware()
   .middleware([authMiddleware])
   .server(async ({ next, context }) => {
-    console.log('Session:', context.session) // typed!
-    return next()
-  })
+    console.log('Session:', context.session); // typed!
+    return next();
+  });
 ```
 
 ## Sending Context Between Client and Server
@@ -122,13 +122,13 @@ const workspaceMiddleware = createMiddleware({ type: 'function' })
       sendContext: {
         workspaceId: context.workspaceId,
       },
-    })
+    });
   })
   .server(async ({ next, context }) => {
     // workspaceId available here, but VALIDATE IT
-    console.log('Workspace:', context.workspaceId)
-    return next()
-  })
+    console.log('Workspace:', context.workspaceId);
+    return next();
+  });
 ```
 
 ### Server → Client (sendContext in server)
@@ -140,31 +140,31 @@ const serverTimer = createMiddleware({ type: 'function' }).server(
       sendContext: {
         timeFromServer: new Date(),
       },
-    })
-  },
-)
+    });
+  }
+);
 
 const clientLogger = createMiddleware({ type: 'function' })
   .middleware([serverTimer])
   .client(async ({ next }) => {
-    const result = await next()
-    console.log('Server time:', result.context.timeFromServer)
-    return result
-  })
+    const result = await next();
+    console.log('Server time:', result.context.timeFromServer);
+    return result;
+  });
 ```
 
 ## Input Validation in Middleware
 
 ```tsx
-import { z } from 'zod'
-import { zodValidator } from '@tanstack/zod-adapter'
+import { z } from 'zod';
+import { zodValidator } from '@tanstack/zod-adapter';
 
 const workspaceMiddleware = createMiddleware({ type: 'function' })
   .inputValidator(zodValidator(z.object({ workspaceId: z.string() })))
   .server(async ({ next, data }) => {
-    console.log('Workspace:', data.workspaceId)
-    return next()
-  })
+    console.log('Workspace:', data.workspaceId);
+    return next();
+  });
 ```
 
 ## Global Middleware
@@ -174,24 +174,24 @@ Create `src/start.ts` to configure global middleware:
 ```tsx
 // src/start.ts
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createStart, createMiddleware } from '@tanstack/react-start'
+import { createStart, createMiddleware } from '@tanstack/react-start';
 
 const requestLogger = createMiddleware().server(async ({ next, request }) => {
-  console.log(`${request.method} ${request.url}`)
-  return next()
-})
+  console.log(`${request.method} ${request.url}`);
+  return next();
+});
 
 const functionAuth = createMiddleware({ type: 'function' }).server(
   async ({ next }) => {
     // runs for every server function
-    return next()
-  },
-)
+    return next();
+  }
+);
 
 export const startInstance = createStart(() => ({
   requestMiddleware: [requestLogger],
   functionMiddleware: [functionAuth],
-}))
+}));
 ```
 
 ## Using Middleware with Server Routes
@@ -209,7 +209,7 @@ export const Route = createFileRoute('/api/users')({
       },
     },
   },
-})
+});
 ```
 
 ### Specific handlers only
@@ -223,12 +223,12 @@ export const Route = createFileRoute('/api/users')({
         POST: {
           middleware: [authMiddleware],
           handler: async ({ context }) => {
-            return Response.json({ user: context.session.user })
+            return Response.json({ user: context.session.user });
           },
         },
       }),
   },
-})
+});
 ```
 
 ## Middleware Factories
@@ -237,29 +237,29 @@ Create parameterized middleware for reusable patterns like authorization:
 
 ```tsx
 const authMiddleware = createMiddleware().server(async ({ next, request }) => {
-  const session = await auth.getSession({ headers: request.headers })
-  if (!session) throw new Error('Unauthorized')
-  return next({ context: { session } })
-})
+  const session = await auth.getSession({ headers: request.headers });
+  if (!session) throw new Error('Unauthorized');
+  return next({ context: { session } });
+});
 
-type Permissions = Record<string, string[]>
+type Permissions = Record<string, string[]>;
 
 function authorizationMiddleware(permissions: Permissions) {
   return createMiddleware({ type: 'function' })
     .middleware([authMiddleware])
     .server(async ({ next, context }) => {
-      const granted = await auth.hasPermission(context.session, permissions)
-      if (!granted) throw new Error('Forbidden')
-      return next()
-    })
+      const granted = await auth.hasPermission(context.session, permissions);
+      if (!granted) throw new Error('Forbidden');
+      return next();
+    });
 }
 
 // Usage
 const getClients = createServerFn()
   .middleware([authorizationMiddleware({ client: ['read'] })])
   .handler(async () => {
-    return { message: 'The user can read clients.' }
-  })
+    return { message: 'The user can read clients.' };
+  });
 ```
 
 ## Custom Headers and Fetch
@@ -271,9 +271,9 @@ const authMiddleware = createMiddleware({ type: 'function' }).client(
   async ({ next }) => {
     return next({
       headers: { Authorization: `Bearer ${getToken()}` },
-    })
-  },
-)
+    });
+  }
+);
 ```
 
 Headers merge across middleware. Later middleware overrides earlier. Call-site headers override all middleware headers.
@@ -282,17 +282,17 @@ Headers merge across middleware. Later middleware overrides earlier. Call-site h
 
 ```tsx
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import type { CustomFetch } from '@tanstack/react-start'
+import type { CustomFetch } from '@tanstack/react-start';
 
 const loggingMiddleware = createMiddleware({ type: 'function' }).client(
   async ({ next }) => {
     const customFetch: CustomFetch = async (url, init) => {
-      console.log('Request:', url)
-      return fetch(url, init)
-    }
-    return next({ fetch: customFetch })
-  },
-)
+      console.log('Request:', url);
+      return fetch(url, init);
+    };
+    return next({ fetch: customFetch });
+  }
+);
 ```
 
 Fetch precedence (highest to lowest): call site → later middleware → earlier middleware → createStart global → default fetch.
@@ -328,19 +328,19 @@ During SSR, `.client()` callbacks run on the server. Browser-only APIs like `loc
 // WRONG — localStorage doesn't exist on the server during SSR
 const middleware = createMiddleware({ type: 'function' }).client(
   async ({ next }) => {
-    const token = localStorage.getItem('token')
-    return next({ sendContext: { token } })
-  },
-)
+    const token = localStorage.getItem('token');
+    return next({ sendContext: { token } });
+  }
+);
 
 // CORRECT — use cookies/headers or guard with typeof window check
 const middleware = createMiddleware({ type: 'function' }).client(
   async ({ next }) => {
     const token =
-      typeof window !== 'undefined' ? localStorage.getItem('token') : null
-    return next({ sendContext: { token } })
-  },
-)
+      typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    return next({ sendContext: { token } });
+  }
+);
 ```
 
 ### 4. MEDIUM: Wrong method order

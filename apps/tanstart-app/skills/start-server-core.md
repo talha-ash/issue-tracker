@@ -28,12 +28,12 @@ Creates the main request handler that processes all incoming requests through th
 ```ts
 // src/server.ts
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createStartHandler } from '@tanstack/react-start/server'
-import { defaultStreamHandler } from '@tanstack/react-start/server'
+import { createStartHandler } from '@tanstack/react-start/server';
+import { defaultStreamHandler } from '@tanstack/react-start/server';
 
 export default createStartHandler({
   handler: defaultStreamHandler,
-})
+});
 ```
 
 With asset URL transforms (CDN):
@@ -42,7 +42,7 @@ With asset URL transforms (CDN):
 export default createStartHandler({
   handler: defaultStreamHandler,
   transformAssetUrls: 'https://cdn.example.com',
-})
+});
 ```
 
 ## Request Utilities
@@ -53,7 +53,7 @@ All imported from `@tanstack/<framework>-start/server`. Available anywhere durin
 
 ```ts
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 import {
   getRequest,
   getRequestHeaders,
@@ -62,26 +62,26 @@ import {
   getRequestHost,
   getRequestUrl,
   getRequestProtocol,
-} from '@tanstack/react-start/server'
+} from '@tanstack/react-start/server';
 
 const serverFn = createServerFn({ method: 'GET' }).handler(async () => {
-  const request = getRequest()
-  const headers = getRequestHeaders()
-  const auth = getRequestHeader('authorization')
-  const ip = getRequestIP({ xForwardedFor: true })
-  const host = getRequestHost()
-  const url = getRequestUrl()
-  const protocol = getRequestProtocol()
+  const request = getRequest();
+  const headers = getRequestHeaders();
+  const auth = getRequestHeader('authorization');
+  const ip = getRequestIP({ xForwardedFor: true });
+  const host = getRequestHost();
+  const url = getRequestUrl();
+  const protocol = getRequestProtocol();
 
-  return { ip, host }
-})
+  return { ip, host };
+});
 ```
 
 ### Setting Response Data
 
 ```ts
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 import {
   setResponseHeader,
   setResponseHeaders,
@@ -91,42 +91,42 @@ import {
   getResponseStatus,
   removeResponseHeader,
   clearResponseHeaders,
-} from '@tanstack/react-start/server'
+} from '@tanstack/react-start/server';
 
 const serverFn = createServerFn({ method: 'POST' }).handler(async () => {
-  setResponseStatus(201)
-  setResponseHeader('x-custom', 'value')
-  setResponseHeaders({ 'cache-control': 'no-store' })
+  setResponseStatus(201);
+  setResponseHeader('x-custom', 'value');
+  setResponseHeaders({ 'cache-control': 'no-store' });
 
-  return { created: true }
-})
+  return { created: true };
+});
 ```
 
 ## Cookie Management
 
 ```ts
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 import {
   getCookies,
   getCookie,
   setCookie,
   deleteCookie,
-} from '@tanstack/react-start/server'
+} from '@tanstack/react-start/server';
 
 const serverFn = createServerFn({ method: 'POST' }).handler(async () => {
-  const allCookies = getCookies()
-  const token = getCookie('session-token')
+  const allCookies = getCookies();
+  const token = getCookie('session-token');
 
   setCookie('preference', 'dark', {
     httpOnly: true,
     secure: true,
     maxAge: 60 * 60 * 24 * 30, // 30 days
     path: '/',
-  })
+  });
 
-  deleteCookie('old-cookie')
-})
+  deleteCookie('old-cookie');
+});
 ```
 
 ## Session Management
@@ -135,39 +135,39 @@ Encrypted sessions stored in cookies. Requires a password for encryption.
 
 ```ts
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerFn } from '@tanstack/react-start'
+import { createServerFn } from '@tanstack/react-start';
 import {
   useSession,
   getSession,
   updateSession,
   clearSession,
-} from '@tanstack/react-start/server'
+} from '@tanstack/react-start/server';
 
 const sessionConfig = {
   password: process.env.SESSION_SECRET!,
   name: 'my-app-session',
   maxAge: 60 * 60 * 24 * 7, // 7 days
-}
+};
 
 // Full session manager
 const getUser = createServerFn({ method: 'GET' }).handler(async () => {
-  const session = await useSession<{ userId: string }>(sessionConfig)
-  return session.data
-})
+  const session = await useSession<{ userId: string }>(sessionConfig);
+  return session.data;
+});
 
 // Update session
 const login = createServerFn({ method: 'POST' })
   .inputValidator((data: { userId: string }) => data)
   .handler(async ({ data }) => {
-    await updateSession(sessionConfig, { userId: data.userId })
-    return { success: true }
-  })
+    await updateSession(sessionConfig, { userId: data.userId });
+    return { success: true };
+  });
 
 // Clear session
 const logout = createServerFn({ method: 'POST' }).handler(async () => {
-  await clearSession(sessionConfig)
-  return { success: true }
-})
+  await clearSession(sessionConfig);
+  return { success: true };
+});
 ```
 
 ### Session Config
@@ -182,12 +182,12 @@ const logout = createServerFn({ method: 'POST' }).handler(async () => {
 ### Session Manager Methods
 
 ```ts
-const session = await useSession<{ userId: string }>(config)
+const session = await useSession<{ userId: string }>(config);
 
-session.id // Session ID (string | undefined)
-session.data // Session data (typed)
-await session.update({ userId: '123' }) // Persist session data
-await session.clear() // Clear session data
+session.id; // Session ID (string | undefined)
+session.data; // Session data (typed)
+await session.update({ userId: '123' }); // Persist session data
+await session.clear(); // Clear session data
 ```
 
 ## Query Validation
@@ -196,19 +196,19 @@ Validate query string parameters using a Standard Schema:
 
 ```ts
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { getValidatedQuery } from '@tanstack/react-start/server'
-import { z } from 'zod'
+import { getValidatedQuery } from '@tanstack/react-start/server';
+import { z } from 'zod';
 
 const serverFn = createServerFn({ method: 'GET' }).handler(async () => {
   const query = await getValidatedQuery(
     z.object({
       page: z.coerce.number().default(1),
       limit: z.coerce.number().default(20),
-    }),
-  )
+    })
+  );
 
-  return { page: query.page }
-})
+  return { page: query.page };
+});
 ```
 
 > Note: `getValidatedQuery` accepts a Standard Schema validator, not a callback function.
@@ -231,20 +231,20 @@ Server utilities use AsyncLocalStorage and only work during server request handl
 
 ```ts
 // WRONG — importing in a component file that runs on client
-import { getCookie } from '@tanstack/react-start/server'
+import { getCookie } from '@tanstack/react-start/server';
 
 function MyComponent() {
-  const token = getCookie('auth') // crashes on client
+  const token = getCookie('auth'); // crashes on client
 }
 
 // CORRECT — use inside server functions only
 // Use @tanstack/<framework>-start for your framework (react, solid, vue)
-import { createServerFn } from '@tanstack/react-start'
-import { getCookie } from '@tanstack/react-start/server'
+import { createServerFn } from '@tanstack/react-start';
+import { getCookie } from '@tanstack/react-start/server';
 
 const getAuth = createServerFn({ method: 'GET' }).handler(async () => {
-  return getCookie('auth')
-})
+  return getCookie('auth');
+});
 ```
 
 ### 2. HIGH: Forgetting session password for most session operations

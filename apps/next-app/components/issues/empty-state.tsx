@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { ClipboardList, FolderKanban, Plus } from 'lucide-react'
-import { Button } from '@issue-tracker/ui/components'
-import { useLanguage } from '@/lib/i18n'
+import { ClipboardList, FolderKanban, Plus } from 'lucide-react';
+import { Button } from '@issue-tracker/ui/components';
+import { useLanguage } from '@/lib/i18n';
 
 interface EmptyStateProps {
-  type: 'issues' | 'projects'
-  onAction?: () => void
+  type: 'issues' | 'projects';
+  onAction?: () => void;
 }
 
 export function EmptyState({ type, onAction }: EmptyStateProps) {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   const config = {
     issues: {
@@ -25,9 +25,9 @@ export function EmptyState({ type, onAction }: EmptyStateProps) {
       description: t('empty.projects.desc'),
       actionLabel: t('project.create'),
     },
-  }
+  };
 
-  const { icon: Icon, title, description, actionLabel } = config[type]
+  const { icon: Icon, title, description, actionLabel } = config[type];
 
   return (
     <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border p-12">
@@ -35,11 +35,13 @@ export function EmptyState({ type, onAction }: EmptyStateProps) {
         <Icon className="size-8 text-muted-foreground" />
       </div>
       <h3 className="mt-6 text-lg font-medium text-foreground">{title}</h3>
-      <p className="mt-2 text-center text-sm text-muted-foreground">{description}</p>
+      <p className="mt-2 text-center text-sm text-muted-foreground">
+        {description}
+      </p>
       <Button className="mt-6" onClick={onAction}>
         <Plus className="mr-2 size-4" />
         {actionLabel}
       </Button>
     </div>
-  )
+  );
 }

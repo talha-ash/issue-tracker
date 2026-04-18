@@ -31,10 +31,10 @@ pnpm add -D @cloudflare/vite-plugin wrangler
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vite'
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import { cloudflare } from '@cloudflare/vite-plugin'
-import viteReact from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import { cloudflare } from '@cloudflare/vite-plugin';
+import viteReact from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [
@@ -42,7 +42,7 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
   ],
-})
+});
 ```
 
 ```jsonc
@@ -65,14 +65,14 @@ pnpm add -D @netlify/vite-plugin-tanstack-start
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vite'
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import netlify from '@netlify/vite-plugin-tanstack-start'
-import viteReact from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import netlify from '@netlify/vite-plugin-tanstack-start';
+import viteReact from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [tanstackStart(), netlify(), viteReact()],
-})
+});
 ```
 
 Deploy: `npx netlify deploy`
@@ -85,14 +85,14 @@ npm install nitro@npm:nitro-nightly@latest
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vite'
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import { nitro } from 'nitro/vite'
-import viteReact from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import { nitro } from 'nitro/vite';
+import viteReact from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [tanstackStart(), nitro(), viteReact()],
-})
+});
 ```
 
 Build and start: `npm run build && node .output/server/index.mjs`
@@ -103,7 +103,7 @@ Bun deployment requires React 19. For React 18, use Node.js deployment.
 
 ```ts
 // vite.config.ts — add bun preset to nitro
-plugins: [tanstackStart(), nitro({ preset: 'bun' }), viteReact()]
+plugins: [tanstackStart(), nitro({ preset: 'bun' }), viteReact()];
 ```
 
 ## Selective SSR
@@ -119,7 +119,7 @@ export const Route = createFileRoute('/posts/$postId')({
   ssr: true, // default
   loader: () => fetchPost(), // runs on server during SSR
   component: PostPage, // rendered on server
-})
+});
 ```
 
 ### `ssr: false`
@@ -131,7 +131,7 @@ export const Route = createFileRoute('/dashboard')({
   ssr: false,
   loader: () => fetchDashboard(), // runs on client only
   component: DashboardPage, // rendered on client only
-})
+});
 ```
 
 ### `ssr: 'data-only'`
@@ -143,7 +143,7 @@ export const Route = createFileRoute('/canvas')({
   ssr: 'data-only',
   loader: () => fetchCanvasData(), // runs on server
   component: CanvasPage, // rendered on client only
-})
+});
 ```
 
 ### Functional Form
@@ -154,10 +154,10 @@ Decide SSR at runtime based on params/search:
 export const Route = createFileRoute('/docs/$docType/$docId')({
   ssr: ({ params }) => {
     if (params.status === 'success' && params.value.docType === 'sheet') {
-      return false
+      return false;
     }
   },
-})
+});
 ```
 
 ### SSR Inheritance
@@ -172,11 +172,11 @@ Children inherit parent SSR config and can only be MORE restrictive:
 Change the default for all routes in `src/start.ts`:
 
 ```tsx
-import { createStart } from '@tanstack/react-start'
+import { createStart } from '@tanstack/react-start';
 
 export const startInstance = createStart(() => ({
   defaultSsr: false,
-}))
+}));
 ```
 
 ## Static Prerendering
@@ -192,7 +192,7 @@ tanstackStart({
     concurrency: 14,
     failOnError: true,
   },
-})
+});
 ```
 
 Static routes are auto-discovered. Dynamic routes (e.g. `/users/$userId`) require `crawlLinks` or explicit `pages` config.
@@ -209,7 +209,7 @@ export const Route = createFileRoute('/')({
       { name: 'description', content: 'Welcome to My App' },
     ],
   }),
-})
+});
 ```
 
 ### Dynamic Meta from Loader Data
@@ -225,7 +225,7 @@ export const Route = createFileRoute('/posts/$postId')({
       { property: 'og:image', content: loaderData.coverImage },
     ],
   }),
-})
+});
 ```
 
 ### Structured Data (JSON-LD)
@@ -242,7 +242,7 @@ head: ({ loaderData }) => ({
       }),
     },
   ],
-})
+});
 ```
 
 ### Dynamic Sitemap via Server Route
@@ -253,18 +253,18 @@ export const Route = createFileRoute('/sitemap.xml')({
   server: {
     handlers: {
       GET: async () => {
-        const posts = await fetchAllPosts()
+        const posts = await fetchAllPosts();
         const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${posts.map((p) => `<url><loc>https://myapp.com/posts/${p.id}</loc></url>`).join('')}
-</urlset>`
+  ${posts.map(p => `<url><loc>https://myapp.com/posts/${p.id}</loc></url>`).join('')}
+</urlset>`;
         return new Response(sitemap, {
           headers: { 'Content-Type': 'application/xml' },
-        })
+        });
       },
     },
   },
-})
+});
 ```
 
 ## Common Mistakes
@@ -288,16 +288,16 @@ Bun-specific deployment only works with React 19. Use Node.js deployment for Rea
 ```tsx
 // Parent sets ssr: false
 // WRONG — child cannot upgrade to ssr: true
-const parentRoute = createFileRoute('/dashboard')({ ssr: false })
+const parentRoute = createFileRoute('/dashboard')({ ssr: false });
 const childRoute = createFileRoute('/dashboard/stats')({
   ssr: true, // IGNORED — parent false wins
-})
+});
 
 // CORRECT — children can only be MORE restrictive
-const parentRoute = createFileRoute('/dashboard')({ ssr: 'data-only' })
+const parentRoute = createFileRoute('/dashboard')({ ssr: 'data-only' });
 const childRoute = createFileRoute('/dashboard/stats')({
   ssr: false, // OK — more restrictive than parent
-})
+});
 ```
 
 ## Cross-References

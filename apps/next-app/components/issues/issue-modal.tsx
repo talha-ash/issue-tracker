@@ -131,7 +131,7 @@ export function IssueModal({
                 <FieldLabel htmlFor="assignee">
                   {t('issue.assignee')}
                 </FieldLabel>
-                <Select defaultValue={issue?.assignee?.id || ""}>
+                <Select defaultValue={issue?.assignee?.id || ''}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select assignee" />
                   </SelectTrigger>

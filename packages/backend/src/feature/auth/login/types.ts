@@ -1,18 +1,22 @@
-import type { Session, User } from '@supabase/supabase-js'
-import type { ActionState } from '@issue-tracker/repo/shared'
+import type { Session, User } from '@supabase/supabase-js';
+import type { ActionState } from '@issue-tracker/repo/shared';
 
 export type LoginInput = {
-    email: string
-    password: string
-}
+  email: string;
+  password: string;
+};
 
 export type LoginFieldErrors = {
-    email?: string[]
-    password?: string[]
-}
+  email?: string[];
+  password?: string[];
+};
 
 export type LoginValues = {
-    email?: string
-}
+  email?: string;
+};
 
-export type LoginState = ActionState<{ user: User; session: Session }, LoginFieldErrors, LoginValues>
+export type LoginState = ActionState<
+  { user: User; session: Session },
+  LoginFieldErrors,
+  LoginValues
+>;

@@ -16,11 +16,10 @@ import { useRouter } from 'next/navigation';
 export function LoginForm() {
   const { t } = useLanguage();
   const { state, formAction, isPending } = useLogin();
-  const router = useRouter()
-  
+  const router = useRouter();
 
-  if(state.success){
-    router.replace("/")
+  if (state.success) {
+    router.replace('/');
     return;
   }
 

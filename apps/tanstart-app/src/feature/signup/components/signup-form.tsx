@@ -1,24 +1,35 @@
-import { useMemo, useState } from 'react'
-import { Button, Field, FieldGroup, FieldLabel, Input } from '@issue-tracker/ui/components'
-import { useLanguage } from '#/lib/i18n'
-import { useSignup } from '../useSignup'
-import { Navigate } from '@tanstack/react-router'
+import { useMemo, useState } from 'react';
+import {
+  Button,
+  Field,
+  FieldGroup,
+  FieldLabel,
+  Input,
+} from '@issue-tracker/ui/components';
+import { useLanguage } from '#/lib/i18n';
+import { useSignup } from '../useSignup';
+import { Navigate } from '@tanstack/react-router';
 
 function PasswordStrength({ password }: { password: string }) {
   const strength = useMemo(() => {
-    let score = 0
-    if (password.length >= 8) score++
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++
-    if (/\d/.test(password)) score++
-    if (/[^a-zA-Z0-9]/.test(password)) score++
-    return score
-  }, [password])
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[^a-zA-Z0-9]/.test(password)) score++;
+    return score;
+  }, [password]);
 
-  const colors = ['bg-destructive', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500']
+  const colors = [
+    'bg-destructive',
+    'bg-orange-500',
+    'bg-yellow-500',
+    'bg-green-500',
+  ];
 
   return (
     <div className="mt-2 flex gap-1">
-      {[0, 1, 2, 3].map((index) => (
+      {[0, 1, 2, 3].map(index => (
         <div
           key={index}
           className={`h-1 flex-1 rounded-full transition-colors ${
@@ -27,19 +38,18 @@ function PasswordStrength({ password }: { password: string }) {
         />
       ))}
     </div>
-  )
+  );
 }
 
 export function SignupForm() {
-  const { t } = useLanguage()
-  const { isPending, data, handleSubmit } = useSignup()
-  const [password, setPassword] = useState('')
+  const { t } = useLanguage();
+  const { isPending, data, handleSubmit } = useSignup();
+  const [password, setPassword] = useState('');
 
-  if(data.success){
-
-    return <Navigate to='/'/>
+  if (data.success) {
+    return <Navigate to="/" />;
   }
-  
+
   return (
     <form onSubmit={handleSubmit} className="mt-6">
       <FieldGroup>
@@ -55,7 +65,9 @@ export function SignupForm() {
             aria-invalid={!!data.errors.fullname}
           />
           {data.errors.fullname ? (
-            <p className="mt-1 text-xs text-destructive">{data.errors.fullname[0]}</p>
+            <p className="mt-1 text-xs text-destructive">
+              {data.errors.fullname[0]}
+            </p>
           ) : null}
         </Field>
 
@@ -71,7 +83,9 @@ export function SignupForm() {
             aria-invalid={!!data.errors.email}
           />
           {data.errors.email ? (
-            <p className="mt-1 text-xs text-destructive">{data.errors.email[0]}</p>
+            <p className="mt-1 text-xs text-destructive">
+              {data.errors.email[0]}
+            </p>
           ) : null}
         </Field>
 
@@ -85,17 +99,23 @@ export function SignupForm() {
             required
             autoComplete="new-password"
             value={password}
-            onChange={(e) => { setPassword(e.target.value) }}
+            onChange={e => {
+              setPassword(e.target.value);
+            }}
             aria-invalid={!!data.errors.password}
           />
           <PasswordStrength password={password} />
           {data.errors.password ? (
-            <p className="mt-1 text-xs text-destructive">{data.errors.password[0]}</p>
+            <p className="mt-1 text-xs text-destructive">
+              {data.errors.password[0]}
+            </p>
           ) : null}
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="confirm-password">{t('auth.confirm.password')}</FieldLabel>
+          <FieldLabel htmlFor="confirm-password">
+            {t('auth.confirm.password')}
+          </FieldLabel>
           <Input
             id="confirm-password"
             name="confirmPassword"
@@ -106,7 +126,9 @@ export function SignupForm() {
             aria-invalid={!!data.errors.confirmPassword}
           />
           {data.errors.confirmPassword ? (
-            <p className="mt-1 text-xs text-destructive">{data.errors.confirmPassword[0]}</p>
+            <p className="mt-1 text-xs text-destructive">
+              {data.errors.confirmPassword[0]}
+            </p>
           ) : null}
         </Field>
       </FieldGroup>
@@ -119,5 +141,5 @@ export function SignupForm() {
         {isPending ? 'Creating account...' : t('action.create') + ' Account'}
       </Button>
     </form>
-  )
+  );
 }

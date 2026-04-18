@@ -124,8 +124,8 @@ export function ProjectSidebar() {
           <div className="flex-1 truncate">
             <p className="truncate text-sm font-medium">{currentUser.name}</p>
           </div>
-          <Button variant="ghost" size="icon-sm" asChild onClick={handleLogout}>            
-              <LogOut className="size-2" />           
+          <Button variant="ghost" size="icon-sm" asChild onClick={handleLogout}>
+            <LogOut className="size-2" />
           </Button>
         </div>
       </SidebarFooter>
