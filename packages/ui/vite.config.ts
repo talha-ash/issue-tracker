@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { nodeExternals } from 'rollup-plugin-node-externals';
@@ -38,5 +39,9 @@ export default defineConfig({
       },
     },
     cssCodeSplit: false,
+  },
+  test: {
+    environment: 'jsdom',
+    include: ['**/*.test.{ts,tsx}'],
   },
 });

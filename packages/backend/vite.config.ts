@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { nodeExternals } from 'rollup-plugin-node-externals';
@@ -30,5 +31,9 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[ext]',
       },
     },
+  },
+  test: {
+    environment: 'jsdom',
+    include: ['**/*.test.{ts,tsx}'],
   },
 });
