@@ -23,7 +23,7 @@ export const useSignup = () => {
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(e.target);
 
     signupMutation.mutate({
       data: {

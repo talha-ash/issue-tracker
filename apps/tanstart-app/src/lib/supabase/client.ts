@@ -5,7 +5,7 @@ export function createClientSupabaseClient(): DbClient {
   return createBrowserClient<Database>(
     import.meta.env.VITE_SUPABASE_URL as string,
     import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string
-  ) as DbClient;
+  );
 }
 
 let _singleton: DbClient | null = null;

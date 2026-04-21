@@ -27,7 +27,7 @@ export type {
 } from '@issue-tracker/repo/shared';
 
 const loginHandler = createLoginHandler(backendRepo);
-const signHandler = createSignUpHandler(backendRepo);
+const signupHandler = createSignUpHandler(backendRepo);
 const projectsHandler = createProjectsHandler(backendRepo);
 
-export { loginHandler, signHandler, projectsHandler };
+export { loginHandler, signupHandler, projectsHandler };

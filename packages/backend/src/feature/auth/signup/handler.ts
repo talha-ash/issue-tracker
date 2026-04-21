@@ -1,12 +1,7 @@
 import { backendRepo } from '@issue-tracker/repo/backend';
 import type { DbClient } from '@issue-tracker/repo/shared';
 import { validateSignupForm } from './service.js';
-import type {
-  SignupFieldErrors,
-  SignupInput,
-  SignupState,
-  SignupValues,
-} from './types.js';
+import type { SignupInput, SignupState, SignupValues } from './types.js';
 
 export function createSignUpHandler(repo: typeof backendRepo) {
   return {
@@ -40,7 +35,7 @@ export function createSignUpHandler(repo: typeof backendRepo) {
       }
       return {
         success: false,
-        errors: {} as SignupFieldErrors,
+        errors: {},
         message: error?.message ?? 'Signup failed',
         values: { fullname: input.fullname, email: input.email },
       };

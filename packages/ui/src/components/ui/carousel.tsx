@@ -6,8 +6,8 @@ import useEmblaCarousel, {
 } from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-import { Button } from '@issue-tracker/ui/components';
+import { cn } from '../../lib/utils';
+import { Button } from './button';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -95,11 +95,14 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return;
-    onSelect(api);
+    queueMicrotask(() => {
+      onSelect(api);
+    });
     api.on('reInit', onSelect);
     api.on('select', onSelect);
 
     return () => {
+      api.off('reInit', onSelect);
       api.off('select', onSelect);
     };
   }, [api, onSelect]);

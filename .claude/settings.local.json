@@ -13,7 +13,9 @@
       "Bash(grep -A 30 \"^  vite@7.3.1:$\" /media/x/mafia/mafia/ReactApps/issue-tracker/pnpm-lock.yaml)",
       "Bash(grep -A 50 \"^  vite@7.3.1:$\" /media/x/mafia/mafia/ReactApps/issue-tracker/pnpm-lock.yaml)",
       "Bash(grep -rn \"tsx@4.21.0\\\\\"$\\\\|tsx@4.21.0'\" /media/x/mafia/mafia/ReactApps/issue-tracker/pnpm-lock.yaml)",
-      "Bash(xargs -I{} readlink {})"
+      "Bash(xargs -I{} readlink {})",
+      "Bash(sed -i \"s|from '@issue-tracker/ui/components'|from './button'|g\" src/components/ui/carousel.tsx src/components/ui/alert-dialog.tsx src/components/ui/calendar.tsx src/components/ui/pagination.tsx)",
+      "Bash(sed -i \"s|from '@issue-tracker/ui/components'|from './separator'|g\" src/components/ui/button-group.tsx src/components/ui/item.tsx)"
     ]
   }
 }

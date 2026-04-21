@@ -19,5 +19,5 @@ export function createServerSupabaseClient(): DbClient {
         },
       },
     }
-  ) as DbClient;
+  );
 }
