@@ -2,6 +2,7 @@
 
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { loginHandler, signupHandler } from '@issue-tracker/backend';
+import { redirect } from 'next/navigation';
 
 export type {
   LoginFieldErrors,
@@ -9,7 +10,7 @@ export type {
   LoginValues,
   SignupFieldErrors,
   SignupState,
-  SignupValues,
+  SignupValues
 } from '@issue-tracker/backend';
 
 export async function signupAction(
@@ -30,8 +31,13 @@ export async function loginAction(
   formData: FormData
 ) {
   const supabase = await createServerSupabaseClient();
-  return loginHandler.login(supabase, {
+  const resp = await loginHandler.login(supabase, {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   });
+  console.log("Response", resp);
+  if (resp.success) {
+    redirect("/")
+  }
+  return resp;
 }

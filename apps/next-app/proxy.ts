@@ -1,7 +1,10 @@
 import { type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
+
+const PUBLIC_ROUTES = ['/login', '/signup', '/auth', '/about'];
+
 export async function proxy(request: NextRequest) {
-  return await updateSession(request);
+  return updateSession(request, PUBLIC_ROUTES);
 }
 export const config = {
   matcher: [

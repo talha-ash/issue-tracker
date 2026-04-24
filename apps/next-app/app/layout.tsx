@@ -7,6 +7,10 @@ import '../global.css';
 
 // const _geist = Geist({ subsets: ['latin'] })
 // const _geistMono = Geist_Mono({ subsets: ['latin'] })
+if (process.env.NEXT_RUNTIME === 'nodejs') {
+  const { server } = await import('@/mocks/node')
+  server.listen({})
+}
 
 export const metadata: Metadata = {
   title: 'IssueTrack - Modern Issue Tracker',

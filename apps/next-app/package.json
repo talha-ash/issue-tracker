@@ -8,12 +8,16 @@
     "start": "next start",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint"
+    "lint": "eslint",
+     "cypress:open": "cypress open"
   },
   "dependencies": {
     "@issue-tracker/backend": "workspace:*",
     "@issue-tracker/ui": "workspace:*",
     "dotenv": "^17.4.0",
     "next": "16.2.2"
+  },
+  "devDependencies": {
+    "cypress": "^15.14.1"
   }
 }
