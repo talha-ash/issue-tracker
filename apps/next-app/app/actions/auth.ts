@@ -1,7 +1,7 @@
 'use server';
 
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { loginHandler, signupHandler } from '@issue-tracker/backend';
+import { authHandler } from '@issue-tracker/backend';
 import { redirect } from 'next/navigation';
 
 export type {
@@ -10,15 +10,15 @@ export type {
   LoginValues,
   SignupFieldErrors,
   SignupState,
-  SignupValues
+  SignupValues,
 } from '@issue-tracker/backend';
 
 export async function signupAction(
-  _prev: Awaited<ReturnType<typeof signupHandler.signup>>,
+  _prev: Awaited<ReturnType<typeof authHandler.signup>>,
   formData: FormData
 ) {
   const supabase = await createServerSupabaseClient();
-  return signupHandler.signup(supabase, {
+  return authHandler.signup(supabase, {
     fullname: formData.get('fullname') as string,
     email: formData.get('email') as string,
     password: formData.get('password') as string,
@@ -27,17 +27,17 @@ export async function signupAction(
 }
 
 export async function loginAction(
-  _prev: Awaited<ReturnType<typeof loginHandler.login>>,
+  _prev: Awaited<ReturnType<typeof authHandler.login>>,
   formData: FormData
 ) {
   const supabase = await createServerSupabaseClient();
-  const resp = await loginHandler.login(supabase, {
+  const resp = await authHandler.login(supabase, {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   });
-  console.log("Response", resp);
+  console.log('Response', resp);
   if (resp.success) {
-    redirect("/")
+    redirect('/');
   }
   return resp;
 }

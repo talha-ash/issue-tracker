@@ -1,5 +1,4 @@
-import { createLoginHandler } from './feature/auth/login/handler.js';
-import { createSignUpHandler } from './feature/auth/signup/handler.js';
+import { createAuthHandler } from './feature/auth/handler.js';
 import { createProjectsHandler } from './feature/projects/handler.js';
 import { backendRepo } from '@issue-tracker/repo/backend';
 export type {
@@ -16,6 +15,12 @@ export type {
 } from './feature/auth/signup/types.js';
 export type { Project } from './feature/projects/types.js';
 export type {
+  CreateProjectInput,
+  CreateProjectState,
+  CreateProjectFieldErrors,
+  CreateProjectValues,
+} from './feature/projects/createProject/types.js';
+export type {
   Database,
   DbClient,
   ActionState,
@@ -26,8 +31,7 @@ export type {
   Json,
 } from '@issue-tracker/repo/shared';
 
-const loginHandler = createLoginHandler(backendRepo);
-const signupHandler = createSignUpHandler(backendRepo);
+const authHandler = createAuthHandler(backendRepo);
 const projectsHandler = createProjectsHandler(backendRepo);
 
-export { loginHandler, signupHandler, projectsHandler };
+export { authHandler, projectsHandler };

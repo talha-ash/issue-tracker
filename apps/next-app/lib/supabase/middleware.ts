@@ -2,7 +2,10 @@ import type { Database } from '@issue-tracker/backend';
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-export async function updateSession(request: NextRequest, publicRoutes: string[]) {
+export async function updateSession(
+  request: NextRequest,
+  publicRoutes: string[]
+) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(
@@ -32,13 +35,13 @@ export async function updateSession(request: NextRequest, publicRoutes: string[]
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  const isPublicRoute = publicRoutes.some((route) =>
+  const isPublicRoute = publicRoutes.some(route =>
     request.nextUrl.pathname.startsWith(route)
   );
 
   if (!user && !isPublicRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    const url = request.nextUrl.clone();
+    url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 

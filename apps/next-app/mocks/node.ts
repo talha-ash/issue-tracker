@@ -1,7 +1,7 @@
 import { setupServer } from 'msw/node';
 import { http, HttpResponse, passthrough } from 'msw';
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const MOCK_USER_ID = '00000000-0000-0000-0000-000000000001';
 const MOCK_SESSION_ID = '00000000-0000-0000-0000-000000000002';
 
@@ -71,4 +71,3 @@ export const server = setupServer(
     return HttpResponse.json(buildMockUser('test@example.com', now));
   })
 );
-

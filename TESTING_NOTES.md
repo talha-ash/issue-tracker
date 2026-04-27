@@ -35,6 +35,7 @@ but the proxy then calls `getClaims()` which runs `decodeJWT()` on the token.
 Invalid structure → `getClaims()` returns `null` → proxy redirects to `/login`.
 
 The mock builds a proper `header.payload.signature` (base64url) with:
+
 - `alg: 'HS256'` (forces fallback to `getUser()`, skips JWKS)
 - `exp` in the future (passes `validateExp`)
 - `sub`, `email`, `role`, etc. matching what Supabase would normally issue

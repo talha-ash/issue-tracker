@@ -1,14 +1,12 @@
-import { loginHandler } from '@issue-tracker/backend';
 import { createServerSupabaseClient } from '#/lib/supabase/server';
+import { authHandler, type LoginInput } from '@issue-tracker/backend';
 import { createServerFn } from '@tanstack/react-start';
 
 export const loginFn = createServerFn({ method: 'POST' })
-  .inputValidator(
-    (d: { email: string; password: string; redirectUrl?: string }) => d
-  )
+  .inputValidator((d: LoginInput & { redirectUrl?: string }) => d)
   .handler(async ({ data }) => {
     const supabase = createServerSupabaseClient();
-    return loginHandler.login(supabase, {
+    return authHandler.login(supabase, {
       email: data.email,
       password: data.password,
     });

@@ -15,8 +15,6 @@ export function LoginForm() {
   const { t } = useLanguage();
   const { state, formAction, isPending } = useLogin();
 
-  
-
   return (
     <form action={formAction} className="mt-6">
       <FieldGroup>

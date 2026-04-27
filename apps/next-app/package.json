@@ -9,7 +9,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "lint": "eslint",
-     "cypress:open": "cypress open"
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@issue-tracker/backend": "workspace:*",

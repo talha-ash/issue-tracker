@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { ProjectForm } from '@/components/projects/project-form';
-import { useLanguage } from '@/lib/i18n';
+import { CreateProjectForm } from '#/feature/createProject/components/create-project-form';
+import { useLanguage } from '#/lib/i18n';
 
 export const Route = createFileRoute('/_authed/projects/new')({
   component: NewProjectPage,
@@ -19,7 +19,7 @@ function NewProjectPage() {
         <p className="mt-1 text-muted-foreground">{t('project.setup')}</p>
       </div>
 
-      <ProjectForm className="mt-8" />
+      <CreateProjectForm className="mt-8" />
     </div>
   );
 }

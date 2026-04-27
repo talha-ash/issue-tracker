@@ -9,5 +9,6 @@ export const backendRepo = {
   },
   projects: {
     fetchProjects: projects.fetchProjects,
+    createProject: projects.createProject,
   },
 };

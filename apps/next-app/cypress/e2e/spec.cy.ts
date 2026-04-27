@@ -16,4 +16,4 @@ describe('Login Page', () => {
     cy.get('#password').type('password123');
     cy.get('button[type="submit"]').click();
   });
-})
+});
