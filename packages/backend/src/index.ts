@@ -1,37 +1,37 @@
-import { createAuthHandler } from './feature/auth/handler.js';
-import { createProjectsHandler } from './feature/projects/handler.js';
 import { backendRepo } from '@issue-tracker/repo/backend';
+import { createAuthHandlers } from './feature/auth/index.js';
+import { createProjectsHandlers } from './feature/projects/index.js';
+
 export type {
-  LoginState,
-  LoginInput,
-  LoginFieldErrors,
-  LoginValues,
-} from './feature/auth/login/types.js';
-export type {
-  SignupState,
-  SignupInput,
-  SignupFieldErrors,
-  SignupValues,
-} from './feature/auth/signup/types.js';
-export type { Project } from './feature/projects/types.js';
-export type {
-  CreateProjectInput,
-  CreateProjectState,
-  CreateProjectFieldErrors,
-  CreateProjectValues,
-} from './feature/projects/createProject/types.js';
-export type {
+  ActionState,
   Database,
   DbClient,
-  ActionState,
+  Enums,
+  Json,
   Tables,
   TablesInsert,
   TablesUpdate,
-  Enums,
-  Json,
 } from '@issue-tracker/repo/shared';
+export type {
+  LoginFieldErrors,
+  LoginInput,
+  LoginState,
+  LoginValues,
+} from './feature/auth/login/types.js';
+export type {
+  SignupFieldErrors,
+  SignupInput,
+  SignupState,
+  SignupValues,
+} from './feature/auth/signup/types.js';
+export type {
+  CreateProjectFieldErrors,
+  CreateProjectInput,
+  CreateProjectState,
+  CreateProjectValues,
+} from './feature/projects/createProject/types.js';
 
-const authHandler = createAuthHandler(backendRepo);
-const projectsHandler = createProjectsHandler(backendRepo);
+export type { Project } from './feature/projects/types.js';
 
-export { authHandler, projectsHandler };
+export const authHandlers = createAuthHandlers(backendRepo);
+export const projectsHandlers = createProjectsHandlers(backendRepo);

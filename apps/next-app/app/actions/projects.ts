@@ -1,7 +1,7 @@
 'use server';
 
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { projectsHandler } from '@issue-tracker/backend';
+import { projectsHandlers } from '@issue-tracker/backend';
 
 export type {
   CreateProjectFieldErrors,
@@ -10,7 +10,7 @@ export type {
 } from '@issue-tracker/backend';
 
 export async function createProjectAction(
-  _prev: Awaited<ReturnType<typeof projectsHandler.createProject>>,
+  _prev: Awaited<ReturnType<typeof projectsHandlers.createProjectHandler>>,
   formData: FormData
 ) {
   const supabase = await createServerSupabaseClient();
@@ -23,10 +23,11 @@ export async function createProjectAction(
     .toUpperCase()
     .slice(0, 4);
 
-  return projectsHandler.createProject(supabase, {
+  const dateNow = Date.now().toString();
+  return projectsHandlers.createProjectHandler(supabase, {
     name,
     description: formData.get('description') as string,
-    key: `PROJ${Date.now()}${projectKey}`,
+    key: `PROJ${dateNow}${projectKey}`,
     visibility: formData.get('visibility') as 'private' | 'public',
   });
 }

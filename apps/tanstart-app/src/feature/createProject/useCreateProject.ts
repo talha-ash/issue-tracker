@@ -35,11 +35,13 @@ export const useCreateProject = () => {
       .toUpperCase()
       .slice(0, 4);
 
+    const dateNow = Date.now().toString();
+
     createProjectMutation.mutate({
       data: {
         name,
         description: formData.get('description') as string,
-        key: `PROJ${Date.now()}${projectKey}`,
+        key: `PROJ${dateNow}${projectKey}`,
         visibility: formData.get(
           'visibility'
         ) as CreateProjectInput['visibility'],
