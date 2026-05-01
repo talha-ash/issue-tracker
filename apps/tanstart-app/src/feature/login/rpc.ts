@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from '#/lib/supabase/server';
-import { authHandlers, type LoginInput } from '@issue-tracker/backend';
+import { authHandlers, type LoginInput } from '@issue-tracker/server';
 import { createServerFn } from '@tanstack/react-start';
 
 export const loginFn = createServerFn({ method: 'POST' })

@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
-import type { SignupState } from '@issue-tracker/backend';
+import type { SignupState } from '@issue-tracker/server';
 import { signupFn } from './rpc';
 
 export const signupInitialState: SignupState = {

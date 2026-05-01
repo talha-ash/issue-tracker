@@ -1,4 +1,4 @@
-import { authHandlers } from '@issue-tracker/backend';
+import { authHandlers } from '@issue-tracker/server';
 import { createServerSupabaseClient } from '#/lib/supabase/server';
 import { createServerFn } from '@tanstack/react-start';
 

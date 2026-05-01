@@ -16,22 +16,22 @@ A fully responsive Issue Tracker web application inspired by Linear/Plane. Built
 ## Architecture Flow
 
 ```
-browser → client pkg → RPC (app-level) → backend pkg → repo pkg (Supabase)
+browser → client pkg → RPC (app-level) → server pkg → backend pkg (DbClient/Supabase)
 ```
 
 - **`client`** — browser-side hooks, API calls, client-side business logic. No framework-specific APIs.
-- **RPC layer** — app-level glue: `createServerFn` (TanStack Start) or `'use server'` (Next.js). Lives in apps, calls into `backend`.
-- **`backend`** — server-side logic: validation, handlers. No React. Called from RPC layer.
-- **`repo`** — sole Supabase communication. Every function receives a `DbClient` as first param.
+- **RPC layer** — app-level glue: `createServerFn` (TanStack Start) or `'use server'` (Next.js). Lives in apps, calls into `server`.
+- **`server`** — server-side logic: validation, handlers. No React. Called from RPC layer. Handlers call `createBackend(client)` and work through the `Backend` interface.
+- **`backend`** — the `Backend` abstraction: interface + `createBackend(client)` factory + Supabase implementation. Today backed by Supabase; swappable for Firebase or a custom API.
 
 ## Package Dependency Rules
 
 ```
-repo      ← no internal deps
-backend   ← @issue-tracker/repo
-client    ← @issue-tracker/repo  (+ @issue-tracker/backend for types only)
+backend   ← no internal deps
+server    ← @issue-tracker/backend
+client    ← (stub — no deps yet)
 ui        ← no internal deps
-apps      ← ui, backend, client, repo
+apps      ← ui, server, client
 ```
 
 ## Project Structure
@@ -43,9 +43,9 @@ issue-tracker/
 │   └── tanstart-app/      # TanStack Start app (@issue-tracker/tanstart-app)
 ├── packages/
 │   ├── ui/                # Shared UI components (@issue-tracker/ui)
-│   ├── repo/              # Data access layer (@issue-tracker/repo)
-│   ├── backend/           # Server-side logic (@issue-tracker/backend)
-│   └── client/            # Browser-side logic (@issue-tracker/client)
+│   ├── backend/           # Backend abstraction + Supabase impl (@issue-tracker/backend)
+│   ├── server/            # Server-side handlers (@issue-tracker/server)
+│   └── client/            # Browser-side logic stub (@issue-tracker/client)
 ├── package.json           # Root - shared deps hoisted here
 ├── pnpm-workspace.yaml
 └── tsconfig.json          # Root TS config
@@ -67,27 +67,29 @@ issue-tracker/
 
 ## Packages
 
-### `repo` (`packages/repo`)
-
-- Package: `@issue-tracker/repo`
-- Sole communication layer with Supabase. Every function receives a `DbClient` as the first param.
-- Entry points:
-  - `@issue-tracker/repo/backend` → `src/backend.ts` — backend Supabase functions only
-  - `@issue-tracker/repo/client` → `src/client.ts` — client Supabase functions only
-  - `@issue-tracker/repo/shared` → `src/shared/index.ts` — shared types (`ActionState`, `DbClient`, `Database`)
-
 ### `backend` (`packages/backend`)
 
 - Package: `@issue-tracker/backend`
-- Server-side logic. **No React code.**
+- The `Backend` abstraction layer. Defines the `Backend` interface and exposes `createBackend(client: DbClient)` which returns a `Backend` bound to a specific session. Today implemented via Supabase; swappable for Firebase or a custom API without touching handler code.
+- Entry points:
+  - `@issue-tracker/backend/server` → `src/server.ts` — server-side (SSR/Node) exports
+  - `@issue-tracker/backend/browser` → `src/browser.ts` — browser-side exports
+  - `@issue-tracker/backend/shared` → `src/shared/index.ts` — shared types (`ActionState`, `DbClient`, `Backend`, `User`, `Session`, `Database`, `Tables*`)
+- Underlying primitives in `src/context/auth.ts` and `src/context/projects.ts` still take `(client, ...args)` — `createBackend` binds them.
+
+### `server` (`packages/server`)
+
+- Package: `@issue-tracker/server`
+- Server-side handlers. **No React code.**
 - File structure: `src/feature/<domain>/<feature>/` with `handler.ts`, `service.ts`, `types.ts`, `validationSchemas.ts`
 - Validation schema files are named `validationSchemas.ts` (not `validations.ts`)
-- Exports handlers and types from root entry point `@issue-tracker/backend`
+- Handlers are plain exported async functions — no factory pattern. Each handler calls `createBackend(client)` internally and works through the `Backend` interface.
+- Exports all handlers and types from root entry point `@issue-tracker/server`
 
 ### `client` (`packages/client`)
 
 - Package: `@issue-tracker/client`
-- Browser-side hooks, API calls, client-side business logic.
+- Browser-side hooks, API calls, client-side business logic. Currently a stub with no consumers.
 - **No framework-specific APIs** (`createServerFn`, `useRouter`, etc.) — those stay in apps.
 
 ### `ui` (`packages/ui`)
@@ -115,8 +117,8 @@ pnpm --filter @issue-tracker/next-app dev
 pnpm --filter @issue-tracker/tanstart-app dev
 
 # Run individual package in watch mode
-pnpm dev:repo
 pnpm dev:backend
+pnpm dev:server
 pnpm dev:client
 
 # Typecheck everything
@@ -182,11 +184,20 @@ The sidebar is context-aware:
 - UI components live in `packages/ui/src/components/ui/`
 - Utility functions in `packages/ui/src/lib/utils.ts`
 - Root `tsconfig.json` is the base config; packages and apps extend it
-- Backend feature files follow: `src/feature/<domain>/<feature>/{handler,service,types,validationSchemas}.ts`
+- Server feature files follow: `src/feature/<domain>/<feature>/{handler,service,types,validationSchemas}.ts`
 - Validation schema files are always named `validationSchemas.ts`
-- RPC files (`createServerFn`, server actions) are **app-level only** — they call into `@issue-tracker/backend`
-- `repo/backend` is restricted to `backend` package; `repo/client` is restricted to `client` package (enforced by ESLint `no-restricted-imports`)
-- Apps import `Database`, `DbClient`, `ActionState` from `@issue-tracker/backend` — never directly from `@issue-tracker/repo`
+- RPC files (`createServerFn`, server actions) are **app-level only** — they call into `@issue-tracker/server`
+- `backend/server` entry is restricted to `server` package; `backend/browser` entry is restricted to `client` package (enforced by ESLint `no-restricted-imports`)
+- Apps import `Database`, `DbClient`, `ActionState`, `User`, `Session` from `@issue-tracker/server` — never directly from `@issue-tracker/backend`
+- Handler pattern: each handler is a plain `async function handlerName(client: DbClient, input): Promise<State>`. Inside, call `const backend = createBackend(client)` then use `backend.auth.*` / `backend.projects.*`. Do NOT call supabase methods on `client` directly inside handlers.
+
+## Swapping the backend implementation
+
+To replace Supabase with Firebase or a custom API:
+
+1. Write a new `createBackend(client?)` implementation in `packages/backend/src/shared/create-backend.ts` matching the `Backend` interface.
+2. If the new backend is not BaaS (no session-per-request client), drop the `client` param from `createBackend` and update the app-level `lib/supabase/` callers and handler signatures accordingly — handlers themselves don't change shape.
+3. The `apps/*/lib/supabase/` folders are the Supabase-specific implementation; they would be deleted and replaced for a non-Supabase backend.
 
 ## Get Package Skill md
 

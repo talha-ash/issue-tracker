@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { getCookies, setCookie } from '@tanstack/react-start/server';
-import type { Database, DbClient } from '@issue-tracker/backend';
+import type { Database, DbClient } from '@issue-tracker/server';
 
 export function createServerSupabaseClient(): DbClient {
   return createServerClient<Database>(

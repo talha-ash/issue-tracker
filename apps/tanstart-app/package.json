@@ -14,7 +14,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@issue-tracker/backend": "workspace:*",
+    "@issue-tracker/server": "workspace:*",
     "@issue-tracker/ui": "workspace:*",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-router": "latest",

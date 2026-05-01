@@ -19,9 +19,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        server: resolve(__dirname, 'src/server.ts'),
-        browser: resolve(__dirname, 'src/browser.ts'),
-        'shared/index': resolve(__dirname, 'src/shared/index.ts'),
+        index: resolve(__dirname, 'src/index.ts'),
       },
       formats: ['es'],
     },

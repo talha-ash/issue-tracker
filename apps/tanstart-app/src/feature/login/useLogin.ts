@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { loginFn } from './rpc';
-import type { LoginState } from '@issue-tracker/backend';
+import type { LoginState } from '@issue-tracker/server';
 
 export const loginInitialState: LoginState = {
   success: false,

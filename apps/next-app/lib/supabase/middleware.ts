@@ -1,4 +1,4 @@
-import type { Database } from '@issue-tracker/backend';
+import type { Database } from '@issue-tracker/server';
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 

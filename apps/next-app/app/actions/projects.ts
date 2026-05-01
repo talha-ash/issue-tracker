@@ -1,13 +1,13 @@
 'use server';
 
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { projectsHandlers } from '@issue-tracker/backend';
+import { projectsHandlers } from '@issue-tracker/server';
 
 export type {
   CreateProjectFieldErrors,
   CreateProjectState,
   CreateProjectValues,
-} from '@issue-tracker/backend';
+} from '@issue-tracker/server';
 
 export async function createProjectAction(
   _prev: Awaited<ReturnType<typeof projectsHandlers.createProjectHandler>>,

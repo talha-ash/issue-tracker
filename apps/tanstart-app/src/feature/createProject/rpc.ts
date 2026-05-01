@@ -2,7 +2,7 @@ import { createServerSupabaseClient } from '#/lib/supabase/server';
 import {
   projectsHandlers,
   type CreateProjectInput,
-} from '@issue-tracker/backend';
+} from '@issue-tracker/server';
 import { createServerFn } from '@tanstack/react-start';
 
 export const createProjectFn = createServerFn({ method: 'POST' })

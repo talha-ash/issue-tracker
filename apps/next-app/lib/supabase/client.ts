@@ -1,5 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr';
-import type { Database, DbClient } from '@issue-tracker/backend';
+import type { Database, DbClient } from '@issue-tracker/server';
 
 export function createClientSupabaseClient(): DbClient {
   return createBrowserClient<Database>(

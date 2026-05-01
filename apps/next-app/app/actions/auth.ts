@@ -1,7 +1,7 @@
 'use server';
 
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { authHandlers } from '@issue-tracker/backend';
+import { authHandlers } from '@issue-tracker/server';
 import { redirect } from 'next/navigation';
 
 export type {
@@ -11,7 +11,7 @@ export type {
   SignupFieldErrors,
   SignupState,
   SignupValues,
-} from '@issue-tracker/backend';
+} from '@issue-tracker/server';
 
 export async function signupAction(
   _prev: Awaited<ReturnType<typeof authHandlers.signupHandler>>,

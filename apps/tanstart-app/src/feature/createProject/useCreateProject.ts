@@ -1,7 +1,7 @@
 import type {
   CreateProjectInput,
   CreateProjectState,
-} from '@issue-tracker/backend';
+} from '@issue-tracker/server';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { createProjectFn } from './rpc';
