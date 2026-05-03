@@ -14,6 +14,7 @@
   "dependencies": {
     "@issue-tracker/server": "workspace:*",
     "@issue-tracker/ui": "workspace:*",
+    "@issue-tracker/backend": "workspace:*",
     "dotenv": "^17.4.0",
     "next": "16.2.2"
   },

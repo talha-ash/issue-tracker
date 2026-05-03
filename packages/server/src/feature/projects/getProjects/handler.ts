@@ -1,8 +1,7 @@
-import type { Backend } from '@issue-tracker/backend/server';
-import type { DbClient } from '@issue-tracker/backend/shared';
+import type { ProjectsFetchPort } from './port.js';
 
-export function createGetProjectsHandler(backend: Backend) {
-  return function getProjectsHandler(client: DbClient) {
-    return backend.projects.fetchProjects(client);
+export function createGetProjectsHandler(backend: ProjectsFetchPort) {
+  return function getProjectsHandler() {
+    return backend.fetchProjects();
   };
 }

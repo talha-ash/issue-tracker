@@ -1,9 +1,15 @@
-import { backend } from '@issue-tracker/backend/server';
+import type { Backend } from '@issue-tracker/backend/server';
 import { createAuthHandlers } from './feature/auth/index.js';
 import { createProjectsHandlers } from './feature/projects/index.js';
 
-export const authHandlers = createAuthHandlers(backend);
-export const projectsHandlers = createProjectsHandlers(backend);
+export function createHandlers(backend: Backend) {
+  return {
+    authHandlers: createAuthHandlers(backend),
+    projectsHandlers: createProjectsHandlers(backend),
+  };
+}
+
+export type { Backend };
 
 export type {
   LoginFieldErrors,

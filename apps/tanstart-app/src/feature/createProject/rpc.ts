@@ -1,13 +1,10 @@
-import { createServerSupabaseClient } from '#/lib/supabase/server';
-import {
-  projectsHandlers,
-  type CreateProjectInput,
-} from '@issue-tracker/server';
+import { createBackendClient } from '#/lib/backend';
+import { createHandlers, type CreateProjectInput } from '@issue-tracker/server';
 import { createServerFn } from '@tanstack/react-start';
 
 export const createProjectFn = createServerFn({ method: 'POST' })
   .inputValidator((d: CreateProjectInput) => d)
   .handler(async ({ data }) => {
-    const supabase = createServerSupabaseClient();
-    return projectsHandlers.createProjectHandler(supabase, data);
+    const backend = createBackendClient();
+    return createHandlers(backend).projectsHandlers.createProjectHandler(data);
   });

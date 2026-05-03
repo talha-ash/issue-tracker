@@ -1,13 +1,9 @@
-import type { Backend } from '@issue-tracker/backend/server';
-import type { DbClient } from '@issue-tracker/backend/shared';
+import type { AuthSignInPort } from './port.js';
 import { validateLoginFormData } from './service.js';
 import type { LoginInput, LoginState, LoginValues } from './types.js';
 
-export function createLoginHandler(backend: Backend) {
-  return async function loginHandler(
-    client: DbClient,
-    input: LoginInput
-  ): Promise<LoginState> {
+export function createLoginHandler(backend: AuthSignInPort) {
+  return async function loginHandler(input: LoginInput): Promise<LoginState> {
     const validation = validateLoginFormData(input);
     if (validation.isErr()) {
       return {
@@ -18,11 +14,7 @@ export function createLoginHandler(backend: Backend) {
       };
     }
 
-    const result = await backend.auth.signIn(
-      client,
-      input.email,
-      input.password
-    );
+    const result = await backend.signIn(input.email, input.password);
     if (result.isOk()) {
       return {
         success: true,

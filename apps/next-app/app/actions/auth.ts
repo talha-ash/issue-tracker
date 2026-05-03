@@ -1,7 +1,7 @@
 'use server';
 
-import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { authHandlers } from '@issue-tracker/server';
+import { createBackendClient } from '@/lib/backend';
+import { createHandlers } from '@issue-tracker/server';
 import { redirect } from 'next/navigation';
 
 export type {
@@ -14,11 +14,11 @@ export type {
 } from '@issue-tracker/server';
 
 export async function signupAction(
-  _prev: Awaited<ReturnType<typeof authHandlers.signupHandler>>,
+  _prev: Awaited<ReturnType<typeof createHandlers>>,
   formData: FormData
 ) {
-  const supabase = await createServerSupabaseClient();
-  return authHandlers.signupHandler(supabase, {
+  const backend = await createBackendClient();
+  return createHandlers(backend).authHandlers.signupHandler({
     fullname: formData.get('fullname') as string,
     email: formData.get('email') as string,
     password: formData.get('password') as string,
@@ -27,11 +27,11 @@ export async function signupAction(
 }
 
 export async function loginAction(
-  _prev: Awaited<ReturnType<typeof authHandlers.loginHandler>>,
+  _prev: Awaited<ReturnType<typeof createHandlers>>,
   formData: FormData
 ) {
-  const supabase = await createServerSupabaseClient();
-  const resp = await authHandlers.loginHandler(supabase, {
+  const backend = await createBackendClient();
+  const resp = await createHandlers(backend).authHandlers.loginHandler({
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   });

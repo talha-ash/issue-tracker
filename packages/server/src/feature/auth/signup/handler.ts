@@ -1,11 +1,9 @@
-import type { Backend } from '@issue-tracker/backend/server';
-import type { DbClient } from '@issue-tracker/backend/shared';
+import type { AuthSignUpPort } from './port.js';
 import { validateSignupForm } from './service.js';
 import type { SignupInput, SignupState, SignupValues } from './types.js';
 
-export function createSignupHandler(backend: Backend) {
+export function createSignupHandler(backend: AuthSignUpPort) {
   return async function signupHandler(
-    client: DbClient,
     input: SignupInput
   ): Promise<SignupState> {
     const validation = validateSignupForm(input);
@@ -21,8 +19,7 @@ export function createSignupHandler(backend: Backend) {
       };
     }
 
-    const result = await backend.auth.signUp(
-      client,
+    const result = await backend.signUp(
       input.email,
       input.password,
       input.fullname

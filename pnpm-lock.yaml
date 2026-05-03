@@ -207,6 +207,9 @@ importers:
 
   apps/next-app:
     dependencies:
+      '@issue-tracker/backend':
+        specifier: workspace:*
+        version: link:../../packages/backend
       '@issue-tracker/server':
         specifier: workspace:*
         version: link:../../packages/server
@@ -226,6 +229,9 @@ importers:
 
   apps/tanstart-app:
     dependencies:
+      '@issue-tracker/backend':
+        specifier: workspace:*
+        version: link:../../packages/backend
       '@issue-tracker/server':
         specifier: workspace:*
         version: link:../../packages/server

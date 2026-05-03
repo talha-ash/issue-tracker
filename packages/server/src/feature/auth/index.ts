@@ -4,7 +4,7 @@ import { createSignupHandler } from './signup/handler.js';
 
 export function createAuthHandlers(backend: Backend) {
   return {
-    loginHandler: createLoginHandler(backend),
-    signupHandler: createSignupHandler(backend),
+    loginHandler: createLoginHandler(backend.auth),
+    signupHandler: createSignupHandler(backend.auth),
   };
 }

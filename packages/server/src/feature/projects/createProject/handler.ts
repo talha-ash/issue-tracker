@@ -1,5 +1,4 @@
-import type { Backend } from '@issue-tracker/backend/server';
-import type { DbClient } from '@issue-tracker/backend/shared';
+import type { AuthGetCurrentUserPort, ProjectsCreatePort } from './port.js';
 import { validateCreateProject } from './service.js';
 import type {
   CreateProjectInput,
@@ -7,9 +6,10 @@ import type {
   CreateProjectValues,
 } from './types.js';
 
-export function createCreateProjectHandler(backend: Backend) {
+type CreateProjectBackend = AuthGetCurrentUserPort & ProjectsCreatePort;
+
+export function createCreateProjectHandler(backend: CreateProjectBackend) {
   return async function createProjectHandler(
-    client: DbClient,
     input: CreateProjectInput
   ): Promise<CreateProjectState> {
     const validation = validateCreateProject(input);
@@ -22,7 +22,7 @@ export function createCreateProjectHandler(backend: Backend) {
       };
     }
 
-    const userResult = await backend.auth.getCurrentUser(client);
+    const userResult = await backend.getCurrentUser();
     if (userResult.isErr()) {
       return {
         success: false,
@@ -32,7 +32,7 @@ export function createCreateProjectHandler(backend: Backend) {
       };
     }
 
-    const result = await backend.projects.createProject(client, {
+    const result = await backend.createProject({
       ...input,
       owner_id: userResult.value.id,
     });

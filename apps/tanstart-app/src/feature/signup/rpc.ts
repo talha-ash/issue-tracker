@@ -1,5 +1,5 @@
-import { authHandlers } from '@issue-tracker/server';
-import { createServerSupabaseClient } from '#/lib/supabase/server';
+import { createBackendClient } from '#/lib/backend';
+import { createHandlers } from '@issue-tracker/server';
 import { createServerFn } from '@tanstack/react-start';
 
 export const signupFn = createServerFn({ method: 'POST' })
@@ -12,6 +12,6 @@ export const signupFn = createServerFn({ method: 'POST' })
     }) => d
   )
   .handler(async ({ data }) => {
-    const supabase = createServerSupabaseClient();
-    return authHandlers.signupHandler(supabase, data);
+    const backend = createBackendClient();
+    return createHandlers(backend).authHandlers.signupHandler(data);
   });
